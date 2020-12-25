@@ -6,20 +6,23 @@ USE smart_review;
 CREATE TABLE user
 (
     id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    username      CHAR(64),
-    password      CHAR(64),
-    role          TINYINT UNSIGNED,
+    username      CHAR(64) NOT NULL,
+    email         CHAR(64) NOT NULL,
+    password      CHAR(64) NOT NULL,
+    roles         TEXT COMMENT '用户角色, 多个角色使用逗号隔开',
+    enable        TINYINT  NOT NULL DEFAULT '1',
     create_time   DATETIME NOT NULL,
     modified_time DATETIME NOT NULL,
-    is_delete     TINYINT  NOT NULL
+    KEY username (username)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='用户基本信息表';
 
-INSERT INTO smart_review.user(id, username, password, role, create_time, modified_time, is_delete)
-VALUES (1, 'LiZeC', '123', 0, NOW(), NOW(), 0),
-       (2, 'GGBoy', '123', 0, NOW(), NOW(), 0),
-       (3, '中文用户', '123', 0, NOW(), NOW(), 0);
+# password: 123
+INSERT INTO smart_review.user(id, username, email, password, roles, create_time, modified_time)
+VALUES (1, 'user', 'user@mail.com', '$2a$10$TObmaFSkf17z.CYdUfX8duIjGztFDoT7u0T3iwkC/W8inl89zY3jO', 'ROLE_USER', NOW(), NOW()),
+       (2, 'admin', 'admin@mail.com', '2a$10$TObmaFSkf17z.CYdUfX8duIjGztFDoT7u0T3iwkC/W8inl89zY3jO', 'ROLE_ADMIN, ROLE_USER', NOW(), NOW()),
+       (3, '中文用户', '123@mail.com', '$2a$10$TObmaFSkf17z.CYdUfX8duIjGztFDoT7u0T3iwkC/W8inl89zY3jO', 'ROLE_USER', NOW(), NOW());
 
 
 CREATE TABLE knowledge
