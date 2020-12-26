@@ -7,4 +7,6 @@ import top.lizec.smartreview.entity.User;
 public interface UserDao {
 
     User findByUserName(String username);
+
+    Long insertUser(User user);
 }

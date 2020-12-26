@@ -1,15 +1,18 @@
 package top.lizec.smartreview.entity;
 
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
+@ToString
 public class User implements UserDetails {
     private Long id;
     private String username;
     private String password;
+    private String email;
     private String roles;
     private boolean enable;
     private List<GrantedAuthority> authorities;
@@ -83,14 +86,11 @@ public class User implements UserDetails {
         this.enable = enable;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", roles='" + roles + '\'' +
-                ", enable=" + enable +
-                '}';
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

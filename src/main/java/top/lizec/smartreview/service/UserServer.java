@@ -35,7 +35,6 @@ public class UserServer implements UserDetailsService {
 
     public Long createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        throw new UnsupportedOperationException("");
+        return userDao.insertUser(user);
     }
 }
