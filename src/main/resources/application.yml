@@ -8,5 +8,12 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
 server:
   port: 8792
-
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: top.lizec.smartreview.entity
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    top.lizec.smartreview.mapper: TRACE
 
