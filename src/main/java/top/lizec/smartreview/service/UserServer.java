@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import top.lizec.smartreview.entity.User;
-import top.lizec.smartreview.mapper.UserMapper;
+import top.lizec.smartreview.mapper.UserDao;
 
 import javax.annotation.Resource;
 
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 public class UserServer implements UserDetailsService {
 
     @Resource
-    private UserMapper userMapper;
+    private UserDao userDao;
 
     @Resource
     private PasswordEncoder passwordEncoder;
@@ -23,7 +23,7 @@ public class UserServer implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userMapper.findByUserName(username);
+        User user = userDao.findByUserName(username);
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
@@ -33,8 +33,9 @@ public class UserServer implements UserDetailsService {
         return user;
     }
 
-//    public Long createUser(User user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        throw new UnsupportedOperationException("");
-//    }
+    public Long createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        throw new UnsupportedOperationException("");
+    }
 }

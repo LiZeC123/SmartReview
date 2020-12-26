@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import top.lizec.smartreview.entity.User;
 
 @Mapper
-public interface UserMapper {
+public interface UserDao {
 
     User findByUserName(String username);
 }

@@ -1,6 +1,7 @@
 package top.lizec.smartreview.web;
 
 import com.google.code.kaptcha.Producer;
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+@Api
 @Controller
 public class CaptchaController {
     @Resource
