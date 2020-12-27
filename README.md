@@ -75,3 +75,16 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 感谢以下的开源项目: 
 
 - [My Login](https://github.com/nauvalazhar/bootstrap-4-login-page)
+
+
+参考资料
+--------------------
+
+### MySQL
+
+- [Spring Boot MySql Access denied for user 'root'@'localhost'](https://stackoverflow.com/questions/58260870/spring-boot-mysql-access-denied-for-user-rootlocalhost)
+
+
+###  Java监控工具
+
+- [java高分局之jstat命令使用](https://blog.csdn.net/maosijunzi/article/details/46049117)
