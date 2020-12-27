@@ -14,7 +14,7 @@ stopService() {
 
 if [ "$1"x == "start"x ]; then
   startService
-elif [ "$1"x == "start"x ]; then
+elif [ "$1"x == "stop"x ]; then
   stopService
 elif [ "$1"x == "restart"x ]; then
   stopService
