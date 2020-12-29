@@ -72,10 +72,11 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 引用的开源项目项目
 -------------------
 
-感谢以下的开源项目: 
+感谢以下的开源项目和免费组件: 
 
 - [My Login](https://github.com/nauvalazhar/bootstrap-4-login-page)
-
+- [人工智能图标](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=8217)
+- [动物图标](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=25660)
 
 参考资料
 --------------------
