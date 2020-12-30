@@ -7,7 +7,7 @@ function compileService() {
 }
 
 function runService() {
-  nohup java -jar $AppName &
+  nohup java -jar $AppName --spring.profiles.active = prod &
 }
 
 stopService() {
