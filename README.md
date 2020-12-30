@@ -32,7 +32,7 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 
 ### 技术方案
 
-本项目是Java Web项目, 使用JDK 11作为开发环境, 后端使用Spring框架, 前端使用Bootstrap框架.  初步考虑使用如下的技术
+本项目是Java Web项目, 使用JDK 11作为开发环境, 后端使用Spring Boot框架, 前端使用Bootstrap框架.  初步考虑使用如下的技术
 
 1. Spring + MyBatis + MySQL : 业务核心框架
 2. Redis : 对部分访问频率高的接口, 使用Redis进行缓存
