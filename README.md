@@ -58,7 +58,7 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 
 感觉这个间隔时间可能与强化学习存在一定的相关性, 但具体如何实现还需要进一步完善. 以下是一些设想
 
-- 状态: 从知识点被记录到现在的时间t, 单词被复习过的次数 n 
+- 状态: 从知识点被记录到现在的时间 t, 单词被复习过的次数 n 
 - 动作: 立即复习 / 延迟X时间后复习
 - 奖励: 最优目标是知识点有点遗忘但又不是非常遗忘时提示用户复习,
     - 例如可以设定 非常熟悉 + 0.25分  有点熟悉 +1分  有点陌生 -0.25分 陌生 - 10分
@@ -80,6 +80,14 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 
 参考资料
 --------------------
+
+### Spring Security
+
+Spring Security 在 Spring Boot 2.0 版本中对默认运行的路径进行了修改, 
+针对静态文件, 需要进行配置才能被直接访问, 具体可以参考下面的两篇文章
+
+- [Serving static web resources in Spring Boot & Spring Security application](https://stackoverflow.com/a/49506180)
+- [Security changes in Spring Boot 2.0 M4](https://spring.io/blog/2017/09/15/security-changes-in-spring-boot-2-0-m4)
 
 ### MySQL
 
