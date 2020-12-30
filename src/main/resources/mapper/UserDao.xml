@@ -3,10 +3,18 @@
 <mapper namespace="top.lizec.smartreview.mapper.UserDao">
 
     <select id="findByUserName" resultType="top.lizec.smartreview.entity.User">
-        SELECT * FROM user WHERE username=#{username}
+        SELECT *
+        FROM user
+        WHERE username = #{username}
     </select>
 
-    <insert id="insertUser" parameterType="top.lizec.smartreview.entity.User">
+    <select id="findByUserEmail" resultType="top.lizec.smartreview.entity.User">
+        SELECT username, email, password, roles, enable
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="top.lizec.smartreview.entity.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user(username, email, password, roles, create_time, modified_time)
         VALUES (#{username}, #{email}, #{password}, 'ROLE_USER', NOW(), NOW())
     </insert>

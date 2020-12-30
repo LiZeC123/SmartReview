@@ -31,8 +31,10 @@ public class UserController {
         user.setPassword(password);
         user.setEmail(email);
 
-        userServer.createUser(user);
-
-        return "Finish";
+        if (userServer.createUser(user).isPresent()) {
+            return "用户创建成功";
+        } else {
+            return "用户创建失败";
+        }
     }
 }

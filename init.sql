@@ -7,7 +7,7 @@ CREATE TABLE user
 (
     id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     username      CHAR(64) NOT NULL,
-    email         CHAR(64) NOT NULL,
+    email         CHAR(64) NOT NULL UNIQUE,
     password      CHAR(64) NOT NULL,
     roles         TEXT COMMENT '用户角色, 多个角色使用逗号隔开',
     enable        TINYINT  NOT NULL DEFAULT '1',
@@ -18,11 +18,14 @@ CREATE TABLE user
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='用户基本信息表';
 
-# password: 123
+# password: xcf12fg3, odj99Wdx, 9d9xs2x
 INSERT INTO smart_review.user(id, username, email, password, roles, create_time, modified_time)
-VALUES (1, 'user', 'user@mail.com', '$2a$10$TObmaFSkf17z.CYdUfX8duIjGztFDoT7u0T3iwkC/W8inl89zY3jO', 'ROLE_USER', NOW(), NOW()),
-       (2, 'admin', 'admin@mail.com', '2a$10$TObmaFSkf17z.CYdUfX8duIjGztFDoT7u0T3iwkC/W8inl89zY3jO', 'ROLE_ADMIN, ROLE_USER', NOW(), NOW()),
-       (3, '中文用户', '123@mail.com', '$2a$10$TObmaFSkf17z.CYdUfX8duIjGztFDoT7u0T3iwkC/W8inl89zY3jO', 'ROLE_USER', NOW(), NOW());
+VALUES (1, 'user', 'user@mail.com', '$2a$10$74yMegRgwREZVS72aEKGg.TtRE.KMWE4ly0pvM3l5vn4IN.hR4aYK', 'ROLE_USER', NOW(),
+        NOW()),
+       (2, 'admin', 'admin@mail.com', '$2a$10$p5Q8hlQVnuHoVTeOFF4Dmu3.5NHa8ON0n8HMYjQV2/.hJT2nDTzu.',
+        'ROLE_ADMIN, ROLE_USER', NOW(), NOW()),
+       (3, '中文用户', '123@mail.com', '$2a$10$l8OUbd4vpJ9Q15x1OQTHVu9uoUh0aSLlPBpwcSRgeTD4oyc/hRzwC', 'ROLE_USER', NOW(),
+        NOW());
 
 
 CREATE TABLE knowledge
