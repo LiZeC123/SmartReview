@@ -37,7 +37,7 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 1. Spring + MyBatis + MySQL : 业务核心框架
 2. Redis : 对部分访问频率高的接口, 使用Redis进行缓存
 3. RabbitMQ: 导入与导出等批处理任务考虑使用消息队列
-4. Bootstrap & JQuery : 在Bootstrap的静态页面的基础上, 通过JQuery实现动态功能
+4. Bootstrap & Vue.js : 在Bootstrap的静态页面的基础上, 通过Vue.js实现数据的绑定和渲染
 
 ### 数据结构
 
