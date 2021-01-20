@@ -27,7 +27,8 @@ elif [ "$1"x == "stop"x ]; then
   stopService
 elif [ "$1"x == "restart"x ]; then
   stopService
-  startService
+  compileService
+  runService
 else
   echo "无效的参数: $1"
 	echo ""
