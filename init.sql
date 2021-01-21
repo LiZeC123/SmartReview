@@ -12,8 +12,7 @@ CREATE TABLE user
     roles         TEXT COMMENT '用户角色, 多个角色使用逗号隔开',
     enable        TINYINT  NOT NULL DEFAULT '1',
     create_time   DATETIME NOT NULL,
-    modified_time DATETIME NOT NULL,
-    KEY username (username)
+    modified_time DATETIME NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='用户基本信息表';
