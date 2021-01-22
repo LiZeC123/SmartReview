@@ -8,11 +8,12 @@ function compileService() {
 
 function runService() {
   echo "Run Service In Background"
-  nohup java -jar $AppName --spring.profiles.active=prod > smart-review.log 2>&1 &
+  nohup java -jar $AppName --spring.profiles.active=prod >smart-review.log 2>&1 &
   exit
 }
 
 stopService() {
+  echo "Kill Current Service"
   kill "$(jps -l | grep $AppName | awk '{print $1}')"
 }
 
