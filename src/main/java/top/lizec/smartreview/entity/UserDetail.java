@@ -52,4 +52,8 @@ public class UserDetail implements UserDetails {
     public boolean isEnabled() {
         return user.isEnable();
     }
+
+    public Integer getUserId() {
+        return user.getId();
+    }
 }

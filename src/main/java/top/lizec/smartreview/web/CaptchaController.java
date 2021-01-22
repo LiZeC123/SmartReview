@@ -1,17 +1,20 @@
 package top.lizec.smartreview.web;
 
 import com.google.code.kaptcha.Producer;
-import io.swagger.annotations.Api;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+
+import io.swagger.annotations.Api;
 
 @Api
 @Controller
@@ -26,7 +29,7 @@ public class CaptchaController {
         request.getSession().setAttribute("captcha", capText);
         BufferedImage bi = producer.createImage(capText);
 
-        try(ServletOutputStream outputStream = response.getOutputStream()) {
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
             ImageIO.write(bi, "jpg", outputStream);
             outputStream.flush();
         }

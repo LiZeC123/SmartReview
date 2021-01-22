@@ -1,27 +1,22 @@
 package top.lizec.smartreview.web;
 
-import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.lizec.smartreview.entity.User;
-import top.lizec.smartreview.service.UserServer;
 
 import javax.annotation.Resource;
 
+import io.swagger.annotations.Api;
+import top.lizec.smartreview.entity.User;
+import top.lizec.smartreview.service.UserServer;
+
 @Api
 @RestController
-@RequestMapping("/user/api")
+@RequestMapping("/user/user")
 public class UserController {
 
     @Resource
     UserServer userServer;
-
-    @GetMapping("hello")
-    public String hello() {
-        return "Hello, user";
-    }
 
 
     @PostMapping("create")

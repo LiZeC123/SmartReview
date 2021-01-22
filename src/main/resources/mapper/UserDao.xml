@@ -2,14 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.lizec.smartreview.mapper.UserDao">
 
-    <select id="findByUserName" resultType="top.lizec.smartreview.entity.User">
-        SELECT *
-        FROM user
-        WHERE username = #{username}
-    </select>
-
     <select id="findByUserEmail" resultType="top.lizec.smartreview.entity.User">
-        SELECT username, email, password, roles, enable
+        SELECT id, username, email, password, roles, enable
         FROM user
         WHERE email = #{email}
     </select>
