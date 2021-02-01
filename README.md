@@ -91,17 +91,20 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 
 ### Spring Security
 
-Spring Security 在 Spring Boot 2.0 版本中对默认运行的路径进行了修改, 
-针对静态文件, 需要进行配置才能被直接访问, 具体可以参考下面的两篇文章
+Spring Security 在 Spring Boot 2.0 版本中对默认运行的路径进行了修改, 针对静态文件, 需要进行配置才能被直接访问, 具体可以参考下面的两篇文章
 
 - [Serving static web resources in Spring Boot & Spring Security application](https://stackoverflow.com/a/49506180)
 - [Security changes in Spring Boot 2.0 M4](https://spring.io/blog/2017/09/15/security-changes-in-spring-boot-2-0-m4)
 
+---
+
+- [Retrieve User Information in Spring Security](https://www.baeldung.com/get-user-in-spring-security)
+
 ### MySQL
 
 - [Spring Boot MySql Access denied for user 'root'@'localhost'](https://stackoverflow.com/questions/58260870/spring-boot-mysql-access-denied-for-user-rootlocalhost)
+- [MySQL 执行.sql文件](https://www.jianshu.com/p/e603abae317d)
 
-
-###  Java监控工具
+### Java监控工具
 
 - [java高分局之jstat命令使用](https://blog.csdn.net/maosijunzi/article/details/46049117)
