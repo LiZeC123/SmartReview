@@ -8,28 +8,39 @@ import javax.annotation.Resource;
 
 import io.swagger.annotations.Api;
 import top.lizec.smartreview.entity.User;
-import top.lizec.smartreview.service.UserServer;
+import top.lizec.smartreview.response.Result;
+import top.lizec.smartreview.service.UserService;
 
 @Api
 @RestController
-@RequestMapping("/user/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Resource
-    UserServer userServer;
+    UserService userService;
+
+
+    @PostMapping("login")
+    public Result<String> login(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+
+        return userService.login(email, password)
+                .map(Result::success)
+                .orElseGet(Result::failure);
+    }
 
 
     @PostMapping("create")
-    public String create(String username, String password, String email) {
+    public Result<?> create(String username, String password, String email) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
 
-        if (userServer.createUser(user).isPresent()) {
-            return "用户创建成功";
-        } else {
-            return "用户创建失败";
-        }
+        return userService.createUser(user)
+                .map(Result::success)
+                .orElseGet(Result::failure);
     }
 }
