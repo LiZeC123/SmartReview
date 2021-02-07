@@ -2,9 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.lizec.smartreview.mapper.KnowledgeDao">
 
-  <insert id="insert" parameterType="top.lizec.smartreview.entity.Knowledge" useGeneratedKeys="true"
-          keyProperty="id">
-    INSERT INTO knowledge(title, content, creator, link)
-    VALUES (#{title}, #{content}, #{creator}, #{link})
-  </insert>
+    <insert id="insert" parameterType="top.lizec.smartreview.entity.Knowledge"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO knowledge(title, content, creator, link)
+        VALUES (#{title}, #{content}, #{creator}, #{link})
+    </insert>
+
+    <select id="selectAll" parameterType="top.lizec.smartreview.entity.Knowledge"
+            resultType="top.lizec.smartreview.entity.Knowledge">
+        SELECT title, content
+        FROM knowledge
+        WHERE creator = #{userId}
+    </select>
 </mapper>

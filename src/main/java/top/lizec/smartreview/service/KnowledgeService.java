@@ -2,6 +2,8 @@ package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import top.lizec.smartreview.dto.KnowledgeDto;
@@ -22,5 +24,9 @@ public class KnowledgeService {
         knowledge.setLink(dto.getLink());
 
         return knowledgeDao.insert(knowledge);
+    }
+
+    public List<Knowledge> selectAll(Integer userId) {
+        return knowledgeDao.selectAll(userId);
     }
 }

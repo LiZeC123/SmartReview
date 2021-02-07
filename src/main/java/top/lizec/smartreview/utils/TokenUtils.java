@@ -23,6 +23,7 @@ public class TokenUtils {
                 .setIssuedAt(new Date())
                 .claim("role", user.getRoles())
                 .claim("name", user.getUsername())
+                .claim("userId", user.getId())
                 .signWith(RsaUtils.getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
         return String.format("Bearer %s", token);
@@ -48,6 +49,7 @@ public class TokenUtils {
         user.setEmail(claims.getAudience());
         user.setUsername(claims.get("name", String.class));
         user.setRoles(claims.get("role", String.class));
+        user.setId(claims.get("userId", Integer.class));
         return user;
     }
 

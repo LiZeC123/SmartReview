@@ -33,6 +33,10 @@ public class UserDetail implements UserDetails {
         return user.getEmail();
     }
 
+    public String getUserShowName() {
+        return user.getUsername();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

@@ -38,7 +38,7 @@ public class TokenFilter extends OncePerRequestFilter {
                 UserDetails userDetails = new UserDetail(user);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(userDetails.getUsername());
+                authentication.setDetails(userDetails);
                 // 授权
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
