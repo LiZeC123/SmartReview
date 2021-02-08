@@ -23,7 +23,9 @@ public class KnowledgeService {
         knowledge.setCreator(id);
         knowledge.setLink(dto.getLink());
 
-        return knowledgeDao.insert(knowledge);
+        knowledgeDao.insert(knowledge);
+
+        return knowledge;
     }
 
     public List<Knowledge> selectAll(Integer userId) {

@@ -3,15 +3,14 @@
 <mapper namespace="top.lizec.smartreview.mapper.KnowledgeDao">
 
     <insert id="insert" parameterType="top.lizec.smartreview.entity.Knowledge"
-            useGeneratedKeys="true"
-            keyProperty="id">
+            useGeneratedKeys="true" keyProperty="id">
         INSERT INTO knowledge(title, content, creator, link)
         VALUES (#{title}, #{content}, #{creator}, #{link})
     </insert>
 
     <select id="selectAll" parameterType="top.lizec.smartreview.entity.Knowledge"
             resultType="top.lizec.smartreview.entity.Knowledge">
-        SELECT title, content
+        SELECT id, title, content
         FROM knowledge
         WHERE creator = #{userId}
     </select>
