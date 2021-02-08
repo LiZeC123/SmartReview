@@ -40,12 +40,14 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 
 ### 技术方案
 
-本项目是Java Web项目, 使用JDK 11作为开发环境, 后端使用Spring Boot框架, 前端使用Bootstrap框架.  初步考虑使用如下的技术
+本项目是Java Web项目, 使用JDK 11作为开发环境, 后端使用Spring Boot框架, 前端使用Vue.js + Bootstrap框架. 初步考虑使用如下的技术
 
 1. Spring + MyBatis + MySQL : 业务核心框架
 2. Redis : 对部分访问频率高的接口, 使用Redis进行缓存
 3. RabbitMQ: 导入与导出等批处理任务考虑使用消息队列
 4. Bootstrap & Vue.js : 在Bootstrap的静态页面的基础上, 通过Vue.js实现数据的绑定和渲染
+
+> 前端代码请访问 https://github.com/LiZeC123/SmartReviewWeb
 
 ### 数据结构
 
@@ -76,16 +78,6 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 > 在引入强化学习之前, 本系统可以使用固定时间间隔的提醒模式, 或者采取时间序列相关的技术, 结合以往的统计结果计算间隔时间
 
 
-
-引用的开源项目项目
--------------------
-
-感谢以下的开源项目和免费组件: 
-
-- [My Login](https://github.com/nauvalazhar/bootstrap-4-login-page)
-- [人工智能图标](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=8217)
-- [动物图标](https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=25660)
-
 参考资料
 --------------------
 
@@ -95,6 +87,7 @@ Spring Security 在 Spring Boot 2.0 版本中对默认运行的路径进行了�
 
 - [Serving static web resources in Spring Boot & Spring Security application](https://stackoverflow.com/a/49506180)
 - [Security changes in Spring Boot 2.0 M4](https://spring.io/blog/2017/09/15/security-changes-in-spring-boot-2-0-m4)
+- [Spring Boot 2.X 实战--Spring Security (Token)登录和注册](https://my.oschina.net/RyenAng/blog/3230602)
 
 ---
 
