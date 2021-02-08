@@ -15,6 +15,9 @@ import java.security.SecureRandom;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class RsaUtils {
     private static PrivateKey privateKey;
     private static PublicKey publicKey;
@@ -39,11 +42,14 @@ public class RsaUtils {
 
     private static void initKey() throws Exception {
         if (hasGenerateKey()) {
+            log.info("从文件加载Key");
             privateKey = loadPrivateKey();
             publicKey = loadPublicKey();
         } else {
+            log.info("没有检测到Key文件, 重新Key文件");
             createKeyPair();
         }
+        log.info("Key加载完毕");
     }
 
     private static boolean hasGenerateKey() {
