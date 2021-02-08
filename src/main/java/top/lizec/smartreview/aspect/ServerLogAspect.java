@@ -16,23 +16,30 @@ import java.util.Arrays;
 public class ServerLogAspect {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
     @Pointcut("execution(* top.lizec.smartreview.service..*.*(..))")
-    public void serverLog() {
+    public void serviceDefaultLog() {
     }
 
-    @Before("serverLog()")
+    @Pointcut("@annotation(top.lizec.smartreview.aspect.ServiceLog)")
+    public void serviceAnnotationLog() {
+    }
+
+    @Pointcut("serviceDefaultLog() || serviceAnnotationLog()")
+    public void serviceLog() {
+    }
+
+    @Before("serviceLog()")
     public void doBefore(JoinPoint joinPoint) {
         startTime.set(System.currentTimeMillis());
-        String methodName = joinPoint.getSignature().getDeclaringTypeName();
-        logger.info(String.format("Do Method %s with Args %s", methodName, Arrays.toString(joinPoint.getArgs())));
+        String methodName = joinPoint.getSignature().toShortString();
+        logger.info(String.format("执行方法 %s 参数为 %s", methodName, Arrays.toString(joinPoint.getArgs())));
     }
 
-    @AfterReturning(returning = "ret", pointcut = "serverLog()")
+    @AfterReturning(returning = "ret", pointcut = "serviceLog()")
     public void doAfterReturning(Object ret) {
         // 处理完请求，返回内容
-        logger.info(String.format("Return Result %s With %d ms", ret, System.currentTimeMillis() - startTime.get()));
+        logger.info(String.format("返回结果 %s (用时 %d ms)", ret, System.currentTimeMillis() - startTime.get()));
     }
 }
