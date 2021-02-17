@@ -7,6 +7,11 @@
         INSERT INTO knowledge(app_type, title, content, creator, link, tag)
         VALUES (#{appType}, #{title}, #{content}, #{creator}, #{link}, #{tag})
     </insert>
+    <update id="updateTag">
+        UPDATE knowledge
+        SET tag = #{tag}
+        WHERE id = #{id}
+    </update>
 
     <select id="selectAll" resultType="top.lizec.smartreview.entity.Knowledge">
         SELECT id, app_type, title, content, link, tag
@@ -19,5 +24,10 @@
         FROM knowledge
         WHERE creator = #{userId}
         ORDER BY id DESC;
+    </select>
+    <select id="selectTag" resultType="java.lang.String">
+        SELECT tag
+        from knowledge
+        where id = #{id}
     </select>
 </mapper>

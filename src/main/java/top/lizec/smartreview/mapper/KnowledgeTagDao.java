@@ -6,4 +6,6 @@ public interface KnowledgeTagDao {
 
     Long insertBatch(List<Integer> tagIds, Integer knowledgeId);
 
+    List<Integer> selectKnowledgeIdByTag(Integer tagId);
+
 }

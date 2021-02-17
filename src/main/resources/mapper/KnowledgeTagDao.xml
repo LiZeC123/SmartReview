@@ -10,4 +10,10 @@
             (#{knowledgeId}, #{tagId})
         </foreach>
     </insert>
+
+    <select id="selectKnowledgeIdByTag" resultType="java.lang.Integer">
+        SELECT knowledge_id
+        FROM knowledge_tag
+        WHERE tag_id = #{tagId}
+    </select>
 </mapper>

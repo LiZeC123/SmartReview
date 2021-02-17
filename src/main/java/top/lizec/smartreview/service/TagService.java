@@ -14,34 +14,25 @@ public class TagService {
     @Resource
     TagDao tagDao;
 
-    public void create(String name) {
+    @Resource
+    KnowledgeTagService knowledgeTagService;
 
+    public void create(String name, Integer creator) {
+        Tag tag = buildTagObject(name, creator);
+        tagDao.insert(tag);
     }
 
     @Transactional
-    public void modify(String oldName, String newName, Integer userId) {
+    public void remove(String name, Integer creator) {
+        Tag tag = buildTagObject(name, creator);
+        tagDao.delete(tag);
+        knowledgeTagService.remove(tag);
+    }
+
+    private Tag buildTagObject(String name, Integer creator) {
         Tag tag = new Tag();
-        tag.setName(oldName);
-        tag.setCreator(userId);
-        tagDao.selectOne(tag);
-
-        tag.setName(newName);
-        tagDao.update(tag);
+        tag.setName(name);
+        tag.setCreator(creator);
+        return tag;
     }
-
-    public void remove(String name) {
-
-    }
-
-
-    /*
-     * create
-     * modify
-     * remove
-     *
-     *
-     *
-     * */
-
-
 }
