@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.lizec.smartreview.mapper.KnowledgeDao">
 
     <insert id="insert" parameterType="top.lizec.smartreview.entity.Knowledge"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO knowledge(title, content, creator, link)
-        VALUES (#{title}, #{content}, #{creator}, #{link})
+        INSERT INTO knowledge(app_type, title, content, creator, link, tag)
+        VALUES (#{appType}, #{title}, #{content}, #{creator}, #{link}, #{tag})
     </insert>
 
     <select id="selectAll" parameterType="top.lizec.smartreview.entity.Knowledge"
@@ -13,5 +14,13 @@
         SELECT id, title, content
         FROM knowledge
         WHERE creator = #{userId}
+    </select>
+
+    <select id="getRecentKnowledge" resultType="top.lizec.smartreview.entity.Knowledge">
+        SELECT id, title, content, link
+        FROM knowledge
+        WHERE creator = #{userId}
+        ORDER BY id DESC;
+
     </select>
 </mapper>

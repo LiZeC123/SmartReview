@@ -1,6 +1,7 @@
 package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,16 +15,18 @@ import top.lizec.smartreview.mapper.KnowledgeDao;
 public class KnowledgeService {
 
     @Resource
+    KnowledgeTagService knowledgeTagService;
+
+    @Resource
     KnowledgeDao knowledgeDao;
 
-    public Knowledge createKnowledge(Integer id, KnowledgeDto dto) {
-        Knowledge knowledge = new Knowledge();
-        knowledge.setTitle(dto.getTitle());
-        knowledge.setContent(dto.getContent());
-        knowledge.setCreator(id);
-        knowledge.setLink(dto.getLink());
-
+    @Transactional
+    public Knowledge createKnowledge(Integer userId, KnowledgeDto dto) {
+        Knowledge knowledge = dto.toKnowledge();
+        knowledge.setCreator(userId);
         knowledgeDao.insert(knowledge);
+
+        knowledgeTagService.create(dto.getTag(), userId, knowledge.getId());
 
         return knowledge;
     }

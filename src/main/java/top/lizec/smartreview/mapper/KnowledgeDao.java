@@ -8,4 +8,6 @@ public interface KnowledgeDao {
     Long insert(Knowledge knowledge);
 
     List<Knowledge> selectAll(Integer userId);
+
+    List<Knowledge> getRecentKnowledge(Integer userId);
 }

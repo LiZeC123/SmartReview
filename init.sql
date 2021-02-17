@@ -31,10 +31,12 @@ VALUES (1, 'user', 'user@mail.com', '$2a$10$74yMegRgwREZVS72aEKGg.TtRE.KMWE4ly0p
 CREATE TABLE knowledge
 (
     id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    title         CHAR(128)    NOT NULL,
+    app_type      CHAR(32)     NOT NULL,
+    title         CHAR(64)     NOT NULL,
     content       TEXT         NOT NULL,
     creator       INT UNSIGNED NOT NULL,
     link          TEXT         NOT NULL,
+    tag           TEXT         NOT NULL COMMENT '冗余存储用户给定的标签',
     create_time   DATETIME     NOT NULL DEFAULT NOW(),
     modified_time DATETIME     NOT NULL DEFAULT NOW(),
     is_delete     TINYINT      NOT NULL DEFAULT 0
@@ -42,25 +44,23 @@ CREATE TABLE knowledge
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='知识信息表';
 
-INSERT INTO smart_review.knowledge(id, title, content, creator, link)
-VALUES (1, '溢出', '栈满称为上溢出, 栈空称为下溢出', 2, '');
-
 
 CREATE TABLE tag
 (
-    tag_id        INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    tag_name      CHAR(64),
-    is_catalog    TINYINT  NOT NULL DEFAULT 0,
-    create_time   DATETIME NOT NULL DEFAULT NOW(),
-    modified_time DATETIME NOT NULL DEFAULT NOW(),
-    is_delete     TINYINT  NOT NULL DEFAULT 0
+    id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    name          CHAR(64),
+    creator       INT UNSIGNED NOT NULL,
+    create_time   DATETIME     NOT NULL DEFAULT NOW(),
+    modified_time DATETIME     NOT NULL DEFAULT NOW(),
+    is_delete     TINYINT      NOT NULL DEFAULT 0,
+    UNIQUE KEY unique_tag_name (creator, name)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='标签基本信息表';
 
-INSERT INTO smart_review.tag(tag_id, tag_name, is_catalog)
-VALUES (1, '英语笔记本', 1),
-       (2, '计算机英语', 0);
+INSERT INTO smart_review.tag(name, creator)
+VALUES ('数据结构', 1),
+       ('算法', 1);
 
 
 CREATE TABLE knowledge_tag
