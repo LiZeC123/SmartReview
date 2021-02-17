@@ -101,3 +101,7 @@ Spring Security 在 Spring Boot 2.0 版本中对默认运行的路径进行了�
 ### Java监控工具
 
 - [java高分局之jstat命令使用](https://blog.csdn.net/maosijunzi/article/details/46049117)
+
+### Swagger UI
+
+- [java swagger ui 添加header请求头参数](https://blog.csdn.net/uncle_david/article/details/79283422)
