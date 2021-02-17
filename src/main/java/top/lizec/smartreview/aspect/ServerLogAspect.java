@@ -39,17 +39,20 @@ public class ServerLogAspect {
     }
 
     @AfterReturning(returning = "ret", pointcut = "serviceLog()")
-    public void doAfterReturning(Object ret) {
+    public void doAfterReturning(JoinPoint joinPoint, Object ret) {
         // 处理完请求，返回内容
+        String methodName = joinPoint.getSignature().toShortString();
         if (ret instanceof List && ((List<?>) ret).size() > 6) {
             List<?> result = (List<?>) ret;
             int size = result.size();
-            logger.info(String.format("返回结果(数组) [%s %s %s ... %s %s %s] (用时 %d ms)",
+            logger.info(String.format("%s返回结果(数组) [%s %s %s ... %s %s %s] (用时 %d ms)",
+                    methodName,
                     result.get(0), result.get(1), result.get(2),
                     result.get(size - 3), result.get(size - 2), result.get(size - 1),
                     System.currentTimeMillis() - startTime.get()));
         } else {
-            logger.info(String.format("返回结果 %s (用时 %d ms)", ret, System.currentTimeMillis() - startTime.get()));
+            logger.info(String.format("%s返回结果 %s (用时 %d ms)",
+                    methodName, ret, System.currentTimeMillis() - startTime.get()));
         }
 
 
