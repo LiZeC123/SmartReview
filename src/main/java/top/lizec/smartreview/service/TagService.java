@@ -3,6 +3,8 @@ package top.lizec.smartreview.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import top.lizec.smartreview.entity.Tag;
@@ -17,6 +19,7 @@ public class TagService {
     @Resource
     KnowledgeTagService knowledgeTagService;
 
+    @Transactional
     public void create(String name, Integer creator) {
         Tag tag = buildTagObject(name, creator);
         tagDao.insert(tag);
@@ -27,6 +30,10 @@ public class TagService {
         Tag tag = buildTagObject(name, creator);
         tagDao.delete(tag);
         knowledgeTagService.remove(tag);
+    }
+
+    public List<Tag> select(Integer creator) {
+        return tagDao.selectAll(creator);
     }
 
     private Tag buildTagObject(String name, Integer creator) {
