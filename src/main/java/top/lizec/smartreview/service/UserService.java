@@ -3,6 +3,7 @@ package top.lizec.smartreview.service;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 import javax.annotation.Resource;
 
 import top.lizec.smartreview.entity.User;
+import top.lizec.smartreview.entity.UserDetail;
 import top.lizec.smartreview.mapper.UserDao;
 import top.lizec.smartreview.utils.TokenUtils;
 
@@ -27,8 +29,8 @@ public class UserService {
 
     public Optional<String> login(String email, String password) {
         try {
-            auManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-            User user = userDao.findByUserEmail(email);
+            Authentication au = auManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+            User user = ((UserDetail) au.getPrincipal()).getUser();
             return Optional.ofNullable(TokenUtils.createToken(user));
         } catch (BadCredentialsException e) {
             return Optional.empty();
