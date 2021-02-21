@@ -19,7 +19,7 @@
     <select id="selectIdByTagName" resultType="java.lang.Integer">
         SELECT id
         FROM tag
-        WHERE creator = #{creator}
+        WHERE (creator = #{creator} OR creator = 0)
         AND name IN
         <foreach collection="nameList" item="name" open="(" separator="," close=")">
             #{name}

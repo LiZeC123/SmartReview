@@ -39,7 +39,7 @@ public class KnowledgeTagService {
      */
     @Transactional
     public void create(String tagNames, Integer creator, Integer knowledgeId) {
-        List<String> tags = Arrays.stream(tagNames.split(","))
+        List<String> tags = Arrays.stream(tagNames.split(";"))
                 .map(String::strip).collect(Collectors.toList());
         List<Integer> tagIds = tagDao.selectIdByTagName(tags, creator);
         knowledgeTagDao.insertBatch(tagIds, knowledgeId);

@@ -17,14 +17,9 @@ CREATE TABLE user
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='用户基本信息表';
 
-# password: xcf12fg3, odj99Wdx, 9d9xs2x
+# password: xcf12fg3
 INSERT INTO smart_review.user(id, username, email, password, roles)
 VALUES (1, 'user', 'user@mail.com', '$2a$10$74yMegRgwREZVS72aEKGg.TtRE.KMWE4ly0pvM3l5vn4IN.hR4aYK',
-        'ROLE_USER'),
-       (2, 'admin', 'admin@mail.com',
-        '$2a$10$p5Q8hlQVnuHoVTeOFF4Dmu3.5NHa8ON0n8HMYjQV2/.hJT2nDTzu.',
-        'ROLE_ADMIN, ROLE_USER'),
-       (3, '中文用户', '123@mail.com', '$2a$10$l8OUbd4vpJ9Q15x1OQTHVu9uoUh0aSLlPBpwcSRgeTD4oyc/hRzwC',
         'ROLE_USER');
 
 
@@ -58,6 +53,12 @@ CREATE TABLE tag
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='标签基本信息表';
 
+-- 全局标签 与APP类型对应
+INSERT INTO smart_review.tag(name, creator)
+VALUES ('英语单词本', 0),
+       ('力扣题解', 0);
+
+-- 用户自定义标签
 INSERT INTO smart_review.tag(name, creator)
 VALUES ('数据结构', 1),
        ('算法', 1);
