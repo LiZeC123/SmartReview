@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -30,15 +31,18 @@ public class KnowledgeController {
 
 
     @PostMapping("/create")
-    public Result<Knowledge> create(@RequestBody KnowledgeDto knowledge) {
+    public Result<KnowledgeDto> create(@RequestBody KnowledgeDto knowledge) {
         Integer id = userInfoUtils.getCurrentUserId();
-        return Result.success(knowledgeService.createKnowledge(id, knowledge));
+        Knowledge k = knowledgeService.createKnowledge(id, knowledge);
+        return Result.success(new KnowledgeDto(k));
     }
 
     @GetMapping("/selectAll")
-    public Result<List<Knowledge>> selectAll() {
+    public Result<List<KnowledgeDto>> selectAll() {
         Integer id = userInfoUtils.getCurrentUserId();
-        return Result.success(knowledgeService.selectAll(id));
+        List<KnowledgeDto> dto = knowledgeService.selectAll(id).stream()
+                .map(KnowledgeDto::new).collect(Collectors.toList());
+        return Result.success(dto);
     }
 
 }

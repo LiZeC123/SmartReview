@@ -22,13 +22,11 @@ public class KnowledgeService {
 
     @Transactional
     public Knowledge createKnowledge(Integer userId, KnowledgeDto dto) {
-        Knowledge knowledge = dto.toKnowledge();
-        knowledge.setCreator(userId);
-        knowledgeDao.insert(knowledge);
-
-        knowledgeTagService.create(dto.getTag(), userId, knowledge.getId());
-
-        return knowledge;
+        Knowledge k = dto.toKnowledge();
+        k.setCreator(userId);
+        knowledgeDao.insert(k);
+        knowledgeTagService.create(k.getTag(), userId, k.getId());
+        return k;
     }
 
     public List<Knowledge> selectAll(Integer userId) {
