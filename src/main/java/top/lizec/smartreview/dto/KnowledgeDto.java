@@ -10,6 +10,7 @@ import top.lizec.smartreview.entity.Knowledge;
 @Data
 @NoArgsConstructor
 public class KnowledgeDto {
+    private Integer id;
     private String appType;
     private String title;
     private String content;
@@ -18,6 +19,7 @@ public class KnowledgeDto {
 
 
     public KnowledgeDto(Knowledge k) {
+        this.id = k.getId();
         this.appType = k.getAppType();
         this.title = k.getTitle();
         this.content = k.getContent();

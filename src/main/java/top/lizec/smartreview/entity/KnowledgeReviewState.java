@@ -8,8 +8,10 @@ import lombok.Data;
 public class KnowledgeReviewState {
     Integer knowledgeId;
     Integer reviewCount;
+    Integer lastLevel;
     Integer currentLevel;
     Integer currentInterval;
     LocalDateTime nextReviewTime;
     Boolean finished;
+    LocalDateTime finishedTime;
 }

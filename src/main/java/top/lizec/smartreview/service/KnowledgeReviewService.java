@@ -9,23 +9,24 @@ import javax.annotation.Resource;
 
 import top.lizec.smartreview.entity.KnowledgeReviewDetail;
 import top.lizec.smartreview.entity.KnowledgeReviewState;
-import top.lizec.smartreview.mapper.KnowledgeReviewDetailDao;
-import top.lizec.smartreview.mapper.KnowledgeReviewStateDao;
+import top.lizec.smartreview.mapper.ReviewDetailDao;
+import top.lizec.smartreview.mapper.ReviewStateDao;
 
 @Service
 public class KnowledgeReviewService {
     private static final Duration halfDay = Duration.ofHours(12);
 
     @Resource
-    KnowledgeReviewStateDao stateDao;
+    ReviewStateDao stateDao;
 
     @Resource
-    KnowledgeReviewDetailDao detailDao;
+    ReviewDetailDao detailDao;
 
 
     void createReviewRecord(Integer kid) {
         KnowledgeReviewState state = new KnowledgeReviewState();
         state.setKnowledgeId(kid);
+        state.setLastLevel(2);
         state.setCurrentLevel(2);
         state.setCurrentInterval(12);
 
