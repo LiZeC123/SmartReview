@@ -34,7 +34,8 @@ CREATE TABLE knowledge
     tag           TEXT         NOT NULL COMMENT '冗余存储用户给定的标签',
     create_time   DATETIME     NOT NULL DEFAULT NOW(),
     modified_time DATETIME     NOT NULL DEFAULT NOW(),
-    is_delete     TINYINT      NOT NULL DEFAULT 0
+    is_delete     TINYINT      NOT NULL DEFAULT 0,
+    INDEX creator_index (creator)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
   AUTO_INCREMENT = 1 COMMENT ='知识信息表';
@@ -74,3 +75,28 @@ CREATE TABLE knowledge_tag
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
     COMMENT ='知识点与标签关联表';
+
+
+CREATE TABLE knowledge_review_state
+(
+    knowledge_id     INT UNSIGNED PRIMARY KEY,
+    review_count     TINYINT UNSIGNED  NOT NULL DEFAULT 0,
+    current_level    TINYINT UNSIGNED  NOT NULL,
+    current_interval SMALLINT UNSIGNED NOT NULL COMMENT '下次复习的间隔时间(小时)',
+    next_review_time DATETIME          NOT NULL COMMENT '下次复习的具体时间',
+    finished         TINYINT UNSIGNED  NOT NULL COMMENT '是否已经复习'
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4
+    COMMENT ='知识点复习情况状态表';
+
+
+CREATE TABLE knowledge_review_detail
+(
+    id            INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    knowledge_id  INT UNSIGNED     NOT NULL,
+    last_level    TINYINT UNSIGNED NOT NULL COMMENT '上次复习时的记忆等级',
+    current_level TINYINT UNSIGNED NOT NULL COMMENT '本次复习时的记忆等级',
+    create_time   DATETIME         NOT NULL DEFAULT NOW()
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4
+    COMMENT ='知识点复习情况详细记录表';

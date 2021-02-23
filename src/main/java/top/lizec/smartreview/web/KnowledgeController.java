@@ -37,12 +37,27 @@ public class KnowledgeController {
         return Result.success(new KnowledgeDto(k));
     }
 
-    @GetMapping("/selectAll")
-    public Result<List<KnowledgeDto>> selectAll() {
-        Integer id = userInfoUtils.getCurrentUserId();
-        List<KnowledgeDto> dto = knowledgeService.selectAll(id).stream()
+    @GetMapping("/queryRecentReview")
+    public Result<List<KnowledgeDto>> queryRecentReview() {
+        Integer userId = userInfoUtils.getCurrentUserId();
+        List<KnowledgeDto> dto = knowledgeService.queryRecentReview(userId).stream()
                 .map(KnowledgeDto::new).collect(Collectors.toList());
         return Result.success(dto);
+    }
+
+    @GetMapping("/selectAll")
+    public Result<List<KnowledgeDto>> selectAll() {
+        Integer userId = userInfoUtils.getCurrentUserId();
+        List<KnowledgeDto> dto = knowledgeService.selectAll(userId).stream()
+                .map(KnowledgeDto::new).collect(Collectors.toList());
+        return Result.success(dto);
+    }
+
+
+    @GetMapping("/finishReview")
+    public Result<?> finishReview(Integer kid, Integer memoryLevel) {
+        knowledgeService.updateKnowledgeReview(kid, memoryLevel);
+        return Result.success();
     }
 
 }

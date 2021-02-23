@@ -18,6 +18,9 @@ public class KnowledgeService {
     KnowledgeTagService knowledgeTagService;
 
     @Resource
+    KnowledgeReviewService knowledgeReviewService;
+
+    @Resource
     KnowledgeDao knowledgeDao;
 
     @Transactional
@@ -26,10 +29,20 @@ public class KnowledgeService {
         k.setCreator(userId);
         knowledgeDao.insert(k);
         knowledgeTagService.create(k.getTag(), userId, k.getId());
+        knowledgeReviewService.createReviewRecord(k.getId());
         return k;
     }
 
     public List<Knowledge> selectAll(Integer userId) {
         return knowledgeDao.selectAll(userId);
+    }
+
+
+    public List<Knowledge> queryRecentReview(Integer userId) {
+        return knowledgeDao.queryRecentReview(userId);
+    }
+
+    public void updateKnowledgeReview(Integer kid, Integer memoryLevel) {
+        knowledgeReviewService.updateReviewRecord(kid, memoryLevel);
     }
 }

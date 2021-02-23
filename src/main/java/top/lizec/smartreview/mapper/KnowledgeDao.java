@@ -13,5 +13,5 @@ public interface KnowledgeDao {
 
     List<Knowledge> selectAll(Integer userId);
 
-    List<Knowledge> getRecentKnowledge(Integer userId);
+    List<Knowledge> queryRecentReview(Integer userId);
 }
