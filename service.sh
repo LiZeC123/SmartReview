@@ -3,12 +3,12 @@
 AppName=target/smart-review-0.0.1-SNAPSHOT.jar
 
 function compileService() {
-  mvn clean package -Dmaven.test.skip=true
+  mvn clean package
 }
 
 function runService() {
   echo "Run Service In Background"
-  nohup java -jar $AppName --spring.profiles.active=prod >smart-review.log 2>&1 &
+  nohup java -jar $AppName --spring.profiles.active=prod > smart-review.log 2>&1 &
   exit
 }
 
