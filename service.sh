@@ -8,7 +8,7 @@ function compileService() {
 
 function runService() {
   echo "Run Service In Background"
-  nohup java -jar $AppName --spring.profiles.active=prod > smart-review.log 2>&1 &
+  nohup java -jar $AppName --spring.profiles.active=prod >smart-review.log 2>&1 &
   exit
 }
 
