@@ -7,4 +7,8 @@
         INSERT INTO knowledge_review_detail(knowledge_id, last_level, current_level)
             VALUE (#{knowledgeId}, #{lastLevel}, #{currentLevel})
     </insert>
+    <select id="selectUserYesterdayDetails"
+            resultType="top.lizec.smartreview.entity.KnowledgeReviewDetail">
+
+    </select>
 </mapper>

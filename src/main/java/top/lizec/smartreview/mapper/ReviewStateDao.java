@@ -3,7 +3,7 @@ package top.lizec.smartreview.mapper;
 import java.util.List;
 
 import top.lizec.smartreview.entity.KnowledgeReviewState;
-import top.lizec.smartreview.entity.Rate;
+import top.lizec.smartreview.entity.LevelDetail;
 
 public interface ReviewStateDao {
 
@@ -19,5 +19,8 @@ public interface ReviewStateDao {
 
     Integer updateReviewTimeInfo(List<KnowledgeReviewState> states);
 
-    List<Rate> loadSimpleReviewRate();
+    List<LevelDetail> queryTotalLevelDetail();
+
+    List<LevelDetail> queryYesterdayLevelDetail();
+
 }

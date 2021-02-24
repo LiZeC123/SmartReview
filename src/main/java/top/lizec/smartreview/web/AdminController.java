@@ -24,4 +24,10 @@ public class AdminController {
         simpleUpdateTimeTask.updateKnowledgeReviewTime();
         return Result.success();
     }
+
+    @GetMapping("updateParameter")
+    public Result<?> updateParameter() {
+        simpleUpdateTimeTask.updateParameter();
+        return Result.success();
+    }
 }

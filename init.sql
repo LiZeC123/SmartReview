@@ -106,14 +106,9 @@ CREATE TABLE knowledge_review_detail
 
 CREATE TABLE simple_review_rate
 (
-    a DOUBLE NOT NULL,
-    b DOUBLE NOT NULL,
-    c DOUBLE NOT NULL,
-    d DOUBLE NOT NULL
+    id    INT UNSIGNED PRIMARY KEY,
+    param CHAR(80) NOT NULL DEFAULT '0.5|1.0|2.4|4.5|0.4|0.7|2.2|4.0|0.3|0.6|2.0|3.5|0.2|0.5|1.5|3.0'
 ) COMMENT '简单复习模式的倍率数据表';
 
-INSERT INTO simple_review_rate(a, b, c, d)
-VALUES (3.5, 1.5, 1.0, 0.2),
-       (3.0, 2.0, 0.8, 0.4),
-       (3.5, 1.2, 0.9, 0.6),
-       (4.0, 2.0, 1.2, 0.7)
+INSERT INTO simple_review_rate(id)
+VALUES (1)

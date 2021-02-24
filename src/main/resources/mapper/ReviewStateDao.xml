@@ -12,6 +12,7 @@
                    #{finished})
     </insert>
 
+
     <update id="updateReviewState">
         UPDATE knowledge_review_state
         SET review_count  = review_count + 1,
@@ -58,8 +59,20 @@
           AND finished = 1
     </select>
 
-    <select id="loadSimpleReviewRate" resultType="top.lizec.smartreview.entity.Rate">
-        SELECT *
-        FROM simple_review_rate;
+    <select id="queryTotalLevelDetail" resultType="top.lizec.smartreview.entity.LevelDetail">
+        SELECT current_level as level, count(*) as count
+        FROM knowledge_review_state
+        GROUP BY current_level
+        ORDER BY current_level;
     </select>
+
+    <select id="queryYesterdayLevelDetail"
+            resultType="top.lizec.smartreview.entity.LevelDetail">
+        SELECT current_level as level, count(*) as count
+        FROM knowledge_review_state
+        WHERE finished = 1
+        GROUP BY current_level
+        ORDER BY current_level;
+    </select>
+
 </mapper>
