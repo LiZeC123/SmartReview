@@ -84,8 +84,16 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
 
     private String toParam() {
         return Arrays.stream(this.rate).flatMapToDouble(Arrays::stream)
-                .mapToObj(r -> String.format("%.2f", r))
+                .mapToObj(this::toNonNegativeString)
                 .collect(Collectors.joining("|"));
+    }
+
+    private String toNonNegativeString(double v) {
+        if (v >= 0.01) {
+            return String.format("%.3f", v);
+        } else {
+            return "0.01";
+        }
     }
 
     private void step(int level, double diff, double[] totalRate) {
@@ -146,6 +154,7 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
     @Override
     public KnowledgeReviewState update(KnowledgeReviewState state) {
         int interval = (int) (state.getCurrentInterval() * rate[state.getLastLevel()][state.getCurrentLevel()]);
+        interval = Math.max(1, interval);    //时间间隔至少为1, 以免产生0导致后续无法更新
         state.setCurrentInterval(interval);
         state.setNextReviewTime(state.getFinishedTime().plus(Duration.ofHours(interval)));
         return state;
