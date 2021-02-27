@@ -4,18 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
+import top.lizec.smartreview.aspect.ServiceLog;
 import top.lizec.smartreview.entity.KnowledgeReviewState;
 import top.lizec.smartreview.entity.LevelDetail;
 import top.lizec.smartreview.mapper.ReviewStateDao;
 import top.lizec.smartreview.mapper.SimpleReviewDao;
+
+import javax.annotation.Resource;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class SimpleUpdateTimeTask extends AbstractUpdateTask {
@@ -33,11 +32,14 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
         super(10000, 100);
     }
 
+    @ServiceLog("更新复习参数间任务")
     @Scheduled(cron = "0 0 1 * * ?")
     public void updateParameter() {
+
         // 当前没有数据, 则不更新
         List<LevelDetail> currentLevelDetail = reviewStateDao.queryYesterdayLevelDetail();
         if (currentLevelDetail.size() == 0) {
+            logger.warn("没有足够的训练数据");
             return;
         }
 
@@ -55,16 +57,15 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
         simpleReviewDao.updateParameter(toParam());
     }
 
+    @ServiceLog("更新复习时间任务")
     @Scheduled(cron = "0 0 2 * * ?")
     public void updateKnowledgeReviewTime() {
-        logger.info("开始更新任务");
         initReviewIntervalRate();
 
         // count值表示右边界, 因此是实际最大值+1
         int maxCount = reviewStateDao.getKnowledgeCount() + 1;
         batchUpdate(maxCount);
 
-        logger.info("更新任务完成");
     }
 
 
