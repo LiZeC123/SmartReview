@@ -10,6 +10,11 @@ spring:
     druid:
       min-idle: 2
       initial-size: 2
+  redis:
+    jedis:
+      pool:
+        max-wait: 1000
+        min-idle: 2
   profiles:
     active: dev
 server:

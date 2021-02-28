@@ -1,8 +1,8 @@
 package top.lizec.smartreview.entity;
 
-import java.sql.Date;
-
 import lombok.Data;
+
+import java.sql.Date;
 
 
 @Data
@@ -16,4 +16,16 @@ public class Knowledge {
     private String tag;
     private Date createTime;
     private Date modifiedTime;
+
+
+    public String toMarkdown() {
+        return "\n### " + title +
+                "\n正文:\n" +
+                content + "\n" +
+                "\n扩展资源:\n" +
+                link + "\n" +
+                "\n标签:\n" +
+                tag + "\n"
+                + "\n";
+    }
 }

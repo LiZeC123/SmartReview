@@ -26,6 +26,19 @@
         </foreach>
     </select>
 
+    <select id="getKnowledgeIdByTag" resultType="java.lang.Integer">
+        SELECT knowledge_id
+        from knowledge_tag
+        where tag_id = #{tagId}
+    </select>
+
+    <select id="getTagName" resultType="java.lang.String">
+        SELECT name
+        from tag
+        where id = #{tagId};
+    </select>
+
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tag(name, creator)
         VALUES (#{name}, #{creator})

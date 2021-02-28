@@ -1,8 +1,8 @@
 package top.lizec.smartreview.mapper;
 
-import java.util.List;
-
 import top.lizec.smartreview.entity.Tag;
+
+import java.util.List;
 
 public interface TagDao {
 
@@ -18,4 +18,7 @@ public interface TagDao {
 
     List<Integer> selectIdByTagName(List<String> nameList, Integer creator);
 
+    List<Integer> getKnowledgeIdByTag(Integer tagId);
+
+    String getTagName(Integer tagId);
 }

@@ -42,4 +42,12 @@
         WHERE k.creator = #{userId}
         ORDER BY k.id DESC;
     </select>
+
+    <select id="selectByIds" resultType="top.lizec.smartreview.entity.Knowledge">
+        SELECT title, content, link, tag FROM knowledge
+        WHERE id IN
+        <foreach collection="knowledgeIds" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

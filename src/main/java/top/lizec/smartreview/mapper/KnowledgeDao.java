@@ -17,4 +17,6 @@ public interface KnowledgeDao {
     List<Knowledge> queryRecentReview(Integer userId);
 
     List<KnowledgeRecord> queryAllRecord(Integer userId);
+
+    List<Knowledge> selectByIds(List<Integer> knowledgeIds);
 }
