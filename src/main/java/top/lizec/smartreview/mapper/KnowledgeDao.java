@@ -1,8 +1,9 @@
 package top.lizec.smartreview.mapper;
 
-import java.util.List;
-
 import top.lizec.smartreview.entity.Knowledge;
+import top.lizec.smartreview.entity.KnowledgeRecord;
+
+import java.util.List;
 
 public interface KnowledgeDao {
     String selectTag(Integer id);
@@ -14,4 +15,6 @@ public interface KnowledgeDao {
     List<Knowledge> selectAll(Integer userId);
 
     List<Knowledge> queryRecentReview(Integer userId);
+
+    List<KnowledgeRecord> queryAllRecord(Integer userId);
 }

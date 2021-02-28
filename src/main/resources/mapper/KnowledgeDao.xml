@@ -26,7 +26,6 @@
                  JOIN knowledge_review_state krs on knowledge.id = krs.knowledge_id
         WHERE creator = #{userId}
           AND next_review_time <![CDATA[ < ]]> NOW()
-          AND finished = 0
         ORDER BY id DESC;
     </select>
 
@@ -34,5 +33,13 @@
         SELECT tag
         from knowledge
         where id = #{id}
+    </select>
+
+    <select id="queryAllRecord" resultType="top.lizec.smartreview.entity.KnowledgeRecord">
+        SELECT k.id, k.app_type, k.title, krs.review_count, krs.current_interval, krs.next_review_time
+        FROM knowledge k
+                 JOIN knowledge_review_state krs ON k.id = krs.knowledge_id
+        WHERE k.creator = #{userId}
+        ORDER BY k.id DESC;
     </select>
 </mapper>

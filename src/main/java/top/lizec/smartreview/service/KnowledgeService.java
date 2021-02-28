@@ -2,14 +2,13 @@ package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import top.lizec.smartreview.dto.KnowledgeDto;
 import top.lizec.smartreview.entity.Knowledge;
+import top.lizec.smartreview.entity.KnowledgeRecord;
 import top.lizec.smartreview.mapper.KnowledgeDao;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class KnowledgeService {
@@ -44,5 +43,9 @@ public class KnowledgeService {
 
     public void updateKnowledgeReview(Integer kid, Integer memoryLevel) {
         knowledgeReviewService.updateReviewRecord(kid, memoryLevel);
+    }
+
+    public List<KnowledgeRecord> queryAllRecord(Integer userId) {
+        return knowledgeDao.queryAllRecord(userId);
     }
 }

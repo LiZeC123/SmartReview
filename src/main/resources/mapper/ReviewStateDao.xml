@@ -4,44 +4,27 @@
 <mapper namespace="top.lizec.smartreview.mapper.ReviewStateDao">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO knowledge_review_state(knowledge_id, last_level, current_level,
-                                           current_interval,
-                                           next_review_time, finished)
-            VALUE (#{knowledgeId}, #{lastLevel}, #{currentLevel}, #{currentInterval},
-                   #{nextReviewTime},
-                   #{finished})
+        INSERT INTO knowledge_review_state(knowledge_id, current_level, current_interval, next_review_time)
+            VALUE (#{knowledgeId}, #{currentLevel}, #{currentInterval}, #{nextReviewTime})
     </insert>
 
 
     <update id="updateReviewState">
         UPDATE knowledge_review_state
-        SET review_count  = review_count + 1,
-            last_level    = current_level,
-            current_level = #{memoryLevel},
-            finished      = 1,
-            finished_time = NOW()
-        WHERE knowledge_id = #{kid}
+        SET review_count     = #{reviewCount},
+            current_level    = #{currentLevel},
+            current_interval = #{currentInterval},
+            next_review_time = #{nextReviewTime}
+        WHERE knowledge_id = #{knowledgeId}
     </update>
 
-    <update id="updateReviewTimeInfo">
-        INSERT INTO knowledge_review_state(knowledge_id, last_level ,current_level,
-        current_interval,
-        next_review_time,finished) VALUES
-        <foreach collection="states" separator="," item="state">
-            (#{state.knowledgeId}, #{state.lastLevel},#{state.currentLevel},
-            #{state.currentInterval},#{state.nextReviewTime}, 0)
-        </foreach>
-        ON DUPLICATE KEY UPDATE current_interval=VALUES(current_interval),
-        next_review_time=VALUES(next_review_time), finished=0;
-    </update>
 
     <select id="selectById" resultType="top.lizec.smartreview.entity.KnowledgeReviewState">
         SELECT knowledge_id,
                review_count,
                current_level,
                current_interval,
-               next_review_time,
-               finished
+               next_review_time
         from knowledge_review_state
         WHERE knowledge_id = #{kid}
     </select>
@@ -51,13 +34,6 @@
         FROM knowledge_review_state;
     </select>
 
-    <select id="selectNeedUpdateBetween"
-            resultType="top.lizec.smartreview.entity.KnowledgeReviewState">
-        SELECT knowledge_id, last_level, current_level, current_interval, finished_time
-        FROM knowledge_review_state
-        WHERE knowledge_id BETWEEN #{begin} AND #{end}
-          AND finished = 1
-    </select>
 
     <select id="queryTotalLevelDetail" resultType="top.lizec.smartreview.entity.LevelDetail">
         SELECT current_level as level, count(*) as count
@@ -65,14 +41,4 @@
         GROUP BY current_level
         ORDER BY current_level;
     </select>
-
-    <select id="queryYesterdayLevelDetail"
-            resultType="top.lizec.smartreview.entity.LevelDetail">
-        SELECT current_level as level, count(*) as count
-        FROM knowledge_review_state
-        WHERE finished = 1
-        GROUP BY current_level
-        ORDER BY current_level;
-    </select>
-
 </mapper>

@@ -5,19 +5,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import top.lizec.smartreview.aspect.ServiceLog;
-import top.lizec.smartreview.entity.KnowledgeReviewState;
 import top.lizec.smartreview.entity.LevelDetail;
+import top.lizec.smartreview.mapper.ReviewDetailDao;
 import top.lizec.smartreview.mapper.ReviewStateDao;
 import top.lizec.smartreview.mapper.SimpleReviewDao;
 
 import javax.annotation.Resource;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class SimpleUpdateTimeTask extends AbstractUpdateTask {
+public class SimpleUpdateTimeTask {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private double[][] rate;
@@ -26,10 +25,13 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
     ReviewStateDao reviewStateDao;
 
     @Resource
+    ReviewDetailDao reviewDetailDao;
+
+    @Resource
     SimpleReviewDao simpleReviewDao;
 
     public SimpleUpdateTimeTask() {
-        super(10000, 100);
+
     }
 
     @ServiceLog("更新复习参数间任务")
@@ -37,7 +39,7 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
     public void updateParameter() {
 
         // 当前没有数据, 则不更新
-        List<LevelDetail> currentLevelDetail = reviewStateDao.queryYesterdayLevelDetail();
+        List<LevelDetail> currentLevelDetail = reviewDetailDao.queryYesterdayLevelDetail();
         if (currentLevelDetail.size() == 0) {
             logger.warn("没有足够的训练数据");
             return;
@@ -55,17 +57,6 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
         }
 
         simpleReviewDao.updateParameter(toParam());
-    }
-
-    @ServiceLog("更新复习时间任务")
-    @Scheduled(cron = "0 0 2 * * ?")
-    public void updateKnowledgeReviewTime() {
-        initReviewIntervalRate();
-
-        // count值表示右边界, 因此是实际最大值+1
-        int maxCount = reviewStateDao.getKnowledgeCount() + 1;
-        batchUpdate(maxCount);
-
     }
 
 
@@ -133,41 +124,5 @@ public class SimpleUpdateTimeTask extends AbstractUpdateTask {
         }
 
         return rate;
-    }
-
-    /**
-     * 在给定的切片区间上加载数据
-     *
-     * @param location 切片区间
-     * @return 此切片上对应的数据
-     */
-    @Override
-    public List<KnowledgeReviewState> loaderBetween(SliceLocation location) {
-        return reviewStateDao.selectNeedUpdateBetween(location.getBegin(), location.getEnd());
-    }
-
-    /**
-     * 更新状态
-     *
-     * @param state 更新前的状态
-     * @return 根据策略更新后的状态
-     */
-    @Override
-    public KnowledgeReviewState update(KnowledgeReviewState state) {
-        int interval = (int) (state.getCurrentInterval() * rate[state.getLastLevel()][state.getCurrentLevel()]);
-        interval = Math.max(1, interval);    //时间间隔至少为1, 以免产生0导致后续无法更新
-        state.setCurrentInterval(interval);
-        state.setNextReviewTime(state.getFinishedTime().plus(Duration.ofHours(interval)));
-        return state;
-    }
-
-    /**
-     * 保存数据
-     *
-     * @param states 需要保存的数据
-     */
-    @Override
-    public void write(List<KnowledgeReviewState> states) {
-        reviewStateDao.updateReviewTimeInfo(states);
     }
 }

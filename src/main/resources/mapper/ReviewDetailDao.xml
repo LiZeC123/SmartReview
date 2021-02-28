@@ -7,8 +7,12 @@
         INSERT INTO knowledge_review_detail(knowledge_id, last_level, current_level)
             VALUE (#{knowledgeId}, #{lastLevel}, #{currentLevel})
     </insert>
-    <select id="selectUserYesterdayDetails"
-            resultType="top.lizec.smartreview.entity.KnowledgeReviewDetail">
 
+    <select id="queryYesterdayLevelDetail" resultType="top.lizec.smartreview.entity.LevelDetail">
+        SELECT current_level as level, COUNT(*) as count
+        FROM knowledge_review_detail
+        WHERE create_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND CURDATE()
+        GROUP BY current_level
+        ORDER BY current_level;
     </select>
 </mapper>

@@ -81,12 +81,9 @@ CREATE TABLE knowledge_review_state
 (
     knowledge_id     INT UNSIGNED PRIMARY KEY,
     review_count     TINYINT UNSIGNED  NOT NULL DEFAULT 0,
-    last_level       TINYINT UNSIGNED  NOT NULL,
     current_level    TINYINT UNSIGNED  NOT NULL,
     current_interval SMALLINT UNSIGNED NOT NULL COMMENT '当前的复习间隔时间(小时)',
-    next_review_time DATETIME          NOT NULL COMMENT '下次复习的具体时间',
-    finished         TINYINT UNSIGNED  NOT NULL COMMENT '是否已经复习',
-    finished_time    DATETIME
+    next_review_time DATETIME NOT NULL COMMENT '下次复习的具体时间'
 ) ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8mb4
     COMMENT ='知识点复习情况状态表';
