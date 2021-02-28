@@ -3,7 +3,6 @@ package top.lizec.smartreview.service;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import reactor.util.annotation.Nullable;
 import top.lizec.smartreview.dto.AppCount;
 import top.lizec.smartreview.entity.Knowledge;
 import top.lizec.smartreview.mapper.ExportDao;
@@ -110,28 +109,6 @@ public class ExportService {
         }
 
         return archive;
-    }
-
-    /**
-     * 删除创建的临时文件
-     *
-     * @param path 需要删除的文件, 可以为null
-     */
-    public void deleteGeneratedFile(@Nullable Path path) {
-        if (Objects.isNull(path)) {
-            return;
-        }
-
-        try {
-            Files.delete(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void generateAllFile() {
-
     }
 
     public Double queryExportProgress(Integer userId, String type) {
