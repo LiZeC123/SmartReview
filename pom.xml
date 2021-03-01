@@ -119,6 +119,15 @@
         </dependency>
 
 
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <!-- 用户分析网页标题信息, 从而减少用户输入 -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.13.1</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
