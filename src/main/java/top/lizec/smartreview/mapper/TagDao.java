@@ -21,4 +21,6 @@ public interface TagDao {
     List<Integer> getKnowledgeIdByTag(Integer tagId);
 
     String getTagName(Integer tagId);
+
+    List<Tag> selectAppType();
 }
