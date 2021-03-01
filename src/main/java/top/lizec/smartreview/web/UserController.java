@@ -1,15 +1,15 @@
 package top.lizec.smartreview.web;
 
+import io.swagger.annotations.Api;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
-
-import io.swagger.annotations.Api;
 import top.lizec.smartreview.entity.User;
 import top.lizec.smartreview.response.Result;
 import top.lizec.smartreview.service.UserService;
+
+import javax.annotation.Resource;
 
 @Api
 @RestController
@@ -42,5 +42,17 @@ public class UserController {
         return userService.createUser(user)
                 .map(Result::success)
                 .orElseGet(Result::failure);
+    }
+
+
+    /**
+     * 根据密码明文创建加密后的密文
+     *
+     * @param password 密码明文
+     * @return 加密后的密文
+     */
+    @GetMapping("createPassword")
+    public Result<String> createPassword(String password) {
+        return Result.success(userService.createPassword(password));
     }
 }

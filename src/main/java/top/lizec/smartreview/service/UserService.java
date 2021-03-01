@@ -6,16 +6,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLException;
-import java.util.Optional;
-
-import javax.annotation.Resource;
-
 import top.lizec.smartreview.entity.User;
 import top.lizec.smartreview.entity.UserDetail;
 import top.lizec.smartreview.mapper.UserDao;
 import top.lizec.smartreview.utils.TokenUtils;
+
+import javax.annotation.Resource;
+import java.sql.SQLException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -45,5 +43,9 @@ public class UserService {
         } catch (SQLException e) {
             return Optional.empty();
         }
+    }
+
+    public String createPassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }
