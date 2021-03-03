@@ -32,8 +32,10 @@ public class ExportController {
 
     @GetMapping("exportOne")
     public Result<String> exportOne(Integer tagId) {
+        Integer userId = userInfoUtils.getCurrentUserId();
+
         try {
-            Path path = exportService.generateFile(tagId);
+            Path path = exportService.generateFile(userId, tagId);
             String url = "/download/file?token=" + path.getFileName().toString();
             return Result.success(url);
         } catch (IOException e) {
@@ -45,8 +47,9 @@ public class ExportController {
 
     @PostMapping("exportAll")
     public Result<String> exportAll(@RequestBody List<Integer> tagIds) {
+        Integer userId = userInfoUtils.getCurrentUserId();
         try {
-            Path path = exportService.writeAllKnowledgeWithZip(tagIds);
+            Path path = exportService.writeAllKnowledgeWithZip(userId, tagIds);
             String url = "/download/file?token=" + path.getFileName().toString();
             return Result.success(url);
         } catch (IOException e) {

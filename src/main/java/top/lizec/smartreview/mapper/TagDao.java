@@ -23,4 +23,8 @@ public interface TagDao {
     String getTagName(Integer tagId);
 
     List<Tag> selectAppType();
+
+    boolean checkUserPermission(Integer userId, Integer tagId);
+
+    int checkUserPermissionBatch(Integer userId, List<Integer> tagIds);
 }

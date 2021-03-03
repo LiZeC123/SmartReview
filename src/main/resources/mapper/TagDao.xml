@@ -49,6 +49,23 @@
         WHERE creator = 0;
     </select>
 
+    <select id="checkUserPermission" resultType="java.lang.Boolean">
+        SELECT 1
+        FROM tag
+        WHERE id = #{tagId}
+          AND (creator = #{userId} OR creator = 0)
+    </select>
+
+    <select id="checkUserPermissionBatch" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM tag
+        WHERE (creator = #{userId} OR creator = 0)
+        AND id IN
+        <foreach collection="tagIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tag(name, creator)

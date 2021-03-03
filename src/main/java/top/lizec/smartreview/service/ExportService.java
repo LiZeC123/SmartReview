@@ -35,6 +35,9 @@ public class ExportService {
     TagDao tagDao;
 
     @Resource
+    TagService tagService;
+
+    @Resource
     KnowledgeDao knowledgeDao;
 
     @Resource
@@ -47,10 +50,13 @@ public class ExportService {
         return exportDao.queryAppCountInfo(userId);
     }
 
-    //public String generate
 
+    public Path generateFile(Integer userId, Integer tagId) throws IOException {
+        tagService.checkUserPermission(userId, tagId);
+        return generateFileWithoutCheck(tagId);
+    }
 
-    public Path generateFile(Integer tagId) throws IOException {
+    private Path generateFileWithoutCheck(Integer tagId) throws IOException {
         List<Integer> knowledgeIds = tagDao.getKnowledgeIdByTag(tagId);
 
         String tagName = tagDao.getTagName(tagId);
@@ -71,18 +77,9 @@ public class ExportService {
         return tempFile;
     }
 
-    public Path generateFileQuietly(Integer tagId) {
-        try {
-            return generateFile(tagId);
-        } catch (IOException e) {
-            log.warn("文件创建失败");
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-
-    public Path writeAllKnowledgeWithZip(List<Integer> tagIds) throws IOException {
+    public Path writeAllKnowledgeWithZip(Integer userId, List<Integer> tagIds) throws IOException {
+        tagService.checkUserPermissionBatch(userId, tagIds);
         final List<Path> srcFiles = tagIds.stream()
                 .map(this::generateFileQuietly)
                 .filter(Objects::nonNull).
@@ -109,6 +106,16 @@ public class ExportService {
         }
 
         return archive;
+    }
+
+    private Path generateFileQuietly(Integer tagId) {
+        try {
+            return generateFileWithoutCheck(tagId);
+        } catch (IOException e) {
+            log.warn("文件创建失败");
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Double queryExportProgress(Integer userId, String type) {

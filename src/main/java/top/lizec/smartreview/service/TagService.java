@@ -3,6 +3,7 @@ package top.lizec.smartreview.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.lizec.smartreview.entity.Tag;
+import top.lizec.smartreview.exception.NoPermissionException;
 import top.lizec.smartreview.mapper.TagDao;
 
 import javax.annotation.Resource;
@@ -44,5 +45,18 @@ public class TagService {
 
     public List<Tag> selectAppType() {
         return tagDao.selectAppType();
+    }
+
+    public void checkUserPermission(Integer userId, Integer tagId) {
+        if (!tagDao.checkUserPermission(userId, tagId)) {
+            throw new NoPermissionException("用户没有权限执行此操作");
+        }
+    }
+
+    public void checkUserPermissionBatch(Integer userId, List<Integer> tagIds) {
+        int count = tagDao.checkUserPermissionBatch(userId, tagIds);
+        if (tagIds.size() != count) {
+            throw new NoPermissionException("用户没有权限执行此操作");
+        }
     }
 }
