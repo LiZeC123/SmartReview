@@ -9,6 +9,7 @@ import top.lizec.smartreview.mapper.KnowledgeDao;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class KnowledgeService {
@@ -26,10 +27,24 @@ public class KnowledgeService {
     public Knowledge createKnowledge(Integer userId, KnowledgeDto dto) {
         Knowledge k = dto.toKnowledge();
         k.setCreator(userId);
+        k.setTag(k.getTag() + ";" + appTypeToTag(k.getAppType()));
         knowledgeDao.insert(k);
         knowledgeTagService.create(k.getTag(), userId, k.getId());
         knowledgeReviewService.createReviewRecord(k.getId());
         return k;
+    }
+
+    private String appTypeToTag(String appType) {
+        switch (appType) {
+            case "Base":
+                return "默认分类";
+            case "EnglishWordBook":
+                return "英语单词本";
+            case "LeetCodeNote":
+                return "力扣题解";
+            default:
+                throw new IllegalArgumentException("未定义的APP类型");
+        }
     }
 
     public List<Knowledge> selectAll(Integer userId) {
