@@ -26,6 +26,7 @@ public class TagService {
 
     @Transactional
     public void remove(Integer tagId, Integer creator) {
+        checkUserPermission(creator, tagId);
         Tag tag = new Tag();
         tag.setId(tagId);
         tagDao.delete(tag);
