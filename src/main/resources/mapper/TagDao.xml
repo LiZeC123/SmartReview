@@ -32,7 +32,9 @@
     <select id="getKnowledgeIdByTag" resultType="java.lang.Integer">
         SELECT knowledge_id
         from knowledge_tag
+                 JOIN knowledge k on k.id = knowledge_tag.knowledge_id
         where tag_id = #{tagId}
+          AND k.is_delete = 0
     </select>
 
     <select id="getTagName" resultType="java.lang.String">

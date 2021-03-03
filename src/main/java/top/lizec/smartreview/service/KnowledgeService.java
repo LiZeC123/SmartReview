@@ -63,4 +63,14 @@ public class KnowledgeService {
     public List<KnowledgeRecord> queryAllRecord(Integer userId) {
         return knowledgeDao.queryAllRecord(userId);
     }
+
+    public Optional<KnowledgeDto> selectOne(Integer userId, Integer kid) {
+        Knowledge k = knowledgeDao.selectOne(kid);
+
+        return Optional.ofNullable(k).map(KnowledgeDto::new);
+    }
+
+    public void deleteKnowledge(Integer userId, Integer kid) {
+        knowledgeDao.delete(kid);
+    }
 }

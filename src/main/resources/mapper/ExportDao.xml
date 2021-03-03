@@ -9,6 +9,7 @@
                  JOIN knowledge_tag kt ON k.id = kt.knowledge_id
                  JOIN tag t ON kt.tag_id = t.id
         WHERE k.creator = #{userId}
+          AND k.is_delete = 0
         GROUP BY kt.tag_id;
     </select>
 </mapper>

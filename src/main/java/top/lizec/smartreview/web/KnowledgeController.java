@@ -55,6 +55,12 @@ public class KnowledgeController {
         return Result.success(records);
     }
 
+    @GetMapping("/selectOne")
+    public Result<KnowledgeDto> selectOne(Integer kid) {
+        Integer userId = userInfoUtils.getCurrentUserId();
+        return knowledgeService.selectOne(userId, kid).map(Result::success).orElseGet(Result::failure);
+    }
+
 
     @GetMapping("/finishReview")
     public Result<?> finishReview(Integer kid, Integer memoryLevel) {
@@ -62,4 +68,10 @@ public class KnowledgeController {
         return Result.success();
     }
 
+    @GetMapping("/deleteKnowledge")
+    public Result<?> deleteKnowledge(Integer kid) {
+        Integer userId = userInfoUtils.getCurrentUserId();
+        knowledgeService.deleteKnowledge(userId, kid);
+        return Result.success();
+    }
 }

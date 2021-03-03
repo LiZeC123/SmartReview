@@ -14,10 +14,17 @@
         WHERE id = #{id}
     </update>
 
+    <update id="delete">
+        UPDATE knowledge
+        SET is_delete = 1
+        WHERE id = #{kid};
+    </update>
+
     <select id="selectAll" resultType="top.lizec.smartreview.entity.Knowledge">
         SELECT id, app_type, title, content, link, tag
         FROM knowledge
         WHERE creator = #{userId}
+          AND is_delete = 0
     </select>
 
     <select id="queryRecentReview" resultType="top.lizec.smartreview.entity.Knowledge">
@@ -25,6 +32,7 @@
         FROM knowledge
                  JOIN knowledge_review_state krs on knowledge.id = krs.knowledge_id
         WHERE creator = #{userId}
+          AND is_delete = 0
           AND next_review_time <![CDATA[ < ]]> NOW()
         ORDER BY id DESC;
     </select>
@@ -40,6 +48,7 @@
         FROM knowledge k
                  JOIN knowledge_review_state krs ON k.id = krs.knowledge_id
         WHERE k.creator = #{userId}
+          AND is_delete = 0
         ORDER BY k.id DESC;
     </select>
 
@@ -49,5 +58,12 @@
         <foreach collection="knowledgeIds" open="(" separator="," close=")" item="item">
             #{item}
         </foreach>
+    </select>
+
+    <select id="selectOne" resultType="top.lizec.smartreview.entity.Knowledge">
+        SELECT id, app_type, title, content, link, tag
+        FROM knowledge
+        WHERE id = #{kid}
+          AND is_delete = 0
     </select>
 </mapper>

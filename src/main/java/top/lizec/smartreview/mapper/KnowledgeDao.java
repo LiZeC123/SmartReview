@@ -19,4 +19,8 @@ public interface KnowledgeDao {
     List<KnowledgeRecord> queryAllRecord(Integer userId);
 
     List<Knowledge> selectByIds(List<Integer> knowledgeIds);
+
+    Knowledge selectOne(Integer kid);
+
+    Long delete(Integer kid);
 }
