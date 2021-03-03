@@ -23,4 +23,6 @@ public interface KnowledgeDao {
     Knowledge selectOne(Integer kid);
 
     Long delete(Integer kid);
+
+    Boolean checkUserPermission(Integer userId, Integer kid);
 }

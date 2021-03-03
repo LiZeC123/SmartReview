@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.lizec.smartreview.dto.KnowledgeDto;
 import top.lizec.smartreview.entity.Knowledge;
 import top.lizec.smartreview.entity.KnowledgeRecord;
+import top.lizec.smartreview.exception.NoPermissionException;
 import top.lizec.smartreview.mapper.KnowledgeDao;
 
 import javax.annotation.Resource;
@@ -56,7 +57,8 @@ public class KnowledgeService {
         return knowledgeDao.queryRecentReview(userId);
     }
 
-    public void updateKnowledgeReview(Integer kid, Integer memoryLevel) {
+    public void updateKnowledgeReview(Integer userId, Integer kid, Integer memoryLevel) {
+        checkUserPermission(userId, kid);
         knowledgeReviewService.updateReviewRecord(kid, memoryLevel);
     }
 
@@ -65,12 +67,20 @@ public class KnowledgeService {
     }
 
     public Optional<KnowledgeDto> selectOne(Integer userId, Integer kid) {
+        checkUserPermission(userId, kid);
         Knowledge k = knowledgeDao.selectOne(kid);
-
         return Optional.ofNullable(k).map(KnowledgeDto::new);
     }
 
     public void deleteKnowledge(Integer userId, Integer kid) {
+        checkUserPermission(userId, kid);
         knowledgeDao.delete(kid);
+    }
+
+
+    private void checkUserPermission(Integer userId, Integer kid) {
+        if (!knowledgeDao.checkUserPermission(userId, kid)) {
+            throw new NoPermissionException("用户没有权限执行此操作");
+        }
     }
 }

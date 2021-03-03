@@ -64,7 +64,8 @@ public class KnowledgeController {
 
     @GetMapping("/finishReview")
     public Result<?> finishReview(Integer kid, Integer memoryLevel) {
-        knowledgeService.updateKnowledgeReview(kid, memoryLevel);
+        Integer userId = userInfoUtils.getCurrentUserId();
+        knowledgeService.updateKnowledgeReview(userId, kid, memoryLevel);
         return Result.success();
     }
 

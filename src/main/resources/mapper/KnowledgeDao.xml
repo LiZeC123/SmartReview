@@ -66,4 +66,11 @@
         WHERE id = #{kid}
           AND is_delete = 0
     </select>
+
+    <select id="checkUserPermission" resultType="java.lang.Boolean">
+        SELECT 1
+        FROM knowledge
+        WHERE id = #{kid}
+          AND creator = #{userId}
+    </select>
 </mapper>
