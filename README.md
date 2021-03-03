@@ -10,29 +10,6 @@ Smart-Review使用Web架构, 从而可以跨平台使用, 用户可以使用PC�
 > 项目目前处于前期开发阶段, 还在探索具体要开发什么功能, 随着后续开发的进行, 各部分都可能发生改变
 
 
-
-需求规划
------------
-
-### 功能需求规划
-
-- [ ] 页面开发
-  - [x] 复习页面
-  - [ ] 添加知识点页面
-    - [ ] 单词添加页面
-    - [ ] LeetCode添加页面
-  - [ ] 查询页面
-- [ ] 基本功能开发
-  - [ ] 知识点基本操作
-  - [ ] 标签基本操作
-- [ ] 提醒功能开发
-  - [ ] 根据用户反馈调整复习间隔
-- [ ] 导出功能开发
-  - [ ] 将知识点导出为Markdown笔记
-- [ ] 技术需求规划
-  - [ ] 支持多用户多平台同时使用功能
-  - [ ] 对存储数据实现备份
-
 项目架构规划
 ------------
 
@@ -80,6 +57,10 @@ Spring Security 在 Spring Boot 2.0 版本中对默认运行的路径进行了�
 
 - [Spring Boot MySql Access denied for user 'root'@'localhost'](https://stackoverflow.com/questions/58260870/spring-boot-mysql-access-denied-for-user-rootlocalhost)
 - [MySQL 执行.sql文件](https://www.jianshu.com/p/e603abae317d)
+
+### Java
+
+- [Zipping and Unzipping in Java](https://www.baeldung.com/java-compress-and-uncompress)
 
 ### Java监控工具
 
