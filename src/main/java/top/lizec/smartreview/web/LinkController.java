@@ -22,6 +22,10 @@ public class LinkController {
             return Result.failure("链接为空");
         }
 
+        if (!link.startsWith("http")) {
+            return Result.failure("输入内容不是链接");
+        }
+
         try {
             return Result.success(Jsoup.connect(link).get().title());
         } catch (IOException e) {
