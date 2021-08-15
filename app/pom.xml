@@ -10,7 +10,7 @@
     </parent>
     <groupId>top.lizec</groupId>
     <artifactId>smart-review</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>SmartReview</name>
     <description>A Smart Review Tool</description>
 

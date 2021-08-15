@@ -1,0 +1,24 @@
+version: '3.0'
+services:
+  backend:
+    container_name: smart-review-backend
+    restart: always
+    build: 
+    expose: 
+    volumes:
+    depends_on: 
+      - mysql
+      - redis
+  redis:
+    container_name: smart-review-redis
+  mysql:
+    container_name: smart-review-mysql
+  web:
+    container_name: smart-review-web
+    restart: always
+    build: 
+    ports: 
+    volumes: 
+    depends_on: 
+      - backend
+  
