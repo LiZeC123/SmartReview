@@ -1,24 +1,38 @@
-version: '3.0'
+version: '2'
 services:
   backend:
     container_name: smart-review-backend
-    restart: always
     build: 
+      context: ./
+      dockerfile: docker/backend/Dockerfile
     expose: 
-    volumes:
+      - 8792
+    # TODO: 导出文件是否需要映射到Host
     depends_on: 
       - mysql
       - redis
   redis:
     container_name: smart-review-redis
+    image: redis:6.2.5-alpine
+    expose:
+      - 6379
   mysql:
     container_name: smart-review-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    build: 
+      context: ./
+      dockerfile: docker/mysql/Dockerfile
+    expose:
+      - 3306
+    volumes: 
+      - ./data/mysql:/var/lib/mysql
   web:
     container_name: smart-review-web
-    restart: always
     build: 
+      context: ./
+      dockerfile: docker/web/Dockerfile
     ports: 
-    volumes: 
+      - "6080:80"
     depends_on: 
       - backend
   

@@ -1,6 +1,13 @@
-FROM  openjdk:11.0.10-jre-slim
-
+FROM maven:3.8-openjdk-11-slim AS build
 WORKDIR /app
-COPY target/smart-review-1.0.0.jar .
+COPY app/pom.xml .
+RUN mvn dependency:go-offline
+COPY app .
+RUN mvn package
 
-ENTRYPOINT [ "java", "-jar",  "smart-review-1.0.0.jar", "--spring.profiles.active=prod"]
+# -------------------------------
+
+FROM openjdk:11.0.10-jre-slim
+COPY --from=build /app/target/smart-review-1.0.0.jar /app/
+WORKDIR /app
+ENTRYPOINT [ "java", "-jar", "smart-review-1.0.0.jar", "--spring.profiles.active=prod" ]

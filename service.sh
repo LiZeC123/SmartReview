@@ -2,7 +2,14 @@
 
 AppName=target/smart-review-0.0.1-SNAPSHOT.jar
 
+function init {
+  docker build -t maven -f docker/maven/Dockerfile .
+  docker build -t smart-review-mysql -f docker/mysql/Dockerfile .
+}
+
 function compileService() {
+  # 编译的时候, 测试阶段可能启动spring, 会导致端口冲突?
+  docker run 
   mvn clean package
 }
 

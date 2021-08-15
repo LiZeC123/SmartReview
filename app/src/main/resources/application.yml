@@ -2,8 +2,8 @@ spring:
   application:
     name: SmartReview
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/smart_review?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
-    username: review
+    url: jdbc:mysql://localhost:3306/smart_review?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
     # 配置初始连接数量和最小连接数量可以减少初次访问时建立连接的时间
@@ -43,7 +43,24 @@ spring:
   config:
     activate:
       on-profile: prod
+  datasource:
+    url: jdbc:mysql://mysql:3306/smart_review?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置初始连接数量和最小连接数量可以减少初次访问时建立连接的时间
+    druid:
+      min-idle: 2
+      initial-size: 2
+  redis:
+    jedis:
+      host: redis
+      port: 6379
+      pool:
+        max-wait: 1000
+        min-idle: 2
 server:
   port: 8792
+
 
 
