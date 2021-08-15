@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.lizec.smartreview.entity.User;
 import top.lizec.smartreview.response.Result;
 import top.lizec.smartreview.service.UserService;
+import top.lizec.smartreview.utils.UserInfoUtils;
 
 import javax.annotation.Resource;
 
@@ -18,6 +19,9 @@ public class UserController {
 
     @Resource
     UserService userService;
+
+    @Resource
+    UserInfoUtils userInfoUtils;
 
 
     @PostMapping("login")
@@ -54,5 +58,12 @@ public class UserController {
     @GetMapping("createPassword")
     public Result<String> createPassword(String password) {
         return Result.success(userService.createPassword(password));
+    }
+
+
+    @GetMapping("getCurrentUserName")
+    public Result<String> getCurrentUserName() {
+        final Integer userId = userInfoUtils.getCurrentUserId();
+        return Result.success(userService.getUserName(userId));
     }
 }

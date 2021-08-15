@@ -7,7 +7,11 @@
         FROM user
         WHERE email = #{email}
     </select>
-
+    <select id="getUserNameById" resultType="top.lizec.smartreview.entity.User">
+        SELECT username
+        FROM user
+        WHERE id = #{id}
+    </select>
     <insert id="insertUser" parameterType="top.lizec.smartreview.entity.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user(username, email, password, roles, create_time, modified_time)
         VALUES (#{username}, #{email}, #{password}, 'ROLE_USER', NOW(), NOW())

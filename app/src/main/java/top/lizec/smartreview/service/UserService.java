@@ -48,4 +48,8 @@ public class UserService {
     public String createPassword(String password) {
         return passwordEncoder.encode(password);
     }
+
+    public String getUserName(Integer id) {
+        return userDao.getUserNameById(id).getUsername();
+    }
 }

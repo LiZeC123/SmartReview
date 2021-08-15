@@ -2,17 +2,15 @@ package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import top.lizec.smartreview.entity.Tag;
 import top.lizec.smartreview.mapper.KnowledgeDao;
 import top.lizec.smartreview.mapper.KnowledgeTagDao;
 import top.lizec.smartreview.mapper.TagDao;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -30,8 +28,13 @@ public class KnowledgeTagService {
     @Resource
     KnowledgeTagDao knowledgeTagDao;
 
+    @Resource
+    TagService tagService;
+
     /**
      * 在创建知识点时, 将字符串形式的tag拆分插入到KnowledgeTag表中
+     * <p>
+     * 如果用户不具有此操作的权限, 则抛出NoPermissionException
      *
      * @param tagNames    字符串形式的tag
      * @param creator     tag的创建者
@@ -42,11 +45,15 @@ public class KnowledgeTagService {
         List<String> tags = Arrays.stream(tagNames.split(";"))
                 .map(String::strip).collect(Collectors.toList());
         List<Integer> tagIds = tagDao.selectIdByTagName(tags, creator);
+
+        tagService.checkUserPermissionBatch(creator, tagIds);
         knowledgeTagDao.insertBatch(tagIds, knowledgeId);
     }
 
     /**
      * 从所有的Knowledge中删除指定的标签
+     *
+     * 此操作不检查用户是否具有删除此标签的权限
      *
      * @param tag 需要删除的标签
      */

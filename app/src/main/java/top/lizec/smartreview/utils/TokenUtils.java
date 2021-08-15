@@ -1,11 +1,12 @@
 package top.lizec.smartreview.utils;
 
-import java.util.Date;
-
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import top.lizec.smartreview.entity.User;
+
+import java.util.Date;
 
 public class TokenUtils {
     private static final int ONE_DAY = 24 * 60 * 60 * 1000;
@@ -37,20 +38,23 @@ public class TokenUtils {
      * @return sysUser 用户信息
      */
     public static User validationToken(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(RsaUtils.getPublicKey())
-                .build().parseClaimsJws(token).getBody();
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(RsaUtils.getPublicKey())
+                    .build().parseClaimsJws(token).getBody();
 
-        Date expiration = claims.getExpiration();
-        if (!expiration.after(new Date())) {
+            User user = new User();
+            user.setEmail(claims.getAudience());
+            user.setUsername(claims.get("name", String.class));
+            user.setRoles(claims.get("role", String.class));
+            user.setId(claims.get("userId", Integer.class));
+            return user;
+        } catch (ExpiredJwtException e) {
+            // 如果过期
             return null;
         }
-        User user = new User();
-        user.setEmail(claims.getAudience());
-        user.setUsername(claims.get("name", String.class));
-        user.setRoles(claims.get("role", String.class));
-        user.setId(claims.get("userId", Integer.class));
-        return user;
+
+
     }
 
 }
