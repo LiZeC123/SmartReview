@@ -26,15 +26,16 @@ public class KnowledgeController {
 
 
     @PostMapping("/create")
-    public Result<KnowledgeDto> create(@RequestBody KnowledgeDto knowledge) {
+    public Result<?> create(@RequestBody KnowledgeDto knowledge) {
         Integer id = userInfoUtils.getCurrentUserId();
-        Knowledge k = knowledgeService.createKnowledge(id, knowledge);
-        return Result.success(new KnowledgeDto(k));
+        knowledgeService.createKnowledge(id, knowledge);
+        return Result.success();
     }
 
     @GetMapping("/queryRecentReview")
     public Result<List<KnowledgeDto>> queryRecentReview() {
         Integer userId = userInfoUtils.getCurrentUserId();
+        //TODO: web层从这里开始修改
         List<KnowledgeDto> dto = knowledgeService.queryRecentReview(userId).stream()
                 .map(KnowledgeDto::new).collect(Collectors.toList());
         return Result.success(dto);

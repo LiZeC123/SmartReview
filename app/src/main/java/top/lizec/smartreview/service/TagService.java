@@ -2,12 +2,21 @@ package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
+
+import top.lizec.smartreview.dto.TagDto;
+import top.lizec.smartreview.entity.KnowledgeTag;
 import top.lizec.smartreview.entity.Tag;
 import top.lizec.smartreview.exception.NoPermissionException;
 import top.lizec.smartreview.mapper.TagDao;
 
-import javax.annotation.Resource;
-import java.util.List;
+import static java.util.stream.Collectors.*;
 
 @Service
 public class TagService {
@@ -37,6 +46,23 @@ public class TagService {
         return tagDao.selectAll(creator);
     }
 
+    public List<KnowledgeTag> selectTagByKnowledge(Integer id) {
+        return tagDao.selectTagByKnowledge(Collections.singletonList(id));
+    }
+
+    public Map<Integer, List<KnowledgeTag>> selectTagByKnowledge(List<Integer> kids) {
+        return tagDao.selectTagByKnowledge(kids).stream()
+                .collect(groupingBy(KnowledgeTag::getKnowledgeId));
+
+    }
+
+    public void createKnowledgeTag(List<TagDto> tags, Integer uid, Integer kid) {
+        checkUserPermission(uid, tags.stream().map(TagDto::getId).collect(toList()));
+
+        List<KnowledgeTag> kts = tags.stream().map(tag -> new KnowledgeTag(tag,uid, kid)).collect(toList());
+        tagDao.insertKnowledgeTag(kts);
+    }
+
     private Tag buildTagObject(String name, Integer creator) {
         Tag tag = new Tag();
         tag.setName(name);
@@ -54,7 +80,7 @@ public class TagService {
         }
     }
 
-    public void checkUserPermissionBatch(Integer userId, List<Integer> tagIds) {
+    public void checkUserPermission(Integer userId, List<Integer> tagIds) {
         int count = tagDao.checkUserPermissionBatch(userId, tagIds);
         if (tagIds.size() != count) {
             throw new NoPermissionException("用户没有权限执行此操作");

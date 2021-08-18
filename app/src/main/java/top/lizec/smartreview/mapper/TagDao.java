@@ -1,5 +1,6 @@
 package top.lizec.smartreview.mapper;
 
+import top.lizec.smartreview.entity.KnowledgeTag;
 import top.lizec.smartreview.entity.Tag;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface TagDao {
 
     Long insert(Tag tag);
 
+    Long insertKnowledgeTag(List<KnowledgeTag> knowledgeTags);
+
     void update(Tag tag);
 
     void delete(Tag tag);
@@ -23,6 +26,8 @@ public interface TagDao {
     String getTagName(Integer tagId);
 
     List<Tag> selectAppType();
+
+    List<KnowledgeTag> selectTagByKnowledge(List<Integer> kids);
 
     boolean checkUserPermission(Integer userId, Integer tagId);
 

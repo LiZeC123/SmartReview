@@ -4,8 +4,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 import top.lizec.smartreview.entity.Knowledge;
+import top.lizec.smartreview.entity.KnowledgeTag;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -15,8 +17,9 @@ public class KnowledgeDto {
     private String appType;
     private String title;
     private String content;
-    private LinkPair[] link;
-    private String[] tag;
+    private String link;
+    private Integer difficulty;
+    private List<TagDto> tag;
 
 
     public KnowledgeDto(Knowledge k) {
@@ -24,30 +27,16 @@ public class KnowledgeDto {
         this.appType = k.getAppType();
         this.title = k.getTitle();
         this.content = k.getContent();
-
-        if (StringUtils.hasText(k.getLink())) {
-            this.link = Arrays.stream(k.getLink().split("\n"))
-                    .map(LinkPair::new).toArray(LinkPair[]::new);
-        } else {
-            this.link = new LinkPair[0];
-        }
-
-        this.tag = k.getTag().split(";");
+        this.link = k.getLink();
     }
 
     public Knowledge toKnowledge() {
         Knowledge knowledge = new Knowledge();
-        knowledge.setAppType(this.getAppType());
-        knowledge.setTitle(this.getTitle());
-        knowledge.setContent(this.getContent());
-
-        String link = Arrays.stream(this.link)
-                .map(pair -> pair.getName() + " --> " + pair.getUrl())
-                .collect(Collectors.joining("\n"));
+        knowledge.setAppType(appType);
+        knowledge.setTitle(title);
+        knowledge.setContent(content);
         knowledge.setLink(link);
-
-        String tag = String.join(";", this.tag);
-        knowledge.setTag(tag);
+        knowledge.setDifficulty(difficulty);
 
         return knowledge;
     }

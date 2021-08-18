@@ -32,10 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-### RSA KEY ###
-RSA_PRIVATE
-RSA_PUBLIC
-
-
 ### Temp File ###
 tmpFile/
+
+### Data File ###
+data/

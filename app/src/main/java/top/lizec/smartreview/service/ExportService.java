@@ -79,7 +79,7 @@ public class ExportService {
 
 
     public Path writeAllKnowledgeWithZip(Integer userId, List<Integer> tagIds) throws IOException {
-        tagService.checkUserPermissionBatch(userId, tagIds);
+        tagService.checkUserPermission(userId, tagIds);
         final List<Path> srcFiles = tagIds.stream()
                 .map(this::generateFileQuietly)
                 .filter(Objects::nonNull).

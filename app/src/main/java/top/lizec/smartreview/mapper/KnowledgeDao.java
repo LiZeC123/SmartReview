@@ -3,6 +3,8 @@ package top.lizec.smartreview.mapper;
 import top.lizec.smartreview.entity.Knowledge;
 import top.lizec.smartreview.entity.KnowledgeRecord;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface KnowledgeDao {
@@ -14,7 +16,7 @@ public interface KnowledgeDao {
 
     List<Knowledge> selectAll(Integer userId);
 
-    List<Knowledge> queryRecentReview(Integer userId);
+    List<Knowledge> queryRecentReview(Integer userId, LocalDateTime deadline);
 
     List<KnowledgeRecord> queryAllRecord(Integer userId);
 

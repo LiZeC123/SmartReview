@@ -8,9 +8,8 @@ import top.lizec.smartreview.mapper.KnowledgeTagDao;
 import top.lizec.smartreview.mapper.TagDao;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class KnowledgeTagService {
+    //TODO: 在服务层就不要有这种中间服务了, 划分到Tag服务中
 
     @Resource
     KnowledgeDao knowledgeDao;
@@ -32,22 +32,23 @@ public class KnowledgeTagService {
     TagService tagService;
 
     /**
-     * 在创建知识点时, 将字符串形式的tag拆分插入到KnowledgeTag表中
+     * 在创建知识点时, 将对应的tag插入到KnowledgeTag表中
      * <p>
      * 如果用户不具有此操作的权限, 则抛出NoPermissionException
      *
-     * @param tagNames    字符串形式的tag
+     * @param tags        一组tag的ID
      * @param creator     tag的创建者
      * @param knowledgeId tag对应的知识点ID
      */
     @Transactional
-    public void create(String tagNames, Integer creator, Integer knowledgeId) {
-        List<String> tags = Arrays.stream(tagNames.split(";"))
-                .map(String::strip).collect(Collectors.toList());
-        List<Integer> tagIds = tagDao.selectIdByTagName(tags, creator);
+    public void create(List<Integer> tags, Integer creator, Integer knowledgeId) {
 
-        tagService.checkUserPermissionBatch(creator, tagIds);
-        knowledgeTagDao.insertBatch(tagIds, knowledgeId);
+//        List<String> tags = Arrays.stream(tagNames.split(";"))
+//                .map(String::strip).collect(Collectors.toList());
+//        List<Integer> tagIds = tagDao.selectIdByTagName(tags, creator);
+
+        tagService.checkUserPermission(creator, tags);
+        knowledgeTagDao.insertBatch(tags, knowledgeId);
     }
 
     /**

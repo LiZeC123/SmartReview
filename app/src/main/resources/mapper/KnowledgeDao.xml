@@ -32,8 +32,7 @@
         FROM knowledge
                  JOIN knowledge_review_state krs on knowledge.id = krs.knowledge_id
         WHERE creator = #{userId}
-          AND is_delete = 0
-          AND next_review_time <![CDATA[ < ]]> NOW()
+          AND next_review_time <![CDATA[ < ]]> #{deadline}
         ORDER BY id DESC;
     </select>
 
