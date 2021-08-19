@@ -35,17 +35,14 @@ public class KnowledgeController {
     @GetMapping("/queryRecentReview")
     public Result<List<KnowledgeDto>> queryRecentReview() {
         Integer userId = userInfoUtils.getCurrentUserId();
-        //TODO: web层从这里开始修改
-        List<KnowledgeDto> dto = knowledgeService.queryRecentReview(userId).stream()
-                .map(KnowledgeDto::new).collect(Collectors.toList());
+        List<KnowledgeDto> dto = knowledgeService.queryRecentReview(userId);
         return Result.success(dto);
     }
 
     @GetMapping("/selectAll")
     public Result<List<KnowledgeDto>> selectAll() {
         Integer userId = userInfoUtils.getCurrentUserId();
-        List<KnowledgeDto> dto = knowledgeService.selectAll(userId).stream()
-                .map(KnowledgeDto::new).collect(Collectors.toList());
+        List<KnowledgeDto> dto = knowledgeService.selectAll(userId);
         return Result.success(dto);
     }
 

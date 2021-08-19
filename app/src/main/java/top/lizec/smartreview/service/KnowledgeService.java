@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -50,27 +51,20 @@ public class KnowledgeService {
         knowledgeReviewService.createReviewRecord(k.getId());
     }
 
-//    private String appTypeToTag(String appType) {
-//        switch (appType) {
-//            case "Base":
-//                return "默认分类";
-//            case "EnglishWordBook":
-//                return "英语单词本";
-//            case "LeetCodeNote":
-//                return "力扣题解";
-//            default:
-//                throw new IllegalArgumentException("未定义的APP类型");
-//        }
-//    }
-
-    public List<Knowledge> selectAll(Integer userId) {
-        return knowledgeDao.selectAll(userId);
-    }
-
-
     public List<KnowledgeDto> queryRecentReview(Integer userId) {
         List<Knowledge> knowledges = knowledgeDao.queryRecentReview(userId, LocalDateTime.now());
 
+        return loadTag(knowledges);
+    }
+
+
+    public List<KnowledgeDto> selectAll(Integer userId) {
+        List<Knowledge> knowledges = knowledgeDao.selectAll(userId);
+        return loadTag(knowledges);
+    }
+
+
+    private List<KnowledgeDto> loadTag(List<Knowledge> knowledges) {
         List<Integer> kids = knowledges.stream().map(Knowledge::getId).collect(Collectors.toList());
 
         Map<Integer, List<KnowledgeTag>> tagMap = tagService.selectTagByKnowledge(kids);
@@ -78,11 +72,15 @@ public class KnowledgeService {
         List<KnowledgeDto> ans = new ArrayList<>(knowledges.size());
         for (Knowledge knowledge : knowledges) {
             KnowledgeDto dto = new KnowledgeDto(knowledge);
-            dto.setTag(tagMap.getOrDefault(knowledge.getId(), Collections.emptyList()));
+            List<TagDto> tags = tagMap.getOrDefault(knowledge.getId(), Collections.emptyList()).stream()
+                    .map(KnowledgeTag::toTagDto).collect(Collectors.toList());
+            dto.setTag(tags);
         }
 
         return ans;
     }
+
+
     //TODO: 从下面开始修改
     public void updateKnowledgeReview(Integer userId, Integer kid, Integer memoryLevel) {
         checkUserPermission(userId, kid);

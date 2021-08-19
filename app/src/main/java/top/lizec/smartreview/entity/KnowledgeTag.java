@@ -19,4 +19,11 @@ public class KnowledgeTag {
         this.creator = uid;
     }
 
+    public TagDto toTagDto() {
+        TagDto dto = new TagDto();
+        dto.setId(tagId);
+        dto.setName(name);
+        return dto;
+    }
+
 }

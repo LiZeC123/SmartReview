@@ -24,7 +24,6 @@
         SELECT id, app_type, title, content, link, tag
         FROM knowledge
         WHERE creator = #{userId}
-          AND is_delete = 0
     </select>
 
     <select id="queryRecentReview" resultType="top.lizec.smartreview.entity.Knowledge">
@@ -47,7 +46,6 @@
         FROM knowledge k
                  JOIN knowledge_review_state krs ON k.id = krs.knowledge_id
         WHERE k.creator = #{userId}
-          AND is_delete = 0
         ORDER BY k.id DESC;
     </select>
 
