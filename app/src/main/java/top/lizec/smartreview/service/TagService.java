@@ -51,9 +51,12 @@ public class TagService {
     }
 
     public Map<Integer, List<KnowledgeTag>> selectTagByKnowledge(List<Integer> kids) {
+        if(kids.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
         return tagDao.selectTagByKnowledge(kids).stream()
                 .collect(groupingBy(KnowledgeTag::getKnowledgeId));
-
     }
 
     public void createKnowledgeTag(List<TagDto> tags, Integer uid, Integer kid) {

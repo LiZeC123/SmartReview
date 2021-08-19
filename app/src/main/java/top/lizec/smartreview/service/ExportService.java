@@ -66,13 +66,14 @@ public class ExportService {
 
         Path tempFile = fileUtils.createTempFile(".md");
 
+//TODO: 修复导出功能
 
-        try (OutputStream out = Files.newOutputStream(tempFile)) {
-            out.write(String.format("%s\n===================\n", tagName).getBytes(StandardCharsets.UTF_8));
-            for (Knowledge knowledge : knowledgeList) {
-                out.write(knowledge.toMarkdown().getBytes(StandardCharsets.UTF_8));
-            }
-        }
+//        try (OutputStream out = Files.newOutputStream(tempFile)) {
+//            out.write(String.format("%s\n===================\n", tagName).getBytes(StandardCharsets.UTF_8));
+//            for (Knowledge knowledge : knowledgeList) {
+//                out.write(knowledge.toMarkdown().getBytes(StandardCharsets.UTF_8));
+//            }
+//        }
 
         return tempFile;
     }

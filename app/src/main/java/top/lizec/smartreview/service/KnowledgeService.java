@@ -38,8 +38,8 @@ public class KnowledgeService {
     @Resource
     private KnowledgeDao knowledgeDao;
 
-    @Resource
-    private Cache<Integer, KnowledgeDto> knowledgeCache;
+//    @Resource
+//    private Cache<Integer, KnowledgeDto> knowledgeCache;
 
 
     @Transactional

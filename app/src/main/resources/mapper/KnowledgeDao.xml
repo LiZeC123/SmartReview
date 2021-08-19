@@ -27,7 +27,7 @@
     </select>
 
     <select id="queryRecentReview" resultType="top.lizec.smartreview.entity.Knowledge">
-        SELECT id, app_type, title, content, link, tag
+        SELECT id, app_type, title, content, link
         FROM knowledge
                  JOIN knowledge_review_state krs on knowledge.id = krs.knowledge_id
         WHERE creator = #{userId}
