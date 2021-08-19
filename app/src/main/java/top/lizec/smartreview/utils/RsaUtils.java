@@ -2,6 +2,7 @@ package top.lizec.smartreview.utils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class RsaUtils {
     private static PrivateKey privateKey;
     private static PublicKey publicKey;
+    private static final Path privateKeyPath = Paths.get("data", "RSA_PRIVATE");
+    private static final Path publicKeyPath = Paths.get("data", "RSA_PUBLIC");
 
     static {
         try {
@@ -46,16 +49,14 @@ public class RsaUtils {
             privateKey = loadPrivateKey();
             publicKey = loadPublicKey();
         } else {
-            log.info("没有检测到Key文件, 重新Key文件");
+            log.info("没有检测到Key文件, 重新生成Key文件");
             createKeyPair();
         }
         log.info("Key加载完毕");
     }
 
     private static boolean hasGenerateKey() {
-        Path publicKeyFile = Paths.get("RSA_PUBLIC");
-        Path privateKeyFile = Paths.get("RSA_PRIVATE");
-        return Files.exists(publicKeyFile) && Files.exists(privateKeyFile);
+        return Files.exists(privateKeyPath) && Files.exists(publicKeyPath);
     }
 
 
@@ -67,11 +68,11 @@ public class RsaUtils {
             privateKey = keyPair.getPrivate();
             publicKey = keyPair.getPublic();
 
-            try (FileOutputStream out = new FileOutputStream("RSA_PUBLIC")) {
+            try (OutputStream out = Files.newOutputStream(publicKeyPath)) {
                 out.write(publicKey.getEncoded());
             }
 
-            try (FileOutputStream out = new FileOutputStream("RSA_PRIVATE")) {
+            try (OutputStream out = Files.newOutputStream(privateKeyPath)) {
                 out.write(privateKey.getEncoded());
             }
         } catch (NoSuchAlgorithmException | IOException e) {
@@ -80,16 +81,14 @@ public class RsaUtils {
     }
 
     private static PrivateKey loadPrivateKey() throws Exception {
-        Path file = Paths.get("RSA_PRIVATE");
-        byte[] buffer = Files.readAllBytes(file);
+        byte[] buffer = Files.readAllBytes(privateKeyPath);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(keySpec);
     }
 
     public static PublicKey loadPublicKey() throws Exception {
-        Path file = Paths.get("RSA_PUBLIC");
-        byte[] buffer = Files.readAllBytes(file);
+        byte[] buffer = Files.readAllBytes(publicKeyPath);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
         return keyFactory.generatePublic(keySpec);
