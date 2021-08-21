@@ -4,8 +4,8 @@
 <mapper namespace="top.lizec.smartreview.mapper.KnowledgeDao">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO knowledge(app_type, title, content, creator, link, tag)
-        VALUES (#{appType}, #{title}, #{content}, #{creator}, #{link}, #{tag})
+        INSERT INTO knowledge(app_type, title, content, creator, link, difficulty)
+        VALUES (#{appType}, #{title}, #{content}, #{creator}, #{link}, #{difficulty})
     </insert>
 
     <update id="updateTag">

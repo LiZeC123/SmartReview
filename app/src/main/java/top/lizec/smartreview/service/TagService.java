@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -16,7 +15,8 @@ import top.lizec.smartreview.entity.Tag;
 import top.lizec.smartreview.exception.NoPermissionException;
 import top.lizec.smartreview.mapper.TagDao;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class TagService {
@@ -60,8 +60,11 @@ public class TagService {
     }
 
     public void createKnowledgeTag(List<TagDto> tags, Integer uid, Integer kid) {
-        checkUserPermission(uid, tags.stream().map(TagDto::getId).collect(toList()));
+        if(tags.isEmpty()) {
+            return;
+        }
 
+        checkUserPermission(uid, tags.stream().map(TagDto::getId).collect(toList()));
         List<KnowledgeTag> kts = tags.stream().map(tag -> new KnowledgeTag(tag,uid, kid)).collect(toList());
         tagDao.insertKnowledgeTag(kts);
     }
@@ -84,6 +87,10 @@ public class TagService {
     }
 
     public void checkUserPermission(Integer userId, List<Integer> tagIds) {
+        if(tagIds.isEmpty()) {
+            return;
+        }
+
         int count = tagDao.checkUserPermissionBatch(userId, tagIds);
         if (tagIds.size() != count) {
             throw new NoPermissionException("用户没有权限执行此操作");

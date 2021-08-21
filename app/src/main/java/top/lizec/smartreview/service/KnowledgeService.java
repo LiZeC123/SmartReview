@@ -1,20 +1,15 @@
 package top.lizec.smartreview.service;
 
-import com.google.common.cache.Cache;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -75,6 +70,7 @@ public class KnowledgeService {
             List<TagDto> tags = tagMap.getOrDefault(knowledge.getId(), Collections.emptyList()).stream()
                     .map(KnowledgeTag::toTagDto).collect(Collectors.toList());
             dto.setTag(tags);
+            ans.add(dto);
         }
 
         return ans;

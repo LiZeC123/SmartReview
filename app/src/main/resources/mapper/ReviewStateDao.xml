@@ -3,9 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.lizec.smartreview.mapper.ReviewStateDao">
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert">
         INSERT INTO knowledge_review_state(knowledge_id, current_level, current_interval, next_review_time)
-            VALUE (#{knowledgeId}, #{currentLevel}, #{currentInterval}, #{nextReviewTime})
+            VALUES (#{knowledgeId}, #{currentLevel}, #{currentInterval}, #{nextReviewTime})
     </insert>
 
 

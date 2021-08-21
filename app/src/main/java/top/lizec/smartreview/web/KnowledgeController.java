@@ -28,6 +28,8 @@ public class KnowledgeController {
     @PostMapping("/create")
     public Result<?> create(@RequestBody KnowledgeDto knowledge) {
         Integer id = userInfoUtils.getCurrentUserId();
+        //TODO: 获取难度值
+        knowledge.setDifficulty(2);
         knowledgeService.createKnowledge(id, knowledge);
         return Result.success();
     }
