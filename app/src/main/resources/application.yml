@@ -45,7 +45,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:mysql://mysql:3306/smart_review?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:sqlite:data/SmartReview.db
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
