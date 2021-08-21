@@ -27,7 +27,7 @@
             </div>
 
             <div class="card-body">
-              <span class="badge bg-secondary me-3" v-for="tag in card.tag" v-bind:key="tag[0]">{{ tag }}</span>
+              <span class="badge bg-secondary me-3" v-for="tag in card.tag" v-bind:key="tag[0]">{{ tag.name }}</span>
             </div>
 
             <div class="card-footer" id="card-btn-group">
@@ -83,7 +83,12 @@ export default {
       method: 'get',
       url: 'knowledge/queryRecentReview',
     }).then(response => {
-      this.cards = response.data.data;
+      let cards = response.data.data;
+      cards.forEach((card) => {
+        card.link = JSON.parse(card.link)
+      })
+      this.cards = cards;
+      console.log(this.cards);
     })
   }
 }
