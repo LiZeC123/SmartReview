@@ -3,7 +3,7 @@ WORKDIR /app
 COPY app/pom.xml .
 RUN mvn dependency:go-offline
 COPY app .
-RUN mvn package
+RUN mvn package -Dmaven.test.skip=true
 
 # -------------------------------
 

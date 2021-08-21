@@ -42,6 +42,10 @@ elif [ "$1"x == "restart"x ]; then
   compileService
   stopService
   runService
+elif [ "$1"x == "backup"x ]; then
+  backup
+elif [ "$1"x == "update"x ]; then
+  update
 else
   echo "无效的参数: $1"
   echo ""
