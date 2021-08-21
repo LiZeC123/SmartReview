@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: docker/backend/Dockerfile
     expose: 
-      - 8792
+      - "8792"
     # TODO: 导出文件是否需要映射到Host
     volumes: 
       - ./data:/app/data
@@ -18,7 +18,7 @@ services:
     container_name: smart-review-redis
     image: redis:6.2.5-alpine
     expose:
-      - 6379
+      - "6379"
   web:
     container_name: smart-review-web
     build: 
