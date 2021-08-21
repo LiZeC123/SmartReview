@@ -1,27 +1,30 @@
 #!/usr/bin/env bash
 
-AppName=target/smart-review-0.0.1-SNAPSHOT.jar
+AppName=target/smart-review-1.0.0.jar
 
-function init {
-  docker build -t maven -f docker/maven/Dockerfile .
-  docker build -t smart-review-mysql -f docker/mysql/Dockerfile .
+function compileService {
+  docker run mvn clean package -Dmaven.test.skip=true
 }
 
-function compileService() {
-  # 编译的时候, 测试阶段可能启动spring, 会导致端口冲突?
-  docker run 
-  mvn clean package
-}
-
-function runService() {
+function runService {
   echo "Run Service In Background"
   nohup java -jar $AppName --spring.profiles.active=prod >smart-review.log 2>&1 &
   exit
 }
 
-stopService() {
+function stopService {
   echo "Kill Current Service"
   kill "$(jps -l | grep $AppName | awk '{print $1}')"
+}
+
+function backup {
+  echo "Zip SmartReview"
+  # zip -r SmartReview.zip config/ data/database data/log data/notebase > /dev/null
+  echo "Done."
+}
+
+function update {
+  git pull 
 }
 
 if [ "$1"x == "start"x ]; then
@@ -34,8 +37,8 @@ elif [ "$1"x == "run"x ]; then
 elif [ "$1"x == "stop"x ]; then
   stopService
 elif [ "$1"x == "restart"x ]; then
-  stopService
   compileService
+  stopService
   runService
 else
   echo "无效的参数: $1"
@@ -47,5 +50,6 @@ else
   echo "restart   重启项目"
   echo "compile   只编译项目"
   echo "run       直接运行项目"
-  echo ""
+  echo "backup    备份数据文件"
+  echo "update    更新项目代码"
 fi
