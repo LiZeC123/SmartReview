@@ -3,6 +3,7 @@ package top.lizec.smartreview.web;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.lizec.smartreview.entity.User;
@@ -25,12 +26,8 @@ public class UserController {
 
 
     @PostMapping("login")
-    public Result<String> login(String email, String password) {
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-
-        return userService.login(email, password)
+    public Result<String> login(@RequestBody User user) {
+        return userService.login(user.getEmail(), user.getPassword())
                 .map(Result::success)
                 .orElseGet(Result::failure);
     }
