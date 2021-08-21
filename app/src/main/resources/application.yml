@@ -10,6 +10,7 @@ spring:
     druid:
       min-idle: 2
       initial-size: 2
+      validationQuery: "SELECT 1"
   redis:
     jedis:
       pool:
