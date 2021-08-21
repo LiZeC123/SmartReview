@@ -3,18 +3,20 @@
 AppName=target/smart-review-1.0.0.jar
 
 function compileService {
-  docker run mvn clean package -Dmaven.test.skip=true
+  docker-compose build
 }
 
 function runService {
-  echo "Run Service In Background"
-  nohup java -jar $AppName --spring.profiles.active=prod >smart-review.log 2>&1 &
-  exit
+  docker-compose up -d
+  # echo "Run Service In Background"
+  # nohup java -jar $AppName --spring.profiles.active=prod >smart-review.log 2>&1 &
+  # exit
 }
 
 function stopService {
-  echo "Kill Current Service"
-  kill "$(jps -l | grep $AppName | awk '{print $1}')"
+  docker-compose down
+  # echo "Kill Current Service"
+  # kill "$(jps -l | grep $AppName | awk '{print $1}')"
 }
 
 function backup {
