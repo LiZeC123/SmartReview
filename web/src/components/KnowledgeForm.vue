@@ -10,23 +10,12 @@
       <div class="appTypeGroup">
         <label>应用类型</label>
 
-        <div class="form-check form-check-inline mx-2">
-          <input class="form-check-input" type="radio" value="EnglishWordBook" id="radioEnglish"
-                 v-model="appType">
-          <label class="form-check-label" for="radioEnglish">英语单词本</label>
+        <div class="form-check form-check-inline mx-2" v-for="t in appType.types" :key="t.id">
+          <input class="form-check-input" type="radio" :value="t.id" id="radioEnglish"
+                 v-model="appType.currentId">
+          <label class="form-check-label" for="radioEnglish">{{t.name}}</label>
         </div>
 
-        <div class="form-check form-check-inline mx-2">
-          <input class="form-check-input" type="radio" value="LeetCodeNote" id="radioLeet"
-                 v-model="appType">
-          <label class="form-check-label" for="radioLeet">LeetCode题解</label>
-        </div>
-
-        <div class="form-check form-check-inline mx-2">
-          <input class="form-check-input" type="radio" value="Test" id="radioTest"
-                 v-model="appType">
-          <label class="form-check-label" for="radioTest">Test模块</label>
-        </div>
       </div>
 
       <div class="form-floating my-3">
@@ -43,7 +32,7 @@
         <label for="textInputContent">知识点正文</label>
       </div>
 
-      <component :is="appType" :title="title" @link-change="updateLink"></component>
+      <component :is="appType.types[appType.currentId].comp" :title="title" @link-change="updateLink"></component>
 
       <div class="form-floating mb-3">
         <input type="text" class="form-control" id="textInputTag" aria-describedby="textInputTagHelp"
@@ -68,12 +57,22 @@ export default {
   components: {LeetCodeNote, EnglishWordBook},
   data: function () {
     return {
-      appType: "EnglishWordBook",
+      appType: {
+        types: {1:{comp: "EnglishWordBook"}}, // 设置一个初始值
+        currentId: 1,
+        currentComp: "EnglishWordBook"
+      },
       title: "",
       content: "",
       links: [],
-      tag: ["英语单词本"],
+      tag: [],
     }
+  },
+  created() {
+    this.$axios.get('/appType/getAllTypes').then(response => {
+      this.appType.types = response.data.data;
+    });
+
   },
   methods: {
     updateLink: function (links) {
@@ -81,18 +80,16 @@ export default {
     },
     submitInfo: function () {
       const knowledge = {
-        "appType": this.appType,
+        "appType": this.appType.currentId,
         "title": this.title,
         "content": this.content,
-        "link": this.links,
+        "link": JSON.stringify(this.links),
         "tag": this.tag
       }
       console.log(knowledge);
       this.$axios.post('/knowledge/create', knowledge).then(response => {
         if (response.data.success) {
-          const alert = $('#submitAlert')
-          alert.addClass("show").css("display", "block");
-          setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
+          showMessage();
           this.title = "";
           this.content = "";
         }
@@ -113,6 +110,12 @@ export default {
       }
     }
   }
+}
+
+function showMessage() {
+  const alert = $('#submitAlert')
+  alert.addClass("show").css("display", "block");
+  setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
 }
 </script>
 
