@@ -65,13 +65,9 @@ export default {
   },
   methods: {
     submit: function () {
-      this.$axios({
-        method: 'post',
-        url: "user/login",
-        params: {
-          "email": this.email,
-          "password": this.password
-        }
+      this.$axios.post("user/login", {
+        "email": this.email,
+        "password": this.password
       }).then(response => {
         if (response.data.success) {
           const token = response.data.data;
