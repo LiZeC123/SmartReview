@@ -28,14 +28,10 @@ public class KnowledgeService {
     private TagService tagService;
 
     @Resource
-    private KnowledgeReviewService knowledgeReviewService;
+    private ReviewService reviewService;
 
     @Resource
     private KnowledgeDao knowledgeDao;
-
-//    @Resource
-//    private Cache<Integer, KnowledgeDto> knowledgeCache;
-
 
     @Transactional
     public void createKnowledge(Integer userId, KnowledgeDto dto) {
@@ -43,7 +39,7 @@ public class KnowledgeService {
         k.setCreator(userId);
         knowledgeDao.insert(k);
         tagService.createKnowledgeTag(dto.getTag(), userId, k.getId());
-        knowledgeReviewService.createReviewRecord(k.getId());
+        reviewService.createReviewRecord(k.getId());
     }
 
     public List<KnowledgeDto> queryRecentReview(Integer userId) {
@@ -80,7 +76,8 @@ public class KnowledgeService {
     //TODO: 从下面开始修改
     public void updateKnowledgeReview(Integer userId, Integer kid, Integer memoryLevel) {
         checkUserPermission(userId, kid);
-        knowledgeReviewService.updateReviewRecord(kid, memoryLevel);
+        Knowledge k = knowledgeDao.selectOne(kid);
+        reviewService.updateReviewRecord(k, memoryLevel);
     }
 
     public List<KnowledgeRecord> queryAllRecord(Integer userId) {
@@ -100,6 +97,7 @@ public class KnowledgeService {
 
 
     private void checkUserPermission(Integer userId, Integer kid) {
+        //TODO: 所有检查类接口都需要短时间缓存
         if (!knowledgeDao.checkUserPermission(userId, kid)) {
             throw new NoPermissionException("用户没有权限执行此操作");
         }

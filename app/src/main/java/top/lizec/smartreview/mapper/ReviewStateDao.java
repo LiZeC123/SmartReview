@@ -13,8 +13,4 @@ public interface ReviewStateDao {
 
     void updateReviewState(KnowledgeReviewState state);
 
-    Integer getKnowledgeCount();
-
-    List<LevelDetail> queryTotalLevelDetail();
-
 }

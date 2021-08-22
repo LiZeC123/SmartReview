@@ -4,15 +4,7 @@
 <mapper namespace="top.lizec.smartreview.mapper.ReviewDetailDao">
 
     <insert id="insert">
-        INSERT INTO knowledge_review_detail(knowledge_id, last_level, current_level)
-            VALUE (#{knowledgeId}, #{lastLevel}, #{currentLevel})
+        INSERT INTO knowledge_review_detail(knowledge_id, review_count, last_level, current_level, difficulty, interval_time, elapsed_time)
+        VALUES (#{knowledgeId},#{reviewCount},#{lastLevel},#{currentLevel},#{difficulty},#{intervalTime},#{elapsedTime})
     </insert>
-
-    <select id="queryYesterdayLevelDetail" resultType="top.lizec.smartreview.entity.LevelDetail">
-        SELECT current_level as level, COUNT(*) as count
-        FROM knowledge_review_detail
-        WHERE create_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND CURDATE()
-        GROUP BY current_level
-        ORDER BY current_level;
-    </select>
 </mapper>

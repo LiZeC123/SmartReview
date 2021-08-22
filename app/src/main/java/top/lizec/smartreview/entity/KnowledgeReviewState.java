@@ -8,7 +8,11 @@ import java.time.LocalDateTime;
 public class KnowledgeReviewState {
     Integer knowledgeId;
     Integer reviewCount;
-    Integer currentLevel;
-    Integer currentInterval;
+    Integer memoryLevel;
+    Integer intervalTime;
     LocalDateTime nextReviewTime;
+
+    public void increaseCount() {
+        this.reviewCount++;
+    }
 }

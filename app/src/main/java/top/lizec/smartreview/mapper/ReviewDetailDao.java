@@ -8,6 +8,4 @@ import java.util.List;
 public interface ReviewDetailDao {
 
     Integer insert(KnowledgeReviewDetail detail);
-
-    List<LevelDetail> queryYesterdayLevelDetail();
 }

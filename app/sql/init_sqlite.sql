@@ -25,13 +25,12 @@ CREATE TABLE knowledge
     title      CHAR(64) NOT NULL,
     content    TEXT     NOT NULL,
     link       TEXT     NOT NULL,
-    difficulty INT      NOT NULL,
+    difficulty TINYINT  NOT NULL,
     creator    INT      NOT NULL
 );
 CREATE INDEX creator_index ON knowledge (creator);
 
 -- 应用类型表
-DROP TABLE  app_type;
 CREATE TABLE app_type
 (
     id   INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,10 +88,10 @@ CREATE TABLE knowledge_sentence
 CREATE TABLE knowledge_review_state
 (
     knowledge_id     INT PRIMARY KEY,
-    review_count     TINYINT  NOT NULL DEFAULT 0,
-    current_level    TINYINT  NOT NULL,
-    current_interval SMALLINT NOT NULL, -- 当前的复习间隔时间(小时)
-    next_review_time DATETIME NOT NULL  -- 下次复习的具体时间
+    review_count     SMALLINT NOT NULL DEFAULT 0,
+    memory_level     TINYINT  NOT NULL, -- 当前的记忆等级
+    interval_time    SMALLINT NOT NULL, -- 下次复习的间隔时间(小时)
+    next_review_time DATETIME NOT NULL  -- 下次复习的具体时刻
 );
 
 
@@ -101,18 +100,10 @@ CREATE TABLE knowledge_review_detail
 (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     knowledge_id  INT      NOT NULL,
+    review_count  SMALLINT NOT NULL,
     last_level    TINYINT  NOT NULL, -- 上次复习时的记忆等级
     current_level TINYINT  NOT NULL, -- 本次复习时的记忆等级
-    create_time   DATETIME NOT NULL
+    difficulty    TINYINT  NOT NULL,
+    interval_time SMALLINT NOT NULL, -- 预定的复习间隔时间
+    elapsed_time  SMALLINT NOT NULL  -- 本次复习时间距离预定复习时间的差值
 );
-
-
--- 简单复习模式的倍率数据表
-CREATE TABLE simple_review_rate
-(
-    id    INT PRIMARY KEY,
-    param CHAR(80) NOT NULL DEFAULT '0.5|1.0|2.4|4.5|0.4|0.7|2.2|4.0|0.3|0.6|2.0|3.5|0.2|0.5|1.5|3.0'
-);
-
-INSERT INTO simple_review_rate(id)
-VALUES (1);
