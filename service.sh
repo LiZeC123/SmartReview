@@ -21,7 +21,7 @@ function stopService {
 
 function backup {
   echo "Zip SmartReview"
-  # zip -r SmartReview.zip config/ data/database data/log data/notebase > /dev/null
+  zip -r SmartReview.zip data/ > /dev/null
   echo "Done."
 }
 
