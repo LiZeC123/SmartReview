@@ -60,7 +60,10 @@
 export default {
   name: "LinkSubmitBase",
   props: {
-    builtinLinks: Array
+    builtinLinks: Array,
+    initCommitLinks: Array,
+    clear: Boolean,
+    submit: Boolean,
   },
   data: function () {
     return {
@@ -75,20 +78,18 @@ export default {
     createLink: function () {
       this.commitLinks.push(this.newLink);
       this.newLink = {name: "", url: ""};
-      this.commit();
     },
     deleteLink: function (index) {
       this.commitLinks.splice(index, 1);
-      this.commit();
     },
     commit: function () {
       let links = [];
 
-      for(let link of this.builtinLinks) {
+      for (let link of this.builtinLinks) {
         links.push(link);
       }
 
-      for(let link of this.commitLinks) {
+      for (let link of this.commitLinks) {
         links.push(link);
       }
 
@@ -96,13 +97,33 @@ export default {
     }
   },
   watch: {
-    'builtinLinks': function (newValue) {
-      if (newValue.length === 0) {
+    'initCommitLinks': function (newValue) {
+      // props属性可以赋予初始值, 但如果同时也要进行修改, 则只能监听变化并重置
+      this.commitLinks = newValue
+    },
+    'submit': function (newValue) {
+      if(newValue === true) {
+        this.commit();
+      }
+    },
+    'clear': function (newValue) {
+      if (newValue === true) {
         this.commitLinks = [];
         this.newLink = {name: "", url: ""};
       }
-
-      this.commit();
+    },
+    'newLink.url': function (newValue) {
+      this.$axios({
+        method: "get",
+        url: "/link/getLinkTitle",
+        params: {
+          "link": newValue
+        }
+      }).then(response => {
+        if (response.data.success) {
+          this.newLink.name = response.data.data;
+        }
+      })
     }
   }
 }

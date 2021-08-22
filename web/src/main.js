@@ -10,16 +10,26 @@ Vue.prototype.$axios = axios
 
 axios.defaults.baseURL = '/api'
 axios.interceptors.request.use(config => {
+    // 这是一个函数, 因此并不会在定义时立即执行, 而是在每次发送请求时执行此操作
     if(store.state.token) {
         config.headers.common['Authorization'] = store.state.token;
     }
     return config;
 });
 
+axios.interceptors.response.use(res => {
+    if (res.data.success) {
+        return res;
+    } else {
+        store.commit('del_token')
+        router.push({path: '/login'}).then(() => {
+        });
+    }
+});
 
 // 页面刷新时，重新赋值token
-if (sessionStorage.getItem('token')) {
-    store.commit('set_token', sessionStorage.getItem('token'))
+if (localStorage.getItem('token')) {
+    store.commit('set_token', localStorage.getItem('token'))
 }
 
 router.beforeEach((to, from, next) => {
@@ -27,7 +37,6 @@ router.beforeEach((to, from, next) => {
 
     if (!isLogin && to.path !== "/login") {
         // 未登录状态；跳转至login
-        console.log(["Try ", to.path, "Goto Login Page"]);
         router.push({path: '/login'}).then(()=>{});
     }
 

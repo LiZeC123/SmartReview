@@ -1,5 +1,5 @@
 <template>
-  <div class="album py-5 bg-light">
+  <div class="album py-5 bg-light h-100">
     <div class="container py-4" id="cardApp">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -10,24 +10,25 @@
         </div>
 
         <div class="col" v-for="(card, index) in cards" :key="card.id">
-          <div class="card shadow-sm">
+          <div class="card shadow-sm" @click="changeShowStatus(card)">
             <div class="card-header">{{ card.title }}</div>
 
-            <div class="card-body" v-if="card.content !== ''">
+            <div class="card-body" v-if="card.content !== '' && card.showContent">
+              <h5 class="card-title">正文</h5>
               <p class="card-text">{{ card.content }}</p>
             </div>
 
-            <div class="card-body">
+            <div class="card-body" v-if="card.link.length !== 0">
               <h5 class="card-title">资源</h5>
               <ul>
-                <li class="my-2" v-for="link in card.link" :key="link.url"><a :href="link.url"
-                                                                              target="_blank">{{ link.name }}</a>
+                <li class="my-2" v-for="link in card.link" :key="link.url">
+                  <a :href="link.url" target="_blank">{{ link.name }}</a>
                 </li>
               </ul>
             </div>
 
             <div class="card-body">
-              <span class="badge bg-secondary me-3" v-for="tag in card.tag" v-bind:key="tag[0]">{{ tag.name }}</span>
+              <span class="badge bg-secondary me-3" v-for="tag in card.tag" v-bind:key="tag.id">{{ tag.name }}</span>
             </div>
 
             <div class="card-footer" id="card-btn-group">
@@ -57,7 +58,7 @@
 
 <script>
 export default {
-  name: "ReviewCard",
+  name: "ReviewRecentCard",
   data: function () {
     return {
       cards: []
@@ -76,6 +77,9 @@ export default {
           this.cards.splice(idx, 1);
         }
       });
+    },
+    changeShowStatus: function (card) {
+      card.showContent = !card.showContent;
     }
   },
   created() {
@@ -83,12 +87,11 @@ export default {
       method: 'get',
       url: 'knowledge/queryRecentReview',
     }).then(response => {
-      let cards = response.data.data;
-      cards.forEach((card) => {
+      for (let card of response.data.data) {
+        card.showContent = false;
         card.link = JSON.parse(card.link)
-      })
-      this.cards = cards;
-      console.log(this.cards);
+      }
+      this.cards = response.data.data;
     })
   }
 }

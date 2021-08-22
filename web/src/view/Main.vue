@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="h-100">
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
       <div class="container-fluid">
         <img alt="icon" class="me-2" src="../assets/logo.png" style="height: 38px">
@@ -22,7 +22,10 @@
               <router-link class="nav-link" to="/home/recent">最近复习</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/home/knowledge">创建知识</router-link>
+              <router-link class="nav-link" to="/home/create">创建知识</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/home/knowledge">知识管理</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/home/tag">标签管理</router-link>
@@ -38,12 +41,12 @@
                  data-bs-toggle="dropdown"
                  aria-expanded="false">用户</a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown01">
-                <li><a class="dropdown-item" href="#">权限: <strong>游客</strong></a></li>
+                <li class="dropdown-item">当前用户: <strong>{{ username }}</strong></li>
                 <li>
                   <hr class="dropdown-divider">
                 </li>
                 <li><a class="dropdown-item" href="#">用户设置</a></li>
-                <li><a class="dropdown-item" href="#">退出登录</a></li>
+                <li><a class="dropdown-item" href="#" @click="logout">退出登录</a></li>
               </ul>
             </li>
           </ul>
@@ -58,8 +61,30 @@
 </template>
 
 <script>
+import router from "@/router";
+
 export default {
-name: "Main"
+  name: "Main",
+  data: function () {
+    return {
+      username: "用户",
+      role: "普通权限"
+    }
+  },
+  methods: {
+    logout: function () {
+      localStorage.clear();
+      this.$store.commit("del_token");
+      router.push({path: '/login'}).then(()=>{});
+    },
+  },
+  created() {
+    this.$axios.get("user/getCurrentUserName").then(response => {
+      if (response.data.success) {
+        this.username = response.data.data
+      }
+    });
+  }
 }
 </script>
 

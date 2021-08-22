@@ -1,21 +1,18 @@
 <template>
   <div class="row py-3 my-5 mx-2">
 
-    <div id="submitAlert" class="alert alert-success alert-dismissible fade" role="alert"
-         style="position: fixed; top: 56px;left: 0; z-index: 99;display: none">
-      <strong>创建成功</strong> 知识点已进入自动复习队列
+    <div id="submitAlert" class="alert alert-success alert-dismissible fade" role="alert">
+      <strong>提交成功</strong> {{ showMessage }}
     </div>
 
-    <form id="createForm" class="mx-auto" onsubmit="return false;">
+    <div class="mx-auto container">
       <div class="appTypeGroup">
         <label>应用类型</label>
-
         <div class="form-check form-check-inline mx-2" v-for="t in appType.types" :key="t.id">
-          <input class="form-check-input" type="radio" :value="t.id" id="radioEnglish"
+          <input class="form-check-input" type="radio" :value="t.id" :id="t.comp"
                  v-model="appType.currentId">
-          <label class="form-check-label" for="radioEnglish">{{t.name}}</label>
+          <label class="form-check-label" :for="t.comp">{{t.name}}</label>
         </div>
-
       </div>
 
       <div class="form-floating my-3">
@@ -32,29 +29,37 @@
         <label for="textInputContent">知识点正文</label>
       </div>
 
-      <component :is="appType.types[appType.currentId].comp" :title="title" @link-change="updateLink"></component>
+      <component :is="appType.types[appType.currentId].comp" :title="title" :links="getInitLinks" :submit="doSubmit" :clear="clear"
+                 @link-change="updateLink"></component>
+
+      <hr/>
 
       <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="textInputTag" aria-describedby="textInputTagHelp"
-               placeholder="标签" v-model="tag">
-        <small id="textInputTagHelp" class="form-text text-muted">与此知识点关联的标签</small>
-        <label for="textInputTag">标签</label>
+        <h6>勾选此知识点的标签</h6>
+        <div class="form-check form-check-inline" v-for="tag in tagList" :key="tag.id">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" :value="tag.name" v-model="tags">
+          <label class="form-check-label" for="inlineCheckbox1">{{ tag.name }}</label>
+        </div>
       </div>
-
-      <button type="submit" class="btn btn-primary float-end" @click="submitInfo">创建知识点</button>
-
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import EnglishWordBook from "@/components/link/EnglishWordBook";
 import LeetCodeNote from "@/components/link/LeetCodeNote";
-import $ from "jquery"
+import SimpleBaseLink from "@/components/link/SimpleBaseLink";
+import $ from "jquery";
 
 export default {
   name: "KnowledgeForm",
-  components: {LeetCodeNote, EnglishWordBook},
+  components: {SimpleBaseLink, LeetCodeNote, EnglishWordBook},
+  props: {
+    doSubmit: Boolean,
+    doShow: Boolean,
+    showMessage: String,
+    knowledge: Object,
+  },
   data: function () {
     return {
       appType: {
@@ -65,60 +70,98 @@ export default {
       title: "",
       content: "",
       links: [],
-      tag: [],
+      initLinks: [],
+      tags: [],
+      tagList: [],
     }
-  },
-  created() {
-    this.$axios.get('/appType/getAllTypes').then(response => {
-      this.appType.types = response.data.data;
-    });
-
   },
   methods: {
     updateLink: function (links) {
       this.links = links;
+      //子模块完成提交操作后, 再提交完整的数据
+      this.submitKnowledge();
     },
-    submitInfo: function () {
+    submitKnowledge: function () {
       const knowledge = {
         "appType": this.appType.currentId,
         "title": this.title,
         "content": this.content,
         "link": JSON.stringify(this.links),
-        "tag": this.tag
+        "tag": this.tags
       }
-      console.log(knowledge);
-      this.$axios.post('/knowledge/create', knowledge).then(response => {
-        if (response.data.success) {
-          showMessage();
-          this.title = "";
-          this.content = "";
-        }
-      })
+
+      this.$emit('submit', knowledge);
     },
+    resetForm: function () {
+      this.title = "";
+      this.content = "";
+      this.tags = [];
+    }
+  },
+  computed: {
+    linkType: function () {
+      if (this.knowledge !== undefined) {
+        return SimpleBaseLink;
+      }
+      switch (this.appType) {
+        case "Base":
+          return SimpleBaseLink;
+        case "EnglishWordBook":
+          return EnglishWordBook;
+        case "LeetCodeNote":
+          return LeetCodeNote;
+        default:
+          return SimpleBaseLink;
+      }
+    },
+    getInitLinks: function () {
+      return this.initLinks;
+    },
+    clear: function () {
+      return this.title === "";
+    }
   },
   watch: {
-    appType: function (newType) {
-      switch (newType) {
-        case "EnglishWordBook":
-          this.tag = ["英语单词本"];
-          break;
-        case "LeetCodeNote":
-          this.tag = ["力扣题解"];
-          break;
-        default:
-          console.warn("未定义的类型", newType)
+    'doShow': function (newValue) {
+      if (newValue === true) {
+        const alert = $('#submitAlert')
+        alert.addClass("show").css("display", "block");
+        setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
+        this.resetForm();
+        this.$emit('after-show');
+      }
+    },
+    'knowledge': function (knowledge) {
+      if (knowledge !== undefined) {
+        this.title = knowledge.title;
+        this.content = knowledge.content;
+        this.initLinks = knowledge.link;
+        this.tags = knowledge.tag;
       }
     }
+  },
+  created() {
+    this.$axios({
+      method: "get",
+      url: "/tag/selectAll",
+    }).then(response => {
+      if (response.data.success) {
+        this.tagList = response.data.data;
+      }
+    });
+    this.$axios.get('/appType/getAllTypes').then(response => {
+      this.appType.types = response.data.data;
+    });
   }
-}
-
-function showMessage() {
-  const alert = $('#submitAlert')
-  alert.addClass("show").css("display", "block");
-  setTimeout(() => alert.removeClass("show").css("display", "none"), 1500);
 }
 </script>
 
 <style scoped>
-
+#submitAlert {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  z-index: 99;
+  display: none;
+}
 </style>
