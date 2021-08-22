@@ -88,7 +88,7 @@ CREATE TABLE knowledge_sentence
 CREATE TABLE knowledge_review_state
 (
     knowledge_id     INT PRIMARY KEY,
-    review_count     SMALLINT NOT NULL DEFAULT 0,
+    review_count     SMALLINT NOT NULL,
     memory_level     TINYINT  NOT NULL, -- 当前的记忆等级
     interval_time    SMALLINT NOT NULL, -- 下次复习的间隔时间(小时)
     next_review_time DATETIME NOT NULL  -- 下次复习的具体时刻
