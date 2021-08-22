@@ -30,6 +30,7 @@ public class ReviewService {
     public void createReviewRecord(Integer kid) {
         KnowledgeReviewState state = new KnowledgeReviewState();
         state.setKnowledgeId(kid);
+        state.setReviewCount(0);
         state.setMemoryLevel(2);
         state.setIntervalTime(12);
         // 本地时间不涉及时区问题, 因此使用LocalDateTime

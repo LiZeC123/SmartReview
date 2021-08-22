@@ -42,7 +42,7 @@
     </select>
 
     <select id="queryAllRecord" resultType="top.lizec.smartreview.entity.KnowledgeRecord">
-        SELECT k.id, k.app_type, k.title, krs.review_count, krs.current_interval, krs.next_review_time
+        SELECT k.id, k.app_type, k.title, krs.review_count, krs.interval_time, krs.next_review_time
         FROM knowledge k
                  JOIN knowledge_review_state krs ON k.id = krs.knowledge_id
         WHERE k.creator = #{userId}

@@ -7,7 +7,6 @@
         SELECT id, name, creator
         FROM tag
         WHERE creator = #{creator}
-          AND is_delete = 0;
     </select>
 
     <select id="selectOne" resultType="top.lizec.smartreview.entity.Tag">
@@ -15,7 +14,6 @@
         FROM tag
         WHERE creator = #{creator}
           AND name = #{name}
-          AND is_delete = 0;
     </select>
 
     <select id="selectIdByTagName" resultType="java.lang.Integer">
@@ -26,7 +24,6 @@
         <foreach collection="nameList" item="name" open="(" separator="," close=")">
             #{name}
         </foreach>
-        AND is_delete = 0;
     </select>
 
     <select id="getKnowledgeIdByTag" resultType="java.lang.Integer">
@@ -34,7 +31,6 @@
         from knowledge_tag
                  JOIN knowledge k on k.id = knowledge_tag.knowledge_id
         where tag_id = #{tagId}
-          AND k.is_delete = 0
     </select>
 
     <select id="getTagName" resultType="java.lang.String">

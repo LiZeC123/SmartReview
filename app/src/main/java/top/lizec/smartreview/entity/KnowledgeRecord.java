@@ -8,6 +8,6 @@ public class KnowledgeRecord {
     String appType;
     String title;
     Integer reviewCount;
-    Integer currentInterval;
+    Integer intervalTime;
     String nextReviewTime;
 }

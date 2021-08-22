@@ -73,7 +73,6 @@ public class KnowledgeService {
     }
 
 
-    //TODO: 从下面开始修改
     public void updateKnowledgeReview(Integer userId, Integer kid, Integer memoryLevel) {
         checkUserPermission(userId, kid);
         Knowledge k = knowledgeDao.selectOne(kid);
