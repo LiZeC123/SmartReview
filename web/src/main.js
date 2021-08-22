@@ -27,6 +27,7 @@ router.beforeEach((to, from, next) => {
 
     if (!isLogin && to.path !== "/login") {
         // 未登录状态；跳转至login
+        console.log(["Try ", to.path, "Goto Login Page"]);
         router.push({path: '/login'}).then(()=>{});
     }
 
