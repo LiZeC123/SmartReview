@@ -1,9 +1,34 @@
+from typing import List
+
 from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
-from typing import List
 
 # !python -m nltk.downloader wordnet punkt averaged_perceptron_tagger
+
+# 不同类别的单词对应的分数
+level_value = {"HS": -5, "COCA": 0, "CET": 1, "GRE": 2, "TOEFL": 2}
+
+
+def load_level_dictionary():
+    dictionary = {}
+    with open("data/Glossary/dataset.cvs") as f:
+        for line in f:
+            word, tag = line.split(",")
+            word = word.strip()
+            tag = tag.strip()
+
+            tags = tag.split("/")
+            value = 0
+            for t in tags:
+                value += level_value[t]
+            dictionary[word] = (tag, value)
+    return dictionary
+
+
+level_dict = load_level_dictionary()
+wnl = WordNetLemmatizer()
+
 
 # 获取单词的词性
 def get_wordnet_pos(tag):
@@ -19,9 +44,22 @@ def get_wordnet_pos(tag):
         return wordnet.NOUN
 
 
-def lemmatize_sentence(sentence: str) -> List[str]:
-    tokens = word_tokenize(sentence)
+def lemmatize_sentence(sentence: str) -> List:
+    tokens = word_tokenize(sentence.lower())
     tagged = pos_tag(tokens)
 
-    wnl = WordNetLemmatizer()
-    return list(map(lambda t: wnl.lemmatize(t[0], pos=get_wordnet_pos(t[1])), tagged))
+    ans = []
+    for word, tag in tagged:
+        origin_word = wnl.lemmatize(word, get_wordnet_pos(tag))
+        if len(origin_word) == 1:
+            continue
+        if origin_word in level_dict:
+            level_tag = level_dict[origin_word]
+        else:
+            level_tag = ('', 0)
+        ans.append((origin_word, level_tag))
+    # Example: [
+    #   ('comprehensive', (' GRE/COCA/CET/TOEFL', 5)),
+    #   ('feature', (' GRE/COCA/CET', 3))
+    # ]
+    return ans
