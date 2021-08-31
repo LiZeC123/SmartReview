@@ -1,13 +1,7 @@
   
 FROM python:3.9.6-slim-buster
 
-ENV TZ Asia/Shanghai
-
 WORKDIR /app
-
-# 必须安装了这个软件配置才会生效
-RUN apk update && \
-    apk add --no-cache tzdata
 
 # 先执行依赖安装操作，后续如果依赖不变可以复用这一层
 COPY algo/requirements.txt /app/requirements.txt

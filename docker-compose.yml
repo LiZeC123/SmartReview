@@ -22,6 +22,8 @@ services:
       - "6379"
   algo:
     container_name: smart-review-algo
+    environment: 
+      TZ: Asia/Shanghai
     build: 
       context: ./
       dockerfile: docker/algo/Dockerfile
