@@ -1,26 +1,24 @@
 package top.lizec.smartreview.web;
 
-import io.swagger.annotations.Api;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import top.lizec.smartreview.utils.FileUtils;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
+import io.swagger.annotations.Api;
+import top.lizec.smartreview.utils.FileUtils;
 
 @Api
 @Controller
 @RequestMapping("/download")
 public class FileDownloadController {
-
-    @Resource
-    StringRedisTemplate stringRedisTemplate;
 
     @Resource
     FileUtils fileUtils;

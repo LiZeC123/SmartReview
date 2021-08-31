@@ -58,11 +58,11 @@ public class ExportController {
         }
     }
 
-    public Result<Double> queryExportProgress(String type) {
-        Integer id = userInfoUtils.getCurrentUserId();
-
-        return Result.success(exportService.queryExportProgress(id, type));
-    }
+//    public Result<Double> queryExportProgress(String type) {
+//        Integer id = userInfoUtils.getCurrentUserId();
+//
+//        return Result.success(exportService.queryExportProgress(id, type));
+//    }
 
 
 }

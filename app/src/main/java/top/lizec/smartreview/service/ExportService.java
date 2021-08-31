@@ -1,7 +1,6 @@
 package top.lizec.smartreview.service;
 
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import top.lizec.smartreview.dto.AppCount;
 import top.lizec.smartreview.entity.Knowledge;
@@ -40,8 +39,8 @@ public class ExportService {
     @Resource
     KnowledgeDao knowledgeDao;
 
-    @Resource
-    RedisTemplate<String, Double> redisTemplate;
+//    @Resource
+//    RedisTemplate<String, Double> redisTemplate;
 
     @Resource
     FileUtils fileUtils;
@@ -119,7 +118,7 @@ public class ExportService {
         }
     }
 
-    public Double queryExportProgress(Integer userId, String type) {
-        return redisTemplate.opsForValue().get(String.format("%s-%d-%s", PREFIX, userId, type));
-    }
+//    public Double queryExportProgress(Integer userId, String type) {
+//        return redisTemplate.opsForValue().get(String.format("%s-%d-%s", PREFIX, userId, type));
+//    }
 }
