@@ -1,9 +1,7 @@
-Smart-Review 复习管理器(前端代码)
-==============================
+Smart-Review 复习管理器 (前端模块)
+=================================
 
 Smart-Review采用前后端分离架构, 此仓库为Smart-Review项目的前端代码.
-
-> 后端代码请访问 https://github.com/LiZeC123/SmartReview
 
 
 编译项目
