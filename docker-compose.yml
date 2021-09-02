@@ -7,7 +7,6 @@ services:
       dockerfile: docker/backend/Dockerfile
     expose: 
       - "8792"
-    # TODO: 导出文件是否需要映射到Host
     volumes: 
       - ./data:/app/data
     environment: 
