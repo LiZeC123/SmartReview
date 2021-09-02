@@ -8,10 +8,10 @@ COPY algo/requirements.txt /app/requirements.txt
 
 RUN pip3 install -r requirements.txt
 
+RUN python -m nltk.downloader wordnet punkt averaged_perceptron_tagger
+
 # 复制项目代码到容器的app目录
 COPY algo .
-
-RUN python -m nltk.downloader wordnet punkt averaged_perceptron_tagger
 
 EXPOSE 5000
 
