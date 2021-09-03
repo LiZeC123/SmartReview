@@ -8,79 +8,81 @@
     <div class="mx-auto container">
       <div class="appTypeGroup">
         <label>应用类型</label>
-        <div class="form-check form-check-inline mx-2" v-for="t in appType.types" :key="t.id">
+        <div class="form-check form-check-inline mx-2" v-for="t in types" :key="t.id">
           <input class="form-check-input" type="radio" :value="t.id" :id="t.comp"
-                 v-model="appType.currentId">
+                 v-model="currentId">
           <label class="form-check-label" :for="t.comp">{{t.name}}</label>
         </div>
       </div>
 
-      <div class="form-floating my-3">
-        <input type="text" class="form-control" id="textInputTitle" aria-describedby="textInputTitleHelp"
-               placeholder="知识点标题" v-model="title">
-        <small id="textInputTitleHelp"
-               class="form-text text-muted">简要的概括知识点的主要内容</small>
-        <label for="textInputTitle">知识点标题</label>
-      </div>
+      <hr/>
 
-      <div class="form-floating mb-3">
-        <textarea class="form-control" id="textInputContent" placeholder="知识点正文"
-                  style="height: 100px" v-model="content"></textarea>
-        <label for="textInputContent">知识点正文</label>
-      </div>
+<!--      <div class="form-floating my-3">-->
+<!--        <input type="text" class="form-control" id="textInputTitle" aria-describedby="textInputTitleHelp"-->
+<!--               placeholder="知识点标题" v-model="title">-->
+<!--        <small id="textInputTitleHelp"-->
+<!--               class="form-text text-muted">简要的概括知识点的主要内容</small>-->
+<!--        <label for="textInputTitle">知识点标题</label>-->
+<!--      </div>-->
 
-      <component :is="appType.types[appType.currentId].comp" :title="title" :links="getInitLinks" :submit="doSubmit" :clear="clear"
-                 @link-change="updateLink"></component>
+<!--      <div class="form-floating mb-3">-->
+<!--        <textarea class="form-control" id="textInputContent" placeholder="知识点正文"-->
+<!--                  style="height: 100px" v-model="content"></textarea>-->
+<!--        <label for="textInputContent">知识点正文</label>-->
+<!--      </div>-->
+
+      <english-word-book> </english-word-book>
+
+
+      <knowledge-link :reset="reset" :submit="submit" @on-submit="updateLink"> </knowledge-link>
 
       <hr/>
 
-      <div class="form-floating mb-3">
-        <h6>勾选此知识点的标签</h6>
-        <div class="form-check form-check-inline" v-for="tag in tagList" :key="tag.id">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" :value="tag.name" v-model="tags">
-          <label class="form-check-label" for="inlineCheckbox1">{{ tag.name }}</label>
-        </div>
-      </div>
+      <knowledge-tag :reset="reset" :submit="submit" @on-submit="updateTag"></knowledge-tag>
+
     </div>
   </div>
 </template>
 
 <script>
-import EnglishWordBook from "@/components/link/EnglishWordBook";
 import LeetCodeNote from "@/components/link/LeetCodeNote";
 import SimpleBaseLink from "@/components/link/SimpleBaseLink";
 import $ from "jquery";
+import KnowledgeTag from "./KnowledgeTag";
+import KnowledgeLink from "./KnowledgeLink";
+import EnglishWordBook from "./EnglishWordBook";
 
 export default {
   name: "KnowledgeForm",
-  components: {SimpleBaseLink, LeetCodeNote, EnglishWordBook},
+  components: {EnglishWordBook, KnowledgeLink, KnowledgeTag},
   props: {
     doSubmit: Boolean,
     doShow: Boolean,
     showMessage: String,
     knowledge: Object,
+    submit: Number,
   },
   data: function () {
     return {
-      appType: {
-        types: {1:{comp: "EnglishWordBook"}}, // 设置一个初始值
-        currentId: 1,
-        currentComp: "EnglishWordBook"
-      },
+      currentId: 0,
+      types: [],
       title: "",
       content: "",
       links: [],
       initLinks: [],
-      tags: [],
-      tagList: [],
+      reset: 0,
     }
   },
   methods: {
     updateLink: function (links) {
-      this.links = links;
+      this.links = links
       //子模块完成提交操作后, 再提交完整的数据
-      this.submitKnowledge();
+      //this.submitKnowledge();
     },
+    updateTag: function (tags) {
+      this.tags = tags
+    },
+
     submitKnowledge: function () {
       const knowledge = {
         "appType": this.appType.currentId,
@@ -95,7 +97,6 @@ export default {
     resetForm: function () {
       this.title = "";
       this.content = "";
-      this.tags = [];
     }
   },
   computed: {
@@ -141,16 +142,8 @@ export default {
     }
   },
   created() {
-    this.$axios({
-      method: "get",
-      url: "/tag/selectAll",
-    }).then(response => {
-      if (response.data.success) {
-        this.tagList = response.data.data;
-      }
-    });
     this.$axios.get('/appType/getAllTypes').then(response => {
-      this.appType.types = response.data.data;
+      this.types = response.data.data;
     });
   }
 }
