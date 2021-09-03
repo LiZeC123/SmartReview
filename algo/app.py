@@ -1,3 +1,4 @@
+import json
 from typing import Dict
 
 from flask import Flask, request
@@ -15,7 +16,9 @@ def hello_world():
 @app.route("/sentenceToWord", methods=['POST'])
 def sentence2word():
     f: Dict = request.get_json()
-    return lemmatize_sentence(f['sentence'])
+    ans = json.dumps(lemmatize_sentence(f['sentence']))
+    print(ans)
+    return ans
 
 
 

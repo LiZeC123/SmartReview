@@ -1,15 +1,15 @@
 package top.lizec.smartreview.algo;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
+import feign.Headers;
+import feign.RequestLine;
+import top.lizec.smartreview.algo.entity.EnglishWord;
+import top.lizec.smartreview.algo.entity.Sentence;
 
 import java.util.List;
 
-import top.lizec.smartreview.algo.entity.EnglishWord;
-
-@FeignClient(name = "SentenceClient",url = "localhost:5000")
 public interface SentenceClient {
 
-    @PostMapping("/sentenceToWord")
-    List<EnglishWord> sentenceToWord(String sentence);
+    @RequestLine("POST /sentenceToWord")
+    @Headers("Content-Type: application/json")
+    List<EnglishWord> sentenceToWord(Sentence sentence);
 }

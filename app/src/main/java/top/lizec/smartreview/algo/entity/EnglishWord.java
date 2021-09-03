@@ -6,9 +6,4 @@ import lombok.Data;
 public class EnglishWord {
     private String word;
     private String tag;
-
-
-    public static void main(String[] args) {
-
-    }
 }

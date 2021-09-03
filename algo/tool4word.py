@@ -62,4 +62,5 @@ def lemmatize_sentence(sentence: str) -> List:
     #   ('comprehensive', (' GRE/COCA/CET/TOEFL', 5)),
     #   ('feature', (' GRE/COCA/CET', 3))
     # ]
-    return ans
+
+    return list(map(lambda x: {"word": x[0], "tag": x[1][0]}, ans))

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import io.swagger.annotations.Api;
 import top.lizec.smartreview.algo.SentenceClient;
 import top.lizec.smartreview.algo.entity.EnglishWord;
+import top.lizec.smartreview.algo.entity.Sentence;
 
 
 @Api
@@ -23,7 +24,7 @@ public class SentenceController {
 
     @PostMapping("/toWord")
     public List<EnglishWord> sentenceToWord(String sentence) {
-        return sentenceClient.sentenceToWord(sentence);
+        return sentenceClient.sentenceToWord(new Sentence(sentence));
     }
 
 }
