@@ -35,6 +35,11 @@ Spring Security 在 Spring Boot 2.0 版本中对默认运行的路径进行了�
 
 - [java swagger ui 添加header请求头参数](https://blog.csdn.net/uncle_david/article/details/79283422)
 
+### OpenFeign
+
+- [单独使用feign](https://www.jianshu.com/p/22c009c9e1b4)
+- [Intro to Feign](https://www.baeldung.com/intro-to-feign)
+
 ### JUnit 5
 
 - [JUnit 5 Tutorial](https://howtodoinjava.com/junit-5-tutorial/)
