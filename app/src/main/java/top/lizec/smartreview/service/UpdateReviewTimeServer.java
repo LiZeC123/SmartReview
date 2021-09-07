@@ -1,8 +1,8 @@
 package top.lizec.smartreview.service;
 
-import top.lizec.smartreview.entity.KnowledgeReviewDetail;
+import top.lizec.smartreview.entity.ReviewDetail;
 
 public interface UpdateReviewTimeServer {
 
-    int nextReviewTime(KnowledgeReviewDetail detail);
+    int nextReviewTime(ReviewDetail detail);
 }

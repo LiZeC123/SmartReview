@@ -1,16 +1,15 @@
 package top.lizec.smartreview.mapper;
 
-import top.lizec.smartreview.entity.KnowledgeReviewState;
-import top.lizec.smartreview.entity.LevelDetail;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import top.lizec.smartreview.entity.ReviewRecord;
+import top.lizec.smartreview.entity.ReviewState;
 
 import java.util.List;
 
-public interface ReviewStateDao {
+public interface ReviewStateDao extends BaseMapper<ReviewState> {
 
-    Integer insert(KnowledgeReviewState state);
+    void updateReviewState(ReviewState state);
 
-    KnowledgeReviewState selectById(Integer kid);
-
-    void updateReviewState(KnowledgeReviewState state);
+    List<ReviewRecord> selectAllRecord(Integer uid);
 
 }

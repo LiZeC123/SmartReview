@@ -2,19 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.lizec.smartreview.mapper.TagDao">
+    <delete id="deleteKnowledgeTag">
+        DELETE FROM knowledge_tag WHERE tag_id = #{tagId}
+    </delete>
 
-    <select id="selectAll" resultType="top.lizec.smartreview.entity.Tag">
-        SELECT id, name, creator
-        FROM tag
-        WHERE creator = #{creator}
-    </select>
-
-    <select id="selectOne" resultType="top.lizec.smartreview.entity.Tag">
-        SELECT id, name, creator
-        FROM tag
-        WHERE creator = #{creator}
-          AND name = #{name}
-    </select>
 
     <select id="selectIdByTagName" resultType="java.lang.Integer">
         SELECT id
@@ -70,11 +61,11 @@
         </foreach>
     </select>
 
+    <select id="selectKnowledgeTag" resultType="top.lizec.smartreview.entity.Tag">
+        SELECT t.id, t.name  FROM knowledge_tag kt JOIN tag t ON t.id = kt.tag_id
+        WHERE knowledge_id = #{kid}
+    </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO tag(name, creator)
-        VALUES (#{name}, #{creator})
-    </insert>
 
     <insert id="insertKnowledgeTag">
         INSERT INTO knowledge_tag(knowledge_id, tag_id) VALUES
@@ -83,18 +74,5 @@
         </foreach>
     </insert>
 
-    <update id="update">
-        UPDATE tag
-        SET tag.name          = #{name},
-            tag.modified_time = NOW()
-        WHERE id = #{id}
-    </update>
-
-
-    <update id="delete">
-        UPDATE tag
-        SET tag.is_delete = true
-        WHERE tag.id = #{id}
-    </update>
 
 </mapper>

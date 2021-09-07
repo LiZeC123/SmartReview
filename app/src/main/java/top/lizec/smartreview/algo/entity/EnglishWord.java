@@ -6,4 +6,5 @@ import lombok.Data;
 public class EnglishWord {
     private String word;
     private String tag;
+    private Integer difficulty;
 }

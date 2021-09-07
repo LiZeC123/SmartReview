@@ -3,7 +3,6 @@ package top.lizec.smartreview.service;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import top.lizec.smartreview.dto.AppCount;
-import top.lizec.smartreview.entity.Knowledge;
 import top.lizec.smartreview.mapper.ExportDao;
 import top.lizec.smartreview.mapper.KnowledgeDao;
 import top.lizec.smartreview.mapper.TagDao;
@@ -13,7 +12,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -37,6 +35,9 @@ public class ExportService {
     TagService tagService;
 
     @Resource
+    CheckService checkService;
+
+    @Resource
     KnowledgeDao knowledgeDao;
 
 //    @Resource
@@ -51,35 +52,36 @@ public class ExportService {
 
 
     public Path generateFile(Integer userId, Integer tagId) throws IOException {
-        tagService.checkUserPermission(userId, tagId);
+        checkService.checkTagPermission(userId, tagId);
         return generateFileWithoutCheck(tagId);
     }
 
     private Path generateFileWithoutCheck(Integer tagId) throws IOException {
-        List<Integer> knowledgeIds = tagDao.getKnowledgeIdByTag(tagId);
-
-        String tagName = tagDao.getTagName(tagId);
-
-        List<Knowledge> knowledgeList = knowledgeDao.selectByIds(knowledgeIds);
-
-
-        Path tempFile = fileUtils.createTempFile(".md");
-
-//TODO: 修复导出功能
-
+//        List<Integer> knowledgeIds = tagDao.getKnowledgeIdByTag(tagId);
+//
+//        String tagName = tagDao.getTagName(tagId);
+//
+//        List<Knowledge> knowledgeList = knowledgeDao.selectByIds(knowledgeIds);
+//
+//
+//        Path tempFile = fileUtils.createTempFile(".md");
+//
+//
+//
 //        try (OutputStream out = Files.newOutputStream(tempFile)) {
 //            out.write(String.format("%s\n===================\n", tagName).getBytes(StandardCharsets.UTF_8));
 //            for (Knowledge knowledge : knowledgeList) {
 //                out.write(knowledge.toMarkdown().getBytes(StandardCharsets.UTF_8));
 //            }
 //        }
-
-        return tempFile;
+//
+//        return tempFile;
+        return null;
     }
 
 
     public Path writeAllKnowledgeWithZip(Integer userId, List<Integer> tagIds) throws IOException {
-        tagService.checkUserPermission(userId, tagIds);
+        checkService.checkTagPermission(userId, tagIds);
         final List<Path> srcFiles = tagIds.stream()
                 .map(this::generateFileQuietly)
                 .filter(Objects::nonNull).

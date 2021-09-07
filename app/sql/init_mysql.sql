@@ -20,15 +20,12 @@ VALUES (1, 'user', 'user@mail.com', '$2a$10$74yMegRgwREZVS72aEKGg.TtRE.KMWE4ly0p
 
 
 -- 知识信息表
--- 不同的AppType返回的数据也不再是一致的了，是用同一个查询结构带上类型参数还是使用不同的接口呢？
--- 需要进行update时的查询返回和列表查询的返回也不一致
 CREATE TABLE knowledge
 (
     id         INTEGER PRIMARY KEY AUTO_INCREMENT,
     app_type   TINYINT  NOT NULL,
     title      CHAR(64) NOT NULL,
     content    TEXT     NOT NULL,
-    link       TEXT     NOT NULL,
     difficulty TINYINT  NOT NULL,
     creator    INT      NOT NULL
 );
@@ -72,6 +69,18 @@ CREATE TABLE knowledge_tag
 );
 CREATE INDEX idx_tag ON knowledge_tag (tag_id, knowledge_id);
 
+
+-- 扩展链接表
+CREATE TABLE link
+(
+    id           INTEGER PRIMARY KEY AUTO_INCREMENT,
+    knowledge_id INT NOT NULL,
+    name         TEXT,
+    url          TEXT
+);
+CREATE INDEX idx_link ON link (knowledge_id);
+
+
 -- 单词本语料基本信息表
 CREATE TABLE sentence
 (
@@ -89,7 +98,7 @@ CREATE TABLE knowledge_sentence
 
 
 -- 知识点复习情况状态表
-CREATE TABLE knowledge_review_state
+CREATE TABLE review_state
 (
     knowledge_id     INT PRIMARY KEY,
     review_count     SMALLINT NOT NULL,
@@ -100,7 +109,7 @@ CREATE TABLE knowledge_review_state
 
 
 -- 知识点复习情况详细记录表
-CREATE TABLE knowledge_review_detail
+CREATE TABLE review_detail
 (
     id            INTEGER PRIMARY KEY AUTO_INCREMENT,
     knowledge_id  INT      NOT NULL,

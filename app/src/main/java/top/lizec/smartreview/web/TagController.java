@@ -38,7 +38,7 @@ public class TagController {
     @GetMapping("/selectAll")
     public Result<List<Tag>> selectAll() {
         Integer userId = userInfoUtils.getCurrentUserId();
-        return Result.success(tagService.select(userId));
+        return Result.success(tagService.selectUserTag(userId));
     }
 
     @GetMapping("selectAppType")

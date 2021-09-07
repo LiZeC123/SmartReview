@@ -12,4 +12,8 @@ public interface SentenceClient {
     @RequestLine("POST /sentenceToWord")
     @Headers("Content-Type: application/json")
     List<EnglishWord> sentenceToWord(Sentence sentence);
+
+    @RequestLine("POST /queryWordDifficulty")
+    @Headers("Content-Type: application/json")
+    List<EnglishWord> queryWordDifficulty(List<String> words);
 }

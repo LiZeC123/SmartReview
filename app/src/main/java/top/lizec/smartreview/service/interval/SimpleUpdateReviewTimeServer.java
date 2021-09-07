@@ -2,7 +2,7 @@ package top.lizec.smartreview.service.interval;
 
 import org.springframework.stereotype.Service;
 
-import top.lizec.smartreview.entity.KnowledgeReviewDetail;
+import top.lizec.smartreview.entity.ReviewDetail;
 import top.lizec.smartreview.service.UpdateReviewTimeServer;
 
 @Service
@@ -16,7 +16,7 @@ public class SimpleUpdateReviewTimeServer implements UpdateReviewTimeServer {
 
 
     @Override
-    public int nextReviewTime(KnowledgeReviewDetail detail) {
+    public int nextReviewTime(ReviewDetail detail) {
         int totalTime = detail.getIntervalTime() + detail.getElapsedTime();
         double thisRate = rate[detail.getCurrentLevel()][detail.getLastLevel()];
         return (int) (totalTime * thisRate);

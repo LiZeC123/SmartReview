@@ -1,11 +1,8 @@
 package top.lizec.smartreview.mapper;
 
-import java.util.List;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import top.lizec.smartreview.entity.AppType;
 
-public interface AppTypeDao {
-    AppType selectOne(Integer id);
+public interface AppTypeDao extends BaseMapper<AppType> {
 
-    List<AppType> selectAll();
 }

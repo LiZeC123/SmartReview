@@ -1,21 +1,24 @@
 package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-import javax.annotation.Resource;
-
+import org.springframework.transaction.annotation.Transactional;
 import top.lizec.smartreview.entity.Knowledge;
-import top.lizec.smartreview.entity.KnowledgeReviewDetail;
-import top.lizec.smartreview.entity.KnowledgeReviewState;
+import top.lizec.smartreview.entity.ReviewDetail;
+import top.lizec.smartreview.entity.ReviewRecord;
+import top.lizec.smartreview.entity.ReviewState;
 import top.lizec.smartreview.mapper.ReviewDetailDao;
 import top.lizec.smartreview.mapper.ReviewStateDao;
 
+import javax.annotation.Resource;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class ReviewService {
-    private static final Duration halfDay = Duration.ofHours(12);
+//    private static final Duration halfDay = Duration.ofHours(12);
+    //TODO: DEBUG临时调整为1秒
+    private static final Duration halfDay = Duration.ofSeconds(1);
 
     @Resource
     ReviewStateDao stateDao;
@@ -26,10 +29,13 @@ public class ReviewService {
     @Resource
     UpdateReviewTimeServer updateReviewTimeServer;
 
+    @Resource
+    private CheckService checkService;
 
-    public void createReviewRecord(Integer kid) {
-        KnowledgeReviewState state = new KnowledgeReviewState();
-        state.setKnowledgeId(kid);
+    @Transactional
+    public void createReviewRecord(Knowledge k) {
+        ReviewState state = new ReviewState();
+        state.setKnowledgeId(k.getId());
         state.setReviewCount(0);
         state.setMemoryLevel(2);
         state.setIntervalTime(12);
@@ -38,14 +44,18 @@ public class ReviewService {
         stateDao.insert(state);
     }
 
+    @Transactional
+    public void updateKnowledgeReview(Integer userId, Integer kid, Integer memoryLevel) {
+        checkService.checkKnowledgePermission(userId, kid);
+        updateReviewRecord(kid, memoryLevel);
+    }
 
-    public void updateReviewRecord(Knowledge k, Integer memoryLevel) {
-        KnowledgeReviewState state = stateDao.selectById(k.getId());
+    private void updateReviewRecord(Integer kid, Integer memoryLevel) {
+        ReviewState state = stateDao.selectById(kid);
 
         // 首先根据当前状态插入detail表
-        KnowledgeReviewDetail detail = new KnowledgeReviewDetail(state);
+        ReviewDetail detail = new ReviewDetail(state);
         detail.setCurrentLevel(memoryLevel);
-        detail.setDifficulty(k.getDifficulty());
         detailDao.insert(detail);
 
         // 然后更新状态
@@ -55,5 +65,9 @@ public class ReviewService {
         state.setIntervalTime(intervalTime);
         state.setNextReviewTime(LocalDateTime.now().plus(Duration.ofHours(intervalTime)));
         stateDao.updateReviewState(state);
+    }
+
+    public List<ReviewRecord> queryAllRecord(Integer userId) {
+        return stateDao.selectAllRecord(userId);
     }
 }

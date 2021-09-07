@@ -1,23 +1,22 @@
 package top.lizec.smartreview.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import top.lizec.smartreview.entity.KnowledgeTag;
+import top.lizec.smartreview.entity.KnowledgeTagKey;
 import top.lizec.smartreview.entity.Tag;
 
 import java.util.List;
 
-public interface TagDao {
+public interface TagDao extends BaseMapper<Tag> {
 
-    Tag selectOne(Tag tag);
 
-    List<Tag> selectAll(Integer creator);
 
-    Long insert(Tag tag);
 
-    Long insertKnowledgeTag(List<KnowledgeTag> knowledgeTags);
+    Long insertKnowledgeTag(List<KnowledgeTagKey> knowledgeTags);
 
-    void update(Tag tag);
+    Long deleteKnowledgeTag(Integer tagId);
 
-    void delete(Tag tag);
+    List<Tag> selectKnowledgeTag(Integer kid);
 
     List<Integer> selectIdByTagName(List<String> nameList, Integer creator);
 

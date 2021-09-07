@@ -3,31 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.lizec.smartreview.mapper.KnowledgeDao">
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO knowledge(app_type, title, content, creator, link, difficulty)
-        VALUES (#{appType}, #{title}, #{content}, #{creator}, #{link}, #{difficulty})
-    </insert>
-
-    <update id="updateTag">
-        UPDATE knowledge
-        SET tag = #{tag}
-        WHERE id = #{id}
-    </update>
-
-    <update id="delete">
-        UPDATE knowledge
-        SET is_delete = 1
-        WHERE id = #{kid};
-    </update>
-
-    <select id="selectAll" resultType="top.lizec.smartreview.entity.Knowledge">
-        SELECT id, app_type, title, content, link, tag
-        FROM knowledge
-        WHERE creator = #{userId}
-    </select>
 
     <select id="queryRecentReview" resultType="top.lizec.smartreview.entity.Knowledge">
-        SELECT id, app_type, title, content, link
+        SELECT id, app_type, title, content
         FROM knowledge
                  JOIN knowledge_review_state krs on knowledge.id = krs.knowledge_id
         WHERE creator = #{userId}
@@ -35,34 +13,6 @@
         ORDER BY id DESC;
     </select>
 
-    <select id="selectTag" resultType="java.lang.String">
-        SELECT tag
-        from knowledge
-        where id = #{id}
-    </select>
-
-    <select id="queryAllRecord" resultType="top.lizec.smartreview.entity.KnowledgeRecord">
-        SELECT k.id, k.app_type, k.title, krs.review_count, krs.interval_time, krs.next_review_time
-        FROM knowledge k
-                 JOIN knowledge_review_state krs ON k.id = krs.knowledge_id
-        WHERE k.creator = #{userId}
-        ORDER BY k.id DESC;
-    </select>
-
-    <select id="selectByIds" resultType="top.lizec.smartreview.entity.Knowledge">
-        SELECT title, content, link, tag FROM knowledge
-        WHERE id IN
-        <foreach collection="knowledgeIds" open="(" separator="," close=")" item="item">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="selectOne" resultType="top.lizec.smartreview.entity.Knowledge">
-        SELECT id, app_type, title, content, link, tag
-        FROM knowledge
-        WHERE id = #{kid}
-          AND is_delete = 0
-    </select>
 
     <select id="checkUserPermission" resultType="java.lang.Boolean">
         SELECT 1

@@ -17,7 +17,7 @@ public class AppTypeService {
     private AppTypeDao appTypeDao;
 
     public Map<Integer,AppType> getAppTypes() {
-        return appTypeDao.selectAll().stream().collect(Collectors.toMap(AppType::getId, e->e));
+        return appTypeDao.selectList(null).stream().collect(Collectors.toMap(AppType::getId, e->e));
     }
 
 }

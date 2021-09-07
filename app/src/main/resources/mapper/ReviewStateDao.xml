@@ -3,11 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.lizec.smartreview.mapper.ReviewStateDao">
 
-    <insert id="insert">
-        INSERT INTO knowledge_review_state(knowledge_id, review_count, memory_level, interval_time, next_review_time)
-        VALUES (#{knowledgeId}, #{reviewCount}, #{memoryLevel}, #{intervalTime}, #{nextReviewTime})
-    </insert>
-
 
     <update id="updateReviewState">
         UPDATE knowledge_review_state
@@ -17,11 +12,11 @@
             next_review_time = #{nextReviewTime}
         WHERE knowledge_id = #{knowledgeId}
     </update>
-
-
-    <select id="selectById" resultType="top.lizec.smartreview.entity.KnowledgeReviewState">
-        SELECT knowledge_id, review_count, memory_level, interval_time, next_review_time
-        FROM knowledge_review_state
-        WHERE knowledge_id = #{kid}
+    <select id="selectAllRecord" resultType="top.lizec.smartreview.entity.ReviewRecord">
+        SELECT k.id, k.app_type, k.title, krs.review_count, krs.interval_time, krs.next_review_time
+        FROM knowledge_review_state krs
+                 JOIN knowledge k on k.id = krs.knowledge_id
+        WHERE k.creator = #{uid}
     </select>
+
 </mapper>

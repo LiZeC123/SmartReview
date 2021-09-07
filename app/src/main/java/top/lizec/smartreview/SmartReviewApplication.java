@@ -30,7 +30,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableSwagger2
 @EnableScheduling
-@MapperScan("top.lizec")
+@MapperScan("top.lizec.smartreview.mapper")
 public class SmartReviewApplication {
 
     public static void main(String[] args) {

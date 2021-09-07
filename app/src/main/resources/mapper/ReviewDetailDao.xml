@@ -3,8 +3,5 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.lizec.smartreview.mapper.ReviewDetailDao">
 
-    <insert id="insert">
-        INSERT INTO knowledge_review_detail(knowledge_id, review_count, last_level, current_level, difficulty, interval_time, elapsed_time)
-        VALUES (#{knowledgeId},#{reviewCount},#{lastLevel},#{currentLevel},#{difficulty},#{intervalTime},#{elapsedTime})
-    </insert>
+
 </mapper>

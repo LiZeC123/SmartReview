@@ -1,11 +1,8 @@
 package top.lizec.smartreview.mapper;
 
-import top.lizec.smartreview.entity.KnowledgeReviewDetail;
-import top.lizec.smartreview.entity.LevelDetail;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import top.lizec.smartreview.entity.ReviewDetail;
 
-import java.util.List;
+public interface ReviewDetailDao extends BaseMapper<ReviewDetail> {
 
-public interface ReviewDetailDao {
-
-    Integer insert(KnowledgeReviewDetail detail);
 }
