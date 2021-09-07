@@ -16,4 +16,5 @@ RUN apt-get update && \
 
 COPY --from=build /app/target/smart-review-1.0.0.jar /app/
 
-ENTRYPOINT [ "java", "-jar", "smart-review-1.0.0.jar", "--spring.profiles.active=prod" ]
+# 由于服务器是资源有限, 因此采取消耗更小的垃圾回收算法
+ENTRYPOINT [ "java", "-XX:+UseSerialGC", "-jar", "smart-review-1.0.0.jar", "--spring.profiles.active=prod" ]
