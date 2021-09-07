@@ -4,10 +4,8 @@ from nltk import word_tokenize, pos_tag
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 
-# !python -m nltk.downloader wordnet punkt averaged_perceptron_tagger
-
 # 不同类别的单词对应的分数
-level_value = {"HS": -5, "COCA": 0, "CET": 1, "GRE": 2, "TOEFL": 2}
+level_value = {"HS": 0, "COCA": 1, "CET": 2, "GRE": 4, "TOEFL": 3}
 
 
 def load_level_dictionary():
@@ -45,10 +43,11 @@ def get_wordnet_pos(tag):
 
 
 def lemmatize_sentence(sentence: str) -> List:
+    # 单词转为小写后去重
     tokens = word_tokenize(sentence.lower())
     tagged = pos_tag(tokens)
 
-    ans = []
+    ans = {}
     for word, tag in tagged:
         origin_word = wnl.lemmatize(word, get_wordnet_pos(tag))
         if len(origin_word) == 1:
@@ -57,10 +56,34 @@ def lemmatize_sentence(sentence: str) -> List:
             level_tag = level_dict[origin_word]
         else:
             level_tag = ('', 0)
-        ans.append((origin_word, level_tag))
+        ans[origin_word] = level_tag
+
+    ans = [(key, value) for key, value in ans.items()]
+
     # Example: [
     #   ('comprehensive', (' GRE/COCA/CET/TOEFL', 5)),
     #   ('feature', (' GRE/COCA/CET', 3))
     # ]
+    return list(map(lambda x: {"word": x[0], "tag": x[1][0], "difficulty": x[1][1]},
+                    sorted(ans, key=lambda x: x[1][1], reverse=True)))
 
-    return list(map(lambda x: {"word": x[0], "tag": x[1][0]}, ans))
+
+def get_word_difficulty(words):
+    ans = []
+    for word in words:
+        if word in level_dict:
+            ans.append({
+                "word": word,
+                "difficulty": level_dict[word][1]
+            })
+        else:
+            ans.append({
+                "word": word,
+                "difficulty": 0
+            })
+    return ans
+
+
+if __name__ == '__main__':
+    v = lemmatize_sentence("Hello World")
+    print(v)
