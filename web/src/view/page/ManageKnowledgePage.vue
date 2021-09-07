@@ -77,7 +77,7 @@ export default {
     initKnowledgeList: function () {
       this.$axios({
         method: 'get',
-        url: 'knowledge/queryAllRecord',
+        url: 'review/queryAllRecord',
       }).then(response => {
         this.records = response.data.data;
       });
