@@ -61,13 +61,13 @@
 </template>
 
 <script>
-import router from "@/router";
+import router from "../router";
 
 export default {
   name: "Main",
   data: function () {
     return {
-      username: "用户",
+      username: "未登录",
       role: "普通权限"
     }
   },

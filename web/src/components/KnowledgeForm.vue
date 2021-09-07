@@ -11,30 +11,17 @@
         <div class="form-check form-check-inline mx-2" v-for="t in types" :key="t.id">
           <input class="form-check-input" type="radio" :value="t.id" :id="t.comp"
                  v-model="currentId">
-          <label class="form-check-label" :for="t.comp">{{t.name}}</label>
+          <label class="form-check-label" :for="t.comp">{{ t.name }}</label>
         </div>
       </div>
 
       <hr/>
 
-<!--      <div class="form-floating my-3">-->
-<!--        <input type="text" class="form-control" id="textInputTitle" aria-describedby="textInputTitleHelp"-->
-<!--               placeholder="知识点标题" v-model="title">-->
-<!--        <small id="textInputTitleHelp"-->
-<!--               class="form-text text-muted">简要的概括知识点的主要内容</small>-->
-<!--        <label for="textInputTitle">知识点标题</label>-->
-<!--      </div>-->
+      <component :is="currentComp" @on-submit="updateExtend"></component>
 
-<!--      <div class="form-floating mb-3">-->
-<!--        <textarea class="form-control" id="textInputContent" placeholder="知识点正文"-->
-<!--                  style="height: 100px" v-model="content"></textarea>-->
-<!--        <label for="textInputContent">知识点正文</label>-->
-<!--      </div>-->
+      <hr/>
 
-      <english-word-book> </english-word-book>
-
-
-      <knowledge-link :reset="reset" :submit="submit" @on-submit="updateLink"> </knowledge-link>
+      <knowledge-link :reset="reset" :submit="submit" @on-submit="updateLink"></knowledge-link>
 
       <hr/>
 
@@ -45,8 +32,7 @@
 </template>
 
 <script>
-import LeetCodeNote from "@/components/link/LeetCodeNote";
-import SimpleBaseLink from "@/components/link/SimpleBaseLink";
+import LeetCodeNote from "./LeetCodeNote";
 import $ from "jquery";
 import KnowledgeTag from "./KnowledgeTag";
 import KnowledgeLink from "./KnowledgeLink";
@@ -54,7 +40,7 @@ import EnglishWordBook from "./EnglishWordBook";
 
 export default {
   name: "KnowledgeForm",
-  components: {EnglishWordBook, KnowledgeLink, KnowledgeTag},
+  components: {EnglishWordBook, LeetCodeNote, KnowledgeLink, KnowledgeTag},
   props: {
     doSubmit: Boolean,
     doShow: Boolean,
@@ -76,20 +62,20 @@ export default {
   methods: {
     updateLink: function (links) {
       this.links = links
-      //子模块完成提交操作后, 再提交完整的数据
-      //this.submitKnowledge();
     },
     updateTag: function (tags) {
       this.tags = tags
+    },
+    updateExtend: function (extend) {
+      this.extend = extend
     },
 
     submitKnowledge: function () {
       const knowledge = {
         "appType": this.appType.currentId,
-        "title": this.title,
-        "content": this.content,
         "link": JSON.stringify(this.links),
-        "tag": this.tags
+        "tag": this.tags,
+        "extend": this.extend,
       }
 
       this.$emit('submit', knowledge);
@@ -100,21 +86,15 @@ export default {
     }
   },
   computed: {
-    linkType: function () {
-      if (this.knowledge !== undefined) {
-        return SimpleBaseLink;
-      }
-      switch (this.appType) {
-        case "Base":
-          return SimpleBaseLink;
-        case "EnglishWordBook":
-          return EnglishWordBook;
-        case "LeetCodeNote":
-          return LeetCodeNote;
-        default:
-          return SimpleBaseLink;
+    currentComp: function () {
+      if (this.types[this.currentId] !== undefined) {
+        return this.types[this.currentId].comp
+      } else {
+        console.log("Return Default Comp.")
+        return "EnglishWordBook"
       }
     },
+
     getInitLinks: function () {
       return this.initLinks;
     },
@@ -144,6 +124,7 @@ export default {
   created() {
     this.$axios.get('/appType/getAllTypes').then(response => {
       this.types = response.data.data;
+      this.currentId = 1;
     });
   }
 }

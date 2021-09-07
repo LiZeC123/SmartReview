@@ -20,6 +20,10 @@
 <script>
 export default {
   name: "EnglishWordBook",
+  props: {
+    reset: Number,
+    submit: Number,
+  },
   data: function () {
     return {
       content: "",
@@ -29,15 +33,24 @@ export default {
   },
   watch: {
     'content': function (newValue) {
+      if (newValue === "") {
+        this.wordList = [];
+      }
+
       this.$axios({
-        method:"POST",
+        method: "POST",
         url: "/sentence/toWord",
         params: {
           "sentence": newValue
         }
       }).then(resp => this.wordList = resp.data.data);
+    },
+    'reset': function () {
+      this.content = "";
+    },
+    'submit': function () {
+      this.$emit("on-submit", this.words);
     }
-
   }
 }
 </script>

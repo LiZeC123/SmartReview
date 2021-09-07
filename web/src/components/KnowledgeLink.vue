@@ -93,7 +93,7 @@ export default {
     'submit': function () {
       this.$emit('on-submit', this.commitLinks);
     },
-    'clear': function () {
+    'reset': function () {
       this.commitLinks = [];
       this.newLink = {name: "", url: ""};
     },
