@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lizec.smartreview.mapper.ReviewStateDao">
+
+
+    <update id="updateReviewState">
+        UPDATE review_state
+        SET review_count     = #{reviewCount},
+            memory_level     = #{memoryLevel},
+            interval_time    = #{intervalTime},
+            next_review_time = #{nextReviewTime}
+        WHERE knowledge_id = #{knowledgeId}
+    </update>
+    <select id="selectAllRecord" resultType="top.lizec.smartreview.entity.ReviewRecord">
+        SELECT k.id, k.app_type, k.title, krs.review_count, krs.interval_time, krs.next_review_time
+        FROM review_state krs
+                 JOIN knowledge k on k.id = krs.knowledge_id
+        WHERE k.creator = #{uid}
+    </select>
+
+</mapper>
