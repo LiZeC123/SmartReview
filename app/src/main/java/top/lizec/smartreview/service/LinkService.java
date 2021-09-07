@@ -7,6 +7,7 @@ import top.lizec.smartreview.mapper.LinkDao;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LinkService {
@@ -20,6 +21,6 @@ public class LinkService {
     }
 
     public List<Link> selectKnowledgeLink(Integer kid) {
-        return linkDao.selectKnowledgeLink(kid);
+        return linkDao.selectByMap(Map.of("knowledge_id", kid));
     }
 }
