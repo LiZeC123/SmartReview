@@ -18,10 +18,10 @@
               <p class="card-text">{{ card.content }}</p>
             </div>
 
-            <div class="card-body" v-if="card.link.length !== 0">
+            <div class="card-body" v-if="card.links.length !== 0">
               <h5 class="card-title">资源</h5>
               <ul>
-                <li class="my-2" v-for="link in card.link" :key="link.url">
+                <li class="my-2" v-for="link in card.links" :key="link.url">
                   <a :href="link.url" target="_blank">{{ link.name }}</a>
                 </li>
               </ul>
@@ -89,7 +89,6 @@ export default {
     }).then(response => {
       for (let card of response.data.data) {
         card.showContent = false;
-        card.link = JSON.parse(card.link)
       }
       this.cards = response.data.data;
     })
