@@ -75,8 +75,13 @@ export default {
       return day;
     },
     instantToTime: function (nextReviewTime) {
-      let t = new Date(nextReviewTime)
-      return t.getFullYear() + "-" + t.getMonth() + "-" + t.getDay() + " " + t.getHours() + ":" + t.getMinutes();
+      let date = new Date(nextReviewTime);
+      let Y = date.getFullYear() + '-';
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      let D = date.getDate() + ' ';
+      let h = date.getHours() + ':';
+      let m = date.getMinutes();
+      return Y + M + D + h + m;
     },
     initKnowledgeList: function () {
       this.$axios({
