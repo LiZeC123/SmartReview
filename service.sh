@@ -1,22 +1,15 @@
 #!/usr/bin/env bash
 
-AppName=target/smart-review-1.0.0.jar
-
 function compileService {
   docker-compose build
 }
 
 function runService {
   docker-compose up -d
-  # echo "Run Service In Background"
-  # nohup java -jar $AppName --spring.profiles.active=prod >smart-review.log 2>&1 &
-  # exit
 }
 
 function stopService {
   docker-compose down
-  # echo "Kill Current Service"
-  # kill "$(jps -l | grep $AppName | awk '{print $1}')"
 }
 
 function backup {
