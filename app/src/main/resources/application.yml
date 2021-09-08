@@ -55,3 +55,6 @@ spring:
       validationQuery: "SELECT 1"
 
 
+logging:
+  file:
+    name: data/SmartReview.log
