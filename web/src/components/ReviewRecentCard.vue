@@ -70,7 +70,7 @@ export default {
     finishCard: function (id, idx, memoryLevel) {
       this.$axios({
         method: 'get',
-        url: "/knowledge/finishReview",
+        url: "/review/finishReview",
         params: {"kid": id, "memoryLevel": memoryLevel},
       }).then(response => {
         if (response.data.success) {
