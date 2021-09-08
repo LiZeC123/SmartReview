@@ -111,7 +111,6 @@ CREATE TABLE review_detail
     review_count  SMALLINT NOT NULL,
     last_level    TINYINT  NOT NULL, -- 上次复习时的记忆等级
     current_level TINYINT  NOT NULL, -- 本次复习时的记忆等级
-    difficulty    TINYINT  NOT NULL,
     interval_time SMALLINT NOT NULL, -- 预定的复习间隔时间
     elapsed_time  SMALLINT NOT NULL  -- 本次复习时间距离预定复习时间的差值
 );
