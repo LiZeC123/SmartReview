@@ -3,6 +3,7 @@ package top.lizec.smartreview.entity;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -29,6 +30,8 @@ public class ReviewDetail {
         this.reviewCount = state.getReviewCount() + 1;
         this.lastLevel = state.getMemoryLevel();
         this.intervalTime = state.getIntervalTime();
-        this.elapsedTime = (int) Duration.between(state.getNextReviewTime(), LocalDateTime.now()).toHours();
+
+        final LocalDateTime expectTime = state.getNextReviewTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        this.elapsedTime = (int) Duration.between(expectTime, LocalDateTime.now()).toHours();
     }
 }

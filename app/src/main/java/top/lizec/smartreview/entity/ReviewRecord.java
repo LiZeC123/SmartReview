@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class ReviewRecord {
     @TableId(type = IdType.AUTO)
@@ -12,5 +14,5 @@ public class ReviewRecord {
     String title;
     Integer reviewCount;
     Integer intervalTime;
-    String nextReviewTime;
+    Long nextReviewTime;
 }

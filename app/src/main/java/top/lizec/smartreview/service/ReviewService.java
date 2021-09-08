@@ -12,11 +12,14 @@ import top.lizec.smartreview.mapper.ReviewStateDao;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class ReviewService {
-//    private static final Duration halfDay = Duration.ofHours(12);
+    //    private static final Duration halfDay = Duration.ofHours(12);
     //TODO: DEBUG临时调整为1秒
     private static final Duration halfDay = Duration.ofSeconds(1);
 
@@ -39,8 +42,10 @@ public class ReviewService {
         state.setReviewCount(0);
         state.setMemoryLevel(2);
         state.setIntervalTime(12);
-        // 本地时间不涉及时区问题, 因此使用LocalDateTime
-        state.setNextReviewTime(LocalDateTime.now().plus(halfDay));
+
+        final ZonedDateTime zonedDateTime = LocalDateTime.now().plus(halfDay).atZone(ZoneId.systemDefault());
+        state.setNextReviewTime(Date.from(zonedDateTime.toInstant()));
+
         stateDao.insert(state);
     }
 
@@ -63,7 +68,9 @@ public class ReviewService {
         state.setMemoryLevel(memoryLevel);
         int intervalTime = updateReviewTimeServer.nextReviewTime(detail);
         state.setIntervalTime(intervalTime);
-        state.setNextReviewTime(LocalDateTime.now().plus(Duration.ofHours(intervalTime)));
+
+        final ZonedDateTime zonedDateTime = LocalDateTime.now().plus(Duration.ofHours(intervalTime)).atZone(ZoneId.systemDefault());
+        state.setNextReviewTime(Date.from(zonedDateTime.toInstant()));
         stateDao.updateReviewState(state);
     }
 

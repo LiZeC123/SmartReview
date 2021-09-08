@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 public class ReviewState {
@@ -13,7 +14,7 @@ public class ReviewState {
     Integer reviewCount;
     Integer memoryLevel;
     Integer intervalTime;
-    LocalDateTime nextReviewTime;
+    Date nextReviewTime;
 
     public void increaseCount() {
         this.reviewCount++;
