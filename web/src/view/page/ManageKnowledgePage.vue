@@ -18,7 +18,7 @@
           <th>{{ record.title }}</th>
           <th>{{ record.reviewCount }}</th>
           <th>{{ hourToDay(record.intervalTime) }}</th>
-          <th>{{ record.nextReviewTime }}</th>
+          <th>{{ instantToTime(record.nextReviewTime) }}</th>
           <th>
             <button class="btn btn-secondary mx-2" @click="modifyKnowledge(record.id)">详情</button>
             <button class="btn btn-danger" @click="deleteKnowledge(record.id, index)">删除</button>
@@ -73,6 +73,10 @@ export default {
       }
 
       return day;
+    },
+    instantToTime: function (nextReviewTime) {
+      let t = new Date(nextReviewTime)
+      return t.getFullYear() + "-" + t.getMonth() + "-" + t.getDay() + " " + t.getHours() + ":" + t.getMinutes();
     },
     initKnowledgeList: function () {
       this.$axios({
