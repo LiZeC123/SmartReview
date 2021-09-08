@@ -11,7 +11,7 @@ import top.lizec.smartreview.service.app.CreateKnowledgeService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +62,7 @@ public class KnowledgeService {
     }
 
     public List<KnowledgeVO> queryRecentReview(Integer userId) {
-        List<Knowledge> knowledges = knowledgeDao.queryRecentReview(userId, LocalDateTime.now());
+        List<Knowledge> knowledges = knowledgeDao.queryRecentReview(userId, new Date());
 
         return completeKnowledge(knowledges);
     }

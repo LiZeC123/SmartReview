@@ -3,12 +3,12 @@ package top.lizec.smartreview.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import top.lizec.smartreview.entity.Knowledge;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface KnowledgeDao extends BaseMapper<Knowledge> {
 
-    List<Knowledge> queryRecentReview(Integer userId, LocalDateTime deadline);
+    List<Knowledge> queryRecentReview(Integer userId, Date deadline);
 
     Boolean checkUserPermission(Integer userId, Integer kid);
 }
