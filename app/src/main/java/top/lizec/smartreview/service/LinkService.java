@@ -16,7 +16,7 @@ public class LinkService {
     private LinkDao linkDao;
 
     @Transactional
-    public void createLink(Integer knowledgeId, String name, String url) {
+    public void insertLink(Integer knowledgeId, String name, String url) {
         linkDao.insert(new Link(knowledgeId, name, url));
     }
 
