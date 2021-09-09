@@ -19,9 +19,7 @@ import java.util.List;
 
 @Service
 public class ReviewService {
-    //    private static final Duration halfDay = Duration.ofHours(12);
-    //TODO: DEBUG临时调整为1秒
-    private static final Duration halfDay = Duration.ofSeconds(1);
+    private static final Duration halfDay = Duration.ofHours(12);
 
     @Resource
     ReviewStateDao stateDao;
