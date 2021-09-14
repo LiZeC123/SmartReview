@@ -1,5 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router"
+import {createRouter, createWebHistory} from "vue-router"
 
 import ReviewRecentCard from "./components/ReviewRecentCard";
 
@@ -12,23 +11,25 @@ import CreateKnowledgePage from "./view/page/CreateKnowledgePage";
 import ModifyKnowledgePage from "./view/page/ModifyKnowledgePage";
 
 
-Vue.use(VueRouter)
+const routes = [
+    {path: '/', redirect: '/home/recent'},
+    {path: '/login', component: Login},
+    {
+        path: '/home', component: Main,
+        children: [
+            {path: 'recent', component: ReviewRecentCard},
+            {path: 'create', component: CreateKnowledgePage},
+            {path: 'knowledge', component: ManageKnowledgePage},
+            {path: 'tag', component: TagPage},
+            {path: 'export', component: ExportPage},
+            {path: 'modify', component: ModifyKnowledgePage, name: "ModifyKnowledgePage"},
+        ]
+    }
+];
 
-export default new VueRouter({
-    mode: 'history',
-    routes: [
-        {path: '/', redirect: '/home/recent'},
-        {path: '/login', component: Login},
-        {
-            path: '/home', component: Main,
-            children: [
-                {path: 'recent', component: ReviewRecentCard},
-                {path: 'create', component: CreateKnowledgePage},
-                {path: 'knowledge', component: ManageKnowledgePage},
-                {path: 'tag', component: TagPage},
-                {path: 'export', component: ExportPage},
-                {path: 'modify', component: ModifyKnowledgePage, name: "ModifyKnowledgePage"},
-            ]
-        }
-    ]
+const router = createRouter({
+    history: createWebHistory(),
+    routes
 })
+
+export default router

@@ -1,13 +1,10 @@
-import Vue from "vue";
-import Vuex from "vuex"
+import {createStore} from "vuex"
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-    state:{
-        token:''
+export default createStore({
+    state: {
+        token: ''
     },
-    mutations:{
+    mutations: {
         set_token(state, token) {
             state.token = token
             localStorage.token = token

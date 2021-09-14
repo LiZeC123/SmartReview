@@ -108,7 +108,7 @@ export default {
 
       console.log(knowledge);
 
-      this.$axios.post('/knowledge/create', knowledge).then(response => {
+      this.axios.post('/knowledge/create', knowledge).then(response => {
         if (response.data.success) {
           this.reset += 1
           this.show()
@@ -144,7 +144,7 @@ export default {
     },
   },
   created() {
-    this.$axios.get('/appType/getAllTypes').then(response => {
+    this.axios.get('/appType/getAllTypes').then(response => {
       this.types = response.data.data;
       this.currentId = 1;
     });

@@ -84,7 +84,7 @@ export default {
       return Y + M + D + h + m;
     },
     initKnowledgeList: function () {
-      this.$axios({
+      this.axios({
         method: 'get',
         url: 'review/queryAllRecord',
       }).then(response => {
@@ -100,7 +100,7 @@ export default {
       })
     },
     deleteKnowledge: function (id, index) {
-      this.$axios({
+      this.axios({
         method: "get",
         url: "knowledge/deleteKnowledge",
         params: {

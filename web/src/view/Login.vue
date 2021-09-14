@@ -11,7 +11,7 @@
             <form method="POST" class="my-login-validation" novalidate="" onsubmit="return false;">
               <div class="form-group">
                 <label for="email">E-Mail Address</label>
-                <input id="email" type="email" class="form-control" name="username" value=""
+                <input id="email" type="email" class="form-control" name="username"
                        v-model="email" required autofocus>
                 <div class="invalid-feedback">
                   Email is invalid
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     submit: function () {
-      this.$axios.post("user/login", {
+      this.axios.post("user/login", {
         "email": this.email,
         "password": this.password
       }).then(response => {

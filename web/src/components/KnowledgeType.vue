@@ -20,7 +20,7 @@ export default {
     }
   },
   created() {
-    this.$axios.get('/appType/getAllTypes').then(response => {
+    this.axios.get('/appType/getAllTypes').then(response => {
       this.types = response.data.data;
     });
   },

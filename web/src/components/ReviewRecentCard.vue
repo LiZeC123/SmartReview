@@ -68,7 +68,7 @@ export default {
     // TODO: 删除操作可以添加动画效果
     // https://cn.vuejs.org/v2/guide/transitions.html
     finishCard: function (id, idx, memoryLevel) {
-      this.$axios({
+      this.axios({
         method: 'get',
         url: "/review/finishReview",
         params: {"kid": id, "memoryLevel": memoryLevel},
@@ -83,7 +83,7 @@ export default {
     }
   },
   created() {
-    this.$axios({
+    this.axios({
       method: 'get',
       url: 'knowledge/queryRecentReview',
     }).then(response => {

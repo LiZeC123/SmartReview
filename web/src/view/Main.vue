@@ -79,7 +79,7 @@ export default {
     },
   },
   created() {
-    this.$axios.get("user/getCurrentUserName").then(response => {
+    this.axios.get("user/getCurrentUserName").then(response => {
       if (response.data.success) {
         this.username = response.data.data
       }

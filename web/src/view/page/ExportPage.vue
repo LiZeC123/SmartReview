@@ -56,7 +56,7 @@ export default {
       }
     },
     exportOne: function (tagId) {
-      this.$axios({
+      this.axios({
         method: "get",
         url: "export/exportOne",
         params: {"tagId": tagId}
@@ -67,7 +67,7 @@ export default {
       })
     },
     exportAll: function () {
-      this.$axios.post("export/exportAll", this.records.map(r => r.id))
+      this.axios.post("export/exportAll", this.records.map(r => r.id))
           .then(response => {
             if (response.data.success) {
               window.open(response.data.data);
@@ -76,7 +76,7 @@ export default {
     }
   },
   created() {
-    this.$axios({
+    this.axios({
       method: 'get',
       url: 'export/queryInfo',
     }).then(response => {

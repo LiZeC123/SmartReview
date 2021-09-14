@@ -34,7 +34,7 @@ export default {
   },
   created() {
     const id = this.$route.query.id;
-    this.$axios({
+    this.axios({
       method: "get",
       url: "/knowledge/selectOne",
       params: {

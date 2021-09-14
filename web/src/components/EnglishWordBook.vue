@@ -37,7 +37,7 @@ export default {
         this.wordList = [];
       }
 
-      this.$axios({
+      this.axios({
         method: "POST",
         url: "/sentence/toWord",
         params: {

@@ -22,7 +22,7 @@ export default {
     }
   },
   created() {
-    this.$axios.get("/tag/selectAll").then(response => this.tagList = response.data.data)
+    this.axios.get("/tag/selectAll").then(response => this.tagList = response.data.data)
   },
   watch: {
     'reset': function () {

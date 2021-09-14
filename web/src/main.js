@@ -1,12 +1,9 @@
-import Vue from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import axios from "axios";
 import router from "./router";
 import store from "./store";
-
-Vue.config.productionTip = false
-
-Vue.prototype.$axios = axios
+import VueAxios from "vue-axios";
 
 axios.defaults.baseURL = '/api'
 axios.interceptors.request.use(config => {
@@ -50,8 +47,4 @@ router.beforeEach((to, from, next) => {
 });
 
 
-new Vue({
-    router,
-    store,
-    render: h => h(App),
-}).$mount('#app')
+createApp(App).use(store).use(router).use(VueAxios, axios).mount("#app")

@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     createTag: function () {
-      this.$axios({
+      this.axios({
         method: "get",
         url: 'tag/create',
         params: {"tagName": this.title}
@@ -56,14 +56,14 @@ export default {
     },
     deleteTag: function (tagId) {
       console.log("delete ", tagId);
-      this.$axios({
+      this.axios({
         method: "get",
         url: 'tag/delete',
         params: {"tagId": tagId}
       }).then(() => this.fetchTag());
     },
     fetchTag: function () {
-      this.$axios({
+      this.axios({
         method: 'get',
         url: 'tag/selectAll',
       }).then(response => {
