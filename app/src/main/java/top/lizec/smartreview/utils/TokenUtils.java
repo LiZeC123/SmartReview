@@ -9,8 +9,8 @@ import top.lizec.smartreview.entity.User;
 import java.util.Date;
 
 public class TokenUtils {
-    private static final int ONE_DAY = 24 * 60 * 60 * 1000;
-    private static final int EXPIRATION = 7 * ONE_DAY;
+    private static final long ONE_DAY = 24 * 60 * 60 * 1000;
+    private static final long EXPIRATION = 30 * ONE_DAY;
 
     /**
      * 生成 Token 字符串 必须 setAudience 接收者 setExpiration 过期时间 role 用户角色
