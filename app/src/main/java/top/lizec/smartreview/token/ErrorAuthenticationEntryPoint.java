@@ -18,8 +18,8 @@ public class ErrorAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         // 设置 Json 格式返回
         response.setContentType("application/json;charset=UTF-8");
-        // 设置 HTTP 状态码为 401
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        // 按照HTTP规范应该返回401, 但会导致前端处理更加复杂, 所以还是返回200
+        response.setStatus(HttpServletResponse.SC_OK);
         // PrintWriter 输出 Response 返回信息
         PrintWriter writer = response.getWriter();
 
