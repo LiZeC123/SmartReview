@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router"
 
-import ReviewRecentCard from "./components/ReviewRecentCard";
+import ReviewRecentCard from "./view/page/ReviewRecentPage";
 
 import Login from "./view/Login";
 import Main from "./view/Main";
