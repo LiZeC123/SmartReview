@@ -6,7 +6,9 @@ import top.lizec.smartreview.algo.entity.EnglishWord;
 import top.lizec.smartreview.dto.KnowledgeDto;
 import top.lizec.smartreview.dto.LinkDto;
 import top.lizec.smartreview.entity.Knowledge;
+import top.lizec.smartreview.entity.Sentence;
 import top.lizec.smartreview.service.LinkService;
+import top.lizec.smartreview.service.SentenceService;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ public class CreateEnglishWordNoteService implements CreateKnowledgeService {
     private SentenceClient sentenceClient;
     @Resource
     private LinkService linkService;
+    @Resource
+    private SentenceService sentenceService;
 
     @Override
     public List<Knowledge> parseKnowledgeDto(KnowledgeDto dto) {
@@ -46,5 +50,7 @@ public class CreateEnglishWordNoteService implements CreateKnowledgeService {
         for (LinkDto linkDto : dto.getLink()) {
             linkService.insertLink(k.getId(), linkDto.getName(), linkDto.getUrl());
         }
+
+        sentenceService.insertNewSentence(k, new Sentence(dto.getContent()));
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lizec.smartreview.mapper.SentenceDao">
+
+
+    <insert id="insertSentenceRelation">
+        INSERT INTO knowledge_sentence(knowledge_id, sentence_id) VALUES (#{kid}, #{sentenceId})
+    </insert>
+</mapper>
