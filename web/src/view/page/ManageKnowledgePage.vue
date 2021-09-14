@@ -52,14 +52,12 @@ export default {
   methods: {
     typeToName: function (appType) {
       switch (appType) {
-        case "EnglishWordBook":
+        case "1":
           return "英语单词本"
-        case "LeetCodeNote":
+        case "2":
           return "力扣题解";
-        case "Base":
-          return "基础记录";
         default:
-          return appType;
+          return "基础记录";
       }
     },
     hourToDay: function (currentInterval) {
@@ -76,12 +74,7 @@ export default {
     },
     instantToTime: function (nextReviewTime) {
       let date = new Date(nextReviewTime);
-      let Y = date.getFullYear() + '-';
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-      let D = date.getDate() + ' ';
-      let h = date.getHours() + ':';
-      let m = date.getMinutes();
-      return Y + M + D + h + m;
+      return date.toLocaleString("en-GB")
     },
     initKnowledgeList: function () {
       this.axios({
