@@ -118,9 +118,11 @@ export default {
     createEnglishWordBook: function () {
       return {
         "appType": this.currentId,
+        "title": "",
+        "content": this.extend.content,
         "link": this.links,
         "tag": this.tags,
-        "words": this.extend
+        "words": this.extend.words
       }
     },
     submitLeetCodeNote: function () {

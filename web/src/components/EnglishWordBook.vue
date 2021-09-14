@@ -49,7 +49,7 @@ export default {
       this.content = "";
     },
     'submit': function () {
-      this.$emit("on-submit", this.words);
+      this.$emit("on-submit", {"content": this.content, "words": this.words});
     }
   }
 }
