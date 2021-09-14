@@ -6,6 +6,7 @@ import top.lizec.smartreview.algo.entity.EnglishWord;
 import top.lizec.smartreview.dto.KnowledgeDto;
 import top.lizec.smartreview.dto.LinkDto;
 import top.lizec.smartreview.entity.Knowledge;
+import top.lizec.smartreview.entity.Link;
 import top.lizec.smartreview.entity.Sentence;
 import top.lizec.smartreview.service.LinkService;
 import top.lizec.smartreview.service.SentenceService;
@@ -42,14 +43,12 @@ public class CreateEnglishWordNoteService implements CreateKnowledgeService {
 
     @Override
     public void afterInsertKnowledge(Knowledge k, KnowledgeDto dto) {
-        linkService.insertLink(k.getId(), "初阶韦氏词典", "https://www.learnersdictionary.com/definition/" + k.getTitle());
-        linkService.insertLink(k.getId(), "高阶韦氏词典", "https://www.merriam-webster.com/dictionary/" + k.getTitle());
-        linkService.insertLink(k.getId(), "必应搜索图片", "https://cn.bing.com/images/search?q=" + k.getTitle());
-        linkService.insertLink(k.getId(), "必应搜索词典", "https://cn.bing.com/dict/search?q=" + k.getTitle());
-
-        for (LinkDto linkDto : dto.getLink()) {
-            linkService.insertLink(k.getId(), linkDto.getName(), linkDto.getUrl());
-        }
+        List<Link> links = new ArrayList<>(4);
+        links.add(new Link(k.getId(), "初阶韦氏词典", "https://www.learnersdictionary.com/definition/" + k.getTitle()));
+        links.add(new Link(k.getId(), "高阶韦氏词典", "https://www.merriam-webster.com/dictionary/" + k.getTitle()));
+        links.add(new Link(k.getId(), "必应搜索图片", "https://cn.bing.com/images/search?q=" + k.getTitle()));
+        links.add(new Link(k.getId(), "必应搜索词典", "https://cn.bing.com/dict/search?q=" + k.getTitle()));
+        linkService.insertLinkBatch(links);
 
         sentenceService.insertNewSentence(k, new Sentence(dto.getContent()));
     }

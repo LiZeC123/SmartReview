@@ -11,10 +11,7 @@ import top.lizec.smartreview.service.app.CreateKnowledgeService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +22,8 @@ public class KnowledgeService {
     private TagService tagService;
     @Resource
     private LinkService linkService;
+    @Resource
+    private SentenceService sentenceService;
     @Resource
     private ReviewService reviewService;
     @Resource
@@ -78,9 +77,11 @@ public class KnowledgeService {
     }
 
     private KnowledgeVO completeKnowledge(Knowledge k) {
+        Integer kid = k.getId();
         KnowledgeVO VO = new KnowledgeVO(k);
-        VO.setTags(tagService.selectKnowledgeTag(k.getId()));
-        VO.setLinks(linkService.selectKnowledgeLink(k.getId()));
+        VO.setTags(tagService.selectKnowledgeTag(kid));
+        VO.setLinks(linkService.selectKnowledgeLink(kid));
+        VO.setSentences(sentenceService.selectSentenceById(kid));
         return VO;
     }
 

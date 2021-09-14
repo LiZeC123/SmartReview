@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import top.lizec.smartreview.entity.Knowledge;
 import top.lizec.smartreview.entity.Link;
+import top.lizec.smartreview.entity.Sentence;
 import top.lizec.smartreview.entity.Tag;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class KnowledgeVO {
     private Integer creator;
     private List<Tag> tags;
     private List<Link> links;
+    private List<Sentence> sentences;
 
 
     public KnowledgeVO(Knowledge k) {

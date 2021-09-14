@@ -1,5 +1,6 @@
 package top.lizec.smartreview.service;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.lizec.smartreview.entity.Link;
@@ -10,17 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class LinkService {
+public class LinkService extends ServiceImpl<LinkDao, Link> {
 
     @Resource
     private LinkDao linkDao;
 
     @Transactional
-    public void insertLink(Integer knowledgeId, String name, String url) {
-        linkDao.insert(new Link(knowledgeId, name, url));
+    public void insertLinkBatch(List<Link> links) {
+        this.saveBatch(links);
     }
 
     public List<Link> selectKnowledgeLink(Integer kid) {
-        return linkDao.selectByMap(Map.of("knowledge_id", kid));
+        return this.listByMap(Map.of("knowledge_id", kid));
     }
 }
