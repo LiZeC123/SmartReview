@@ -13,9 +13,7 @@ function stopService {
 }
 
 function backup {
-  echo "Zip SmartReview"
-  zip -r SmartReview.zip data/ > /dev/null
-  echo "Done."
+  zip -r SmartReview.zip data/
 }
 
 function update {
@@ -24,10 +22,12 @@ function update {
 
 function init {
   dataFile=data/SmartReview.db
-  if [ ! -f "${dataFile}" ]; then
-    echo "Create Init Database."
+  if [ ! -f "${dataFile}" ||  "$1"x == "-f"x ]; then
+    echo "初始化数据库."
     sqlite3 "${dataFile}" < app/sql/init_sqlite.sql
-fi
+  else
+    echo "数据文件${dataFile}已存在, 使用 -f 参数强制更新."
+  fi
 }
 
 
@@ -49,7 +49,7 @@ elif [ "$1"x == "backup"x ]; then
 elif [ "$1"x == "update"x ]; then
   update
 elif [ "$1"x == "init"x ]; then
-  init
+  init $2
 else
   echo "无效的参数: $1"
   echo ""
