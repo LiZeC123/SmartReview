@@ -1,15 +1,9 @@
 package top.lizec.smartreview.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.lizec.smartreview.entity.Knowledge;
-import top.lizec.smartreview.entity.ReviewDetail;
-import top.lizec.smartreview.entity.ReviewRecord;
-import top.lizec.smartreview.entity.ReviewState;
-import top.lizec.smartreview.mapper.ReviewDetailDao;
-import top.lizec.smartreview.mapper.ReviewStateDao;
 
-import javax.annotation.Resource;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,19 +11,25 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import top.lizec.smartreview.entity.Knowledge;
+import top.lizec.smartreview.entity.ReviewDetail;
+import top.lizec.smartreview.entity.ReviewRecord;
+import top.lizec.smartreview.entity.ReviewState;
+import top.lizec.smartreview.mapper.ReviewDetailDao;
+import top.lizec.smartreview.mapper.ReviewStateDao;
+
 @Service
 public class ReviewService {
-    private static final Duration halfDay = Duration.ofHours(12);
-
+    @Value("${smart-review.init-review-hour}")
+    private int initReviewHour;
     @Resource
-    ReviewStateDao stateDao;
-
+    private ReviewStateDao stateDao;
     @Resource
-    ReviewDetailDao detailDao;
-
+    private ReviewDetailDao detailDao;
     @Resource
-    UpdateReviewTimeServer updateReviewTimeServer;
-
+    private UpdateReviewTimeServer updateReviewTimeServer;
     @Resource
     private CheckService checkService;
 
@@ -41,7 +41,9 @@ public class ReviewService {
         state.setMemoryLevel(2);
         state.setIntervalTime(12);
 
-        final ZonedDateTime zonedDateTime = LocalDateTime.now().plus(halfDay).atZone(ZoneId.systemDefault());
+        final ZonedDateTime zonedDateTime = LocalDateTime.now()
+                .plus(Duration.ofHours(initReviewHour))
+                .atZone(ZoneId.systemDefault());
         state.setNextReviewTime(Date.from(zonedDateTime.toInstant()));
 
         stateDao.insert(state);
