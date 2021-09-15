@@ -41,8 +41,8 @@ elif [ "$1"x == "run"x ]; then
 elif [ "$1"x == "stop"x ]; then
   stopService
 elif [ "$1"x == "restart"x ]; then
-  compileService
   stopService
+  compileService
   runService
 elif [ "$1"x == "backup"x ]; then
   backup
