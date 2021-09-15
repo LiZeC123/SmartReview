@@ -2,6 +2,7 @@ package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import top.lizec.smartreview.dto.KnowledgeDto;
 import top.lizec.smartreview.dto.KnowledgeVO;
 import top.lizec.smartreview.entity.Knowledge;
@@ -11,6 +12,7 @@ import top.lizec.smartreview.service.app.CreateKnowledgeService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,13 +52,31 @@ public class KnowledgeService {
         for (Knowledge k : knowledges) {
             k.setCreator(userId);
 
-            knowledgeDao.insert(k);
-
+            boolean isNewKnowledge = insertNewKnowledge(k);
             createKnowledgeService.afterInsertKnowledge(k, dto);
+            if (isNewKnowledge) {
+                tagService.createKnowledgeTag(dto.getTag(), userId, k.getId());
+                reviewService.createReviewRecord(k);
+            }
+        }
+    }
 
-            tagService.createKnowledgeTag(dto.getTag(), userId, k.getId());
-
-            reviewService.createReviewRecord(k);
+    /**
+     * 如果知识点不存在则插入知识点, 否则不进行插入. 无论是否插入都更新知识点ID.
+     *
+     * @param k 待插入知识点
+     * @return 知识点是否已经存在
+     */
+    private boolean insertNewKnowledge(Knowledge k) {
+        // 数据不存在则插入, 否则返回数据库中的实体
+        List<Knowledge> knowledges = knowledgeDao.selectByMap(Map.of("title", k.getTitle()));
+        if (knowledges.isEmpty()) {
+            knowledgeDao.insert(k);
+            return true;
+        } else {
+            Integer kid = knowledges.get(0).getId();
+            k.setId(kid);
+            return false;
         }
     }
 
