@@ -9,7 +9,7 @@
         VALUES (#{kid}, #{sentenceId})
     </insert>
     <select id="selectSentenceByKnowledge" resultType="top.lizec.smartreview.entity.Sentence">
-        SELECT s.content
+        SELECT s.id, s.content
         FROM knowledge_sentence ks
                  JOIN sentence s on ks.sentence_id = s.id
         WHERE ks.knowledge_id = #{kid}
