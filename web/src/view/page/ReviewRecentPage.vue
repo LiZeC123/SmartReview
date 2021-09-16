@@ -18,6 +18,13 @@
               <p class="card-text">{{ card.content }}</p>
             </div>
 
+            <div class="card-body" v-if="card.sentences !== []">
+              <h5 class="card-title">相关句子</h5>
+              <div class="my-2" v-for="sentence in card.sentences" :key="sentence.id">
+                {{ sentence.content }}
+              </div>
+            </div>
+
             <div class="card-body" v-if="card.links.length !== 0">
               <h5 class="card-title">资源</h5>
               <ul>
@@ -83,8 +90,8 @@ export default {
       card.doProcess = false;
       // TODO: 删除操作可以添加动画效果
       // https://cn.vuejs.org/v2/guide/transitions.html
-      this.axios.post("/review/finishReview",{"kid": card.id, "memoryLevel": card.process})
-          .then(()=> this.cards.splice(idx, 1))
+      this.axios.post("/review/finishReview", {"kid": card.id, "memoryLevel": card.process})
+          .then(() => this.cards.splice(idx, 1))
     },
     changeShowStatus: function (card) {
       card.showContent = !card.showContent;
@@ -96,8 +103,8 @@ export default {
       url: 'knowledge/queryRecentReview',
     }).then(response => {
       for (let card of response.data.data) {
-        card.showContent = false;
-        card.process = 85;
+        card.showContent = false
+        card.process = 85
       }
       this.cards = response.data.data;
     })
