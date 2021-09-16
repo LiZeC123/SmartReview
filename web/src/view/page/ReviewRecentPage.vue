@@ -18,6 +18,13 @@
               <p class="card-text">{{ card.content }}</p>
             </div>
 
+            <div class="card-body" v-if="card.sentences !== []">
+              <h5 class="card-title">相关句子</h5>
+              <div class="my-2" v-for="sentence in card.sentences" :key="sentence.id">
+                {{ sentence.content }}
+              </div>
+            </div>
+
             <div class="card-body" v-if="card.links.length !== 0">
               <h5 class="card-title">资源</h5>
               <ul>
@@ -33,18 +40,17 @@
 
             <div class="card-footer" id="card-btn-group">
               <div class="d-flex justify-content-between align-items-center">
-                <button @click="finishCard(card.id, index, 3)"
-                        class="btn btn-outline-success" type="button">熟悉
-                </button>
-                <button @click="finishCard(card.id, index, 2)"
-                        class="btn btn-outline-secondary" type="button">记得
-                </button>
-                <button @click="finishCard(card.id, index, 1)"
-                        class="btn btn-outline-secondary" type="button">陌生
-                </button>
-                <button @click="finishCard(card.id, index, 0)"
-                        class="btn btn-outline-danger" type="button">遗忘
-                </button>
+
+                <div>陌生</div>
+                <div class="progress w-75" :id='"process-"+ card.id'
+                     @mousedown="startProcess(card, $event)"
+                     @mousemove="moveProcess(card, $event)"
+                     @mouseup="stopProcess(card, index)">
+                  <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar"
+                       :style="'width: ' + card.process + '%'"
+                  ></div>
+                </div>
+                <div>熟悉</div>
               </div>
             </div>
 
@@ -65,18 +71,27 @@ export default {
     }
   },
   methods: {
-    // TODO: 删除操作可以添加动画效果
-    // https://cn.vuejs.org/v2/guide/transitions.html
-    finishCard: function (id, idx, memoryLevel) {
-      this.axios({
-        method: 'get',
-        url: "/review/finishReview",
-        params: {"kid": id, "memoryLevel": memoryLevel},
-      }).then(response => {
-        if (response.data.success) {
-          this.cards.splice(idx, 1);
-        }
-      });
+    startProcess: function (card, event) {
+      card.doProcess = true;
+      card.beginX = event.offsetX;
+      card.positionX = event.offsetX;
+      card.beginClientX = event.clientX;
+      card.processLength = document.getElementById("process-" + card.id).clientWidth;
+      card.process = Math.round(card.positionX / card.processLength * 100)
+    },
+    moveProcess: function (card, event) {
+      if (card.doProcess) {
+        let moveX = event.clientX - card.beginClientX
+        card.positionX = (card.beginX + moveX > card.processLength) ? card.processLength : (card.beginX + moveX < 0) ? 0 : card.beginX + moveX;
+        card.process = Math.round(card.positionX / card.processLength * 100)
+      }
+    },
+    stopProcess: function (card, idx) {
+      card.doProcess = false;
+      // TODO: 删除操作可以添加动画效果
+      // https://cn.vuejs.org/v2/guide/transitions.html
+      this.axios.post("/review/finishReview", {"kid": card.id, "memoryLevel": card.process})
+          .then(() => this.cards.splice(idx, 1))
     },
     changeShowStatus: function (card) {
       card.showContent = !card.showContent;
@@ -88,7 +103,8 @@ export default {
       url: 'knowledge/queryRecentReview',
     }).then(response => {
       for (let card of response.data.data) {
-        card.showContent = false;
+        card.showContent = false
+        card.process = 85
       }
       this.cards = response.data.data;
     })
