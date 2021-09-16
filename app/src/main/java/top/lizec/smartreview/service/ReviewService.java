@@ -51,6 +51,7 @@ public class ReviewService {
 
     @Transactional
     public void updateKnowledgeReview(Integer userId, Integer kid, Integer memoryLevel) {
+        memoryLevel = memoryLevel / 25; // 前端输入是0~99, 转换为0~3
         checkService.checkKnowledgePermission(userId, kid);
         updateReviewRecord(kid, memoryLevel);
     }
