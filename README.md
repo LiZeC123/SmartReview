@@ -1,5 +1,11 @@
 Smart-Review 复习管理器
 ========================
+![](https://img.shields.io/github/license/LiZeC123/SmartReview)
+![](https://img.shields.io/github/issues/LiZeC123/SmartReview)
+![](https://img.shields.io/github/v/tag/LiZeC123/SmartReview)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/LiZeC123/SmartReview)
+![GitHub last commit](https://img.shields.io/github/last-commit/LiZeC123/SmartReview)
+
 
 Smart-Review是一个基于人工智能的复习管理工具, 其核心功能是帮助用户维护一个自定义的知识库, 并且在适当的时间间隔下提示用户对相关知识点进行复习.
 
