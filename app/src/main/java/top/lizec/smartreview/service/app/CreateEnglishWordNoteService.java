@@ -18,7 +18,7 @@ import top.lizec.smartreview.service.SentenceService;
 
 @Service
 public class CreateEnglishWordNoteService implements CreateKnowledgeService {
-    private static final int APP_TYPE = 1;
+    private static final int APP_TYPE = 2;
     @Resource
     private SentenceClient sentenceClient;
     @Resource

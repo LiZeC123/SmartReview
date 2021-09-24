@@ -7,6 +7,7 @@ import top.lizec.smartreview.dto.KnowledgeDto;
 import top.lizec.smartreview.dto.KnowledgeVO;
 import top.lizec.smartreview.entity.Knowledge;
 import top.lizec.smartreview.mapper.KnowledgeDao;
+import top.lizec.smartreview.service.app.CreateBaseKnowledgeService;
 import top.lizec.smartreview.service.app.CreateEnglishWordNoteService;
 import top.lizec.smartreview.service.app.CreateKnowledgeService;
 
@@ -35,12 +36,15 @@ public class KnowledgeService {
 
     @Resource
     private CreateEnglishWordNoteService createEnglishWordNoteService;
+    @Resource
+    private CreateBaseKnowledgeService createBaseKnowledgeService;
 
 
     @PostConstruct
     public void init() {
         createServices = new HashMap<>();
-        createServices.put(1, createEnglishWordNoteService);
+        createServices.put(1, createBaseKnowledgeService);
+        createServices.put(2, createEnglishWordNoteService);
     }
 
 

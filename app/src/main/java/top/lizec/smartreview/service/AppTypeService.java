@@ -2,22 +2,25 @@ package top.lizec.smartreview.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
 
 import top.lizec.smartreview.entity.AppType;
-import top.lizec.smartreview.mapper.AppTypeDao;
 
 @Service
 public class AppTypeService {
 
-    @Resource
-    private AppTypeDao appTypeDao;
+    private static final Map<Integer, AppType> appTypeMap;
+
+    static {
+        appTypeMap = new HashMap<>();
+        appTypeMap.put(1, new AppType(1, "基本记录", "BaseKnowledge"));
+        appTypeMap.put(2, new AppType(2, "英语单词本", "EnglishWordBook"));
+        appTypeMap.put(3, new AppType(3, "力扣题解", "LeetCodeNote"));
+    }
 
     public Map<Integer,AppType> getAppTypes() {
-        return appTypeDao.selectList(null).stream().collect(Collectors.toMap(AppType::getId, e->e));
+        return appTypeMap;
     }
 
 }

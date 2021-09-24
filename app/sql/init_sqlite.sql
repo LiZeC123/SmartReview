@@ -22,14 +22,6 @@ CREATE TABLE knowledge
 );
 CREATE INDEX creator_index ON knowledge (creator);
 
--- 应用类型表
-CREATE TABLE app_type
-(
-    id   INTEGER PRIMARY KEY AUTOINCREMENT,
-    name CHAR(16) NOT NULL,
-    comp CHAR(32) NOT NULL
-);
-
 
 -- 标签基本信息表
 CREATE TABLE tag
