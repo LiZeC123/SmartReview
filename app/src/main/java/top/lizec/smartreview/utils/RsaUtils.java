@@ -1,29 +1,22 @@
 package top.lizec.smartreview.utils;
 
-import java.io.FileOutputStream;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
-public class RsaUtils {
-    private static PrivateKey privateKey;
-    private static PublicKey publicKey;
+public final class RsaUtils {
     private static final Path privateKeyPath = Paths.get("data", "RSA_PRIVATE");
     private static final Path publicKeyPath = Paths.get("data", "RSA_PUBLIC");
+    private static PrivateKey privateKey;
+    private static PublicKey publicKey;
 
     static {
         try {

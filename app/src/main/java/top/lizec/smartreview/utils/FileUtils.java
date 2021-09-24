@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 @Component
-public class FileUtils {
+public final class FileUtils {
     private static final Path tempFolder = Path.of("tmpFile");
 
     public FileUtils() throws IOException {

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import top.lizec.smartreview.entity.UserDetail;
 
 @Component
-public class UserInfoUtils {
+public final class UserInfoUtils {
 
     public Integer getCurrentUserId() {
         Authentication au = SecurityContextHolder.getContext().getAuthentication();

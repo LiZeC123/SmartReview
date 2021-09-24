@@ -1,9 +1,9 @@
 package top.lizec.smartreview.utils;
 
-public class LogFormatUtils {
+public final class LogFormatUtils {
 
     public static String argToString(Object[] args) {
-        if(args == null || args.length == 0) {
+        if (args == null || args.length == 0) {
             return "";
         } else {
             int iMax = args.length - 1;

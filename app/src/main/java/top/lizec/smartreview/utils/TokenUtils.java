@@ -8,7 +8,7 @@ import top.lizec.smartreview.entity.User;
 
 import java.util.Date;
 
-public class TokenUtils {
+public final class TokenUtils {
     private static final long ONE_DAY = 24 * 60 * 60 * 1000;
     private static final long EXPIRATION = 30 * ONE_DAY;
 
