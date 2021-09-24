@@ -10,5 +10,7 @@ public interface KnowledgeDao extends BaseMapper<Knowledge> {
 
     List<Knowledge> queryRecentReview(Integer userId, Date deadline);
 
+    List<Knowledge> queryList(Integer userId);
+
     Boolean checkUserPermission(Integer userId, Integer kid);
 }

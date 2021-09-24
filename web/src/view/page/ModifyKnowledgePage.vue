@@ -1,17 +1,15 @@
 <template>
   <div>
-    <knowledge-form :do-submit="doSubmit" :show-message="showMessage" :do-show="doShow" :knowledge="knowledge"
-                    @submit="updateKnowledge" @after-show="afterShow"></knowledge-form>
-<!--    <button type="submit" class="btn btn-primary float-end me-4" @click="sendSubmit">更新知识点</button>-->
+
+
   </div>
 </template>
 
 <script>
-import KnowledgeForm from "@/components/KnowledgeForm";
 
 export default {
   name: "ModifyKnowledgePage",
-  components: {KnowledgeForm},
+  components: {},
   data: function () {
     return {
       doSubmit: false,
@@ -36,7 +34,7 @@ export default {
     const id = this.$route.query.id;
     this.axios({
       method: "get",
-      url: "/knowledge/selectOne",
+      url: "/knowledge/queryDetail",
       params: {
         "kid": id
       }

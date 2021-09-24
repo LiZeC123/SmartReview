@@ -9,6 +9,7 @@ import ExportPage from "./view/page/ExportPage";
 import TagPage from "./view/page/TagPage";
 import CreateKnowledgePage from "./view/page/CreateKnowledgePage";
 import ModifyKnowledgePage from "./view/page/ModifyKnowledgePage";
+import ReviewKnowledge from "./view/page/ReviewKnowledge";
 
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
         path: '/home', component: Main,
         children: [
             {path: 'recent', component: ReviewRecentCard},
+            {path: "review", component: ReviewKnowledge},
             {path: 'create', component: CreateKnowledgePage},
             {path: 'knowledge', component: ManageKnowledgePage},
             {path: 'tag', component: TagPage},

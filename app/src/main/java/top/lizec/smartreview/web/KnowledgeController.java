@@ -37,6 +37,13 @@ public class KnowledgeController {
         return Result.success(dto);
     }
 
+    @GetMapping("/queryList")
+    public Result<List<KnowledgeVO>> queryList() {
+        // TODO: 临时接口, 用于展示不处于复习时间段的单词
+        Integer userId = userInfoUtils.getCurrentUserId();
+        List<KnowledgeVO> dto = knowledgeService.queryList(userId);
+        return Result.success(dto);
+    }
 
     @GetMapping("/queryDetail")
     public Result<KnowledgeVO> queryDetail(Integer kid) {

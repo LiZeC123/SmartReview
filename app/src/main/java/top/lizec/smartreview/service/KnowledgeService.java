@@ -90,6 +90,11 @@ public class KnowledgeService {
         return completeKnowledge(knowledges);
     }
 
+    public List<KnowledgeVO> queryList(Integer userId) {
+        List<Knowledge> knowledges = knowledgeDao.queryList(userId);
+        return completeKnowledge(knowledges);
+    }
+
     public KnowledgeVO queryDetail(Integer userId, Integer kid) {
         checkService.checkKnowledgePermission(userId, kid);
         final Knowledge knowledge = knowledgeDao.selectById(kid);

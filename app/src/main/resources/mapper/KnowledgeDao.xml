@@ -20,4 +20,12 @@
         WHERE id = #{kid}
           AND creator = #{userId}
     </select>
+
+    <select id="queryList" resultType="top.lizec.smartreview.entity.Knowledge">
+        SELECT id, app_type, title, content
+        FROM knowledge
+        WHERE creator = #{userId}
+        ORDER BY id DESC
+        LIMIT 100
+    </select>
 </mapper>
