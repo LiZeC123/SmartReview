@@ -20,9 +20,4 @@ class RsaUtilsTest {
         PublicKey publicKey = RsaUtils.getPublicKey();
         assertNotNull(publicKey);
     }
-
-    void testPair() {
-        PrivateKey privateKey = RsaUtils.getPrivateKey();
-
-    }
 }
