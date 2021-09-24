@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import BaseKnowledge from "../../components/BaseKnowledge";
 import EnglishWordBook from "../../components/EnglishWordBook";
 import LeetCodeNote from "../../components/LeetCodeNote";
 import KnowledgeLink from "../../components/KnowledgeLink";
@@ -49,7 +50,7 @@ import $ from "jquery";
 
 export default {
   name: "CreateKnowledgePage",
-  components: {EnglishWordBook, LeetCodeNote, KnowledgeLink, KnowledgeTag},
+  components: {BaseKnowledge, EnglishWordBook, LeetCodeNote, KnowledgeLink, KnowledgeTag},
   data: function () {
     return {
       showMessage: "知识点已进入自动复习队列",
@@ -101,8 +102,10 @@ export default {
 
       let knowledge;
       if (this.currentId === 1) {
-        knowledge = this.createEnglishWordBook();
+        knowledge = this.createBaseKnowledge();
       } else if (this.currentId === 2) {
+        knowledge = this.createEnglishWordBook();
+      } else if (this.currentId === 3) {
         knowledge = this.submitLeetCodeNote();
       }
 
@@ -114,6 +117,15 @@ export default {
           this.show()
         }
       })
+    },
+    createBaseKnowledge: function () {
+      return {
+        "appType": this.currentId,
+        "title": this.extend.title,
+        "content": this.extend.content,
+        "link": this.links,
+        "tag": this.tags,
+      }
     },
     createEnglishWordBook: function () {
       return {
