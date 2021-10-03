@@ -18,7 +18,7 @@
               <p class="card-text">{{ card.content }}</p>
             </div>
 
-            <div class="card-body" v-if="card.sentences !== []">
+            <div class="card-body" v-if="card.sentences && card.sentences.length !== 0">
               <h5 class="card-title">相关句子</h5>
               <div class="my-2" v-for="sentence in card.sentences" :key="sentence.id">
                 {{ sentence.content }}
