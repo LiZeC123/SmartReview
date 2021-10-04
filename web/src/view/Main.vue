@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="h-100">
+  <div id="mainContainer" class="bg-light">
     <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
       <div class="container-fluid">
         <img alt="icon" class="me-2" src="../assets/logo.png" style="height: 38px">
