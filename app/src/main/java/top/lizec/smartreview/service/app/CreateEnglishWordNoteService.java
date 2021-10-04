@@ -1,13 +1,7 @@
 package top.lizec.smartreview.service.app;
 
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import top.lizec.smartreview.algo.SentenceClient;
+import top.lizec.smartreview.algo.SentenceAnalyzer;
 import top.lizec.smartreview.algo.entity.EnglishWord;
 import top.lizec.smartreview.dto.KnowledgeDto;
 import top.lizec.smartreview.entity.Knowledge;
@@ -16,11 +10,15 @@ import top.lizec.smartreview.entity.Sentence;
 import top.lizec.smartreview.service.LinkService;
 import top.lizec.smartreview.service.SentenceService;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CreateEnglishWordNoteService implements CreateKnowledgeService {
     private static final int APP_TYPE = 2;
     @Resource
-    private SentenceClient sentenceClient;
+    private SentenceAnalyzer sentenceAnalyzer;
     @Resource
     private LinkService linkService;
     @Resource
@@ -28,7 +26,7 @@ public class CreateEnglishWordNoteService implements CreateKnowledgeService {
 
     @Override
     public List<Knowledge> parseKnowledgeDto(KnowledgeDto dto) {
-        final List<EnglishWord> englishWords = sentenceClient.queryWordDifficulty(dto.getWords());
+        final List<EnglishWord> englishWords = sentenceAnalyzer.queryWordDifficulty(dto.getWords());
 
         List<Knowledge> knowledges = new ArrayList<>(englishWords.size());
         for (EnglishWord words : englishWords) {
