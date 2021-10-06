@@ -11,23 +11,23 @@ services:
       - ./data:/app/data
     environment: 
       TZ: Asia/Shanghai
-    depends_on: 
-      - redis
-      - algo
-  redis:
-    container_name: smart-review-redis
-    image: redis:6.2.5-alpine
-    expose:
-      - "6379"
-  algo:
-    container_name: smart-review-algo
-    environment: 
-      TZ: Asia/Shanghai
-    build: 
-      context: ./
-      dockerfile: docker/algo/Dockerfile
-    expose: 
-      - "5000"
+  #   depends_on: 
+  #     - redis
+  #     - algo
+  # redis:
+  #   container_name: smart-review-redis
+  #   image: redis:6.2.5-alpine
+  #   expose:
+  #     - "6379"
+  # algo:
+  #   container_name: smart-review-algo
+  #   environment: 
+  #     TZ: Asia/Shanghai
+  #   build: 
+  #     context: ./
+  #     dockerfile: docker/algo/Dockerfile
+  #   expose: 
+  #     - "5000"
   web:
     container_name: smart-review-web
     build: 

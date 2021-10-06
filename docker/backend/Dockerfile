@@ -17,4 +17,4 @@ RUN apt-get update && \
 COPY --from=build /app/target/smart-review-1.0.0.jar /app/
 
 # 由于服务器资源有限, 默认只使用1/4内存, 因此手动指定最大可用内存
-ENTRYPOINT [ "java", "-Xmx350M", "-jar", "smart-review-1.0.0.jar", "--spring.profiles.active=prod" ]
+ENTRYPOINT [ "java", "-Xmx300M", "-jar", "smart-review-1.0.0.jar", "--spring.profiles.active=prod" ]
