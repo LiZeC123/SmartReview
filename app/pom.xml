@@ -171,9 +171,9 @@
 
         <!-- 验证码相关组件-->
         <dependency>
-            <groupId>com.github.penggle</groupId>
+            <groupId>pro.fessional</groupId>
             <artifactId>kaptcha</artifactId>
-            <version>2.3.2</version>
+            <version>2.3.3</version>
         </dependency>
 
         <!-- 远程调用相关相关组件-->
