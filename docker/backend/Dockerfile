@@ -7,7 +7,9 @@ RUN mvn package -Dmaven.test.skip=true
 
 # -------------------------------
 
-FROM openjdk:11.0.10-jre-slim
+# 使用JDK运行, 从而包含JDK中的基本工具
+# FROM openjdk:11.0.10-jre-slim
+FROM openjdk:11.0.10-jdk-buster
 WORKDIR /app
 
 RUN apt-get update && \
