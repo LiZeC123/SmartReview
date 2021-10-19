@@ -2,9 +2,7 @@ version: '2'
 services:
   backend:
     container_name: smart-review-backend
-    build: 
-      context: ./
-      dockerfile: docker/backend/Dockerfile
+    image: ghcr.io/lizec123/smart-review-backend:latest
     expose: 
       - "8792"
     volumes: 
@@ -30,9 +28,7 @@ services:
   #     - "5000"
   web:
     container_name: smart-review-web
-    build: 
-      context: ./
-      dockerfile: docker/web/Dockerfile
+    image: ghcr.io/lizec123/smart-review-web:latest
     ports: 
       - "6080:80"
     depends_on: 
