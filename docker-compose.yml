@@ -1,37 +1,18 @@
 version: '2'
 services:
-  backend:
-    container_name: smart-review-backend
-    image: ghcr.io/lizec123/smart-review-backend:latest
-    expose: 
-      - "8792"
-    volumes: 
-      - ./data:/app/data
+  review:
+    container_name: smart-review
+    image: ghcr.io/lizec123/smart-review:latest
+    ports: 
+      - "6080:80"
     environment: 
       TZ: Asia/Shanghai
+    volumes: 
+      - ./data:/app/data
   #   depends_on: 
   #     - redis
-  #     - algo
   # redis:
   #   container_name: smart-review-redis
   #   image: redis:6.2.5-alpine
   #   expose:
-  #     - "6379"
-  # algo:
-  #   container_name: smart-review-algo
-  #   environment: 
-  #     TZ: Asia/Shanghai
-  #   build: 
-  #     context: ./
-  #     dockerfile: docker/algo/Dockerfile
-  #   expose: 
-  #     - "5000"
-  web:
-    container_name: smart-review-web
-    image: ghcr.io/lizec123/smart-review-web:latest
-    ports: 
-      - "6080:80"
-    depends_on: 
-      - backend
-
-  
+  #     - "6379"  
