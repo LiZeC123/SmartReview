@@ -7,6 +7,7 @@ services:
       - "6080:80"
     environment: 
       TZ: Asia/Shanghai
+      GIN_MODE: release
     volumes: 
       - ./data:/app/data
   #   depends_on: 
