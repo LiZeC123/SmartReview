@@ -1,44 +1,57 @@
 package main
 
 import (
-	"io"
-	"net/http"
-	"os"
-
+	"fmt"
 	_ "github.com/CodyGuo/godaemon"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"io"
+	"os"
 )
 
-func main() {
-	// 全局配置需要在开始的时候执行
+var db = initDatabase()
+
+func initDatabase() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open("data/SmartReview.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	return db
+}
+
+func init() {
+
+}
+
+func initLog() {
 	gin.DisableConsoleColor()
 	f, _ := os.Create("gin.log")
-	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+	gin.DefaultWriter = io.MultiWriter(f)
+}
+
+func main() {
+	GinMode := os.Getenv("GIN_MODE")
+	fmt.Print(GinMode)
+	if GinMode == "release" {
+		initLog()
+	}
 
 	r := gin.Default()
-	r.SetTrustedProxies(nil)
+	_ = r.SetTrustedProxies(nil)
 
 	user := r.Group("/api/user")
 	{
-		user.GET("/login", login)
+		user.POST("/login", Login)
+		user.GET("/getCurrentUserName", GetCurrentUserName)
 	}
 
-	r.Run("localhost:8792")
-}
+	knowledge := r.Group("/api/knowledge")
+	{
+		knowledge.GET("/queryRecentReview", QueryRecentReview)
 
-type UserLogin struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-func login(c *gin.Context) {
-	var login UserLogin
-	if err := c.ShouldBindJSON(&login); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"success": true, "token": "<token>"})
+	_ = r.Run("localhost:8792")
 }
-

@@ -12,6 +12,9 @@ RUN npm run build
 FROM golang:1.17.5-alpine as go-build
 WORKDIR /app
 
+RUN apk update && \
+    apk add --no-cache gcc musl-dev
+
 COPY app/go.mod .
 COPY app/go.sum .
 RUN go mod download

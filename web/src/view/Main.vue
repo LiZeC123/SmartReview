@@ -83,9 +83,8 @@ export default {
   },
   created() {
     this.axios.get("user/getCurrentUserName").then(response => {
-      if (response.data.success) {
-        this.username = response.data.data
-      }
+      console.log(response)
+      this.username = response.data.username
     });
   }
 }

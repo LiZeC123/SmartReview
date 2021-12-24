@@ -101,11 +101,11 @@ export default {
   },
   mounted() {
     this.initCards().then(response => {
-      for (let card of response.data.data) {
+      for (let card of response.data) {
         card.showContent = false
         card.process = 85
       }
-      this.cards = response.data.data;
+      this.cards = response.data;
     })
   }
 }

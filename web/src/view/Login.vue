@@ -70,7 +70,7 @@ export default {
         "password": this.password
       }).then(response => {
         if (response.data.success) {
-          const token = response.data.data;
+          const token = response.data.token;
           this.$store.commit('set_token', token);
           this.$router.push('/home/recent');
         }
