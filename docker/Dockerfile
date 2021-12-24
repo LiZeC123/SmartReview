@@ -41,11 +41,7 @@ COPY docker/nginx.conf /etc/nginx/
 # 复制后端可执行文件
 COPY --from=go-build /app/app .
 
-
-EXPOSE 5000
-
 # 使用ENTRYPOINT限制容器只能执行下面的指令
-ENTRYPOINT [ "python3", "app.py"]
-
+CMD [ "sh", "-c", "nginx && ./app -d=true && python3 app.py" ]
 
 # TODO： 可能需要安装Sqlite

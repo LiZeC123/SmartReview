@@ -1,3 +1,5 @@
+github.com/CodyGuo/godaemon v0.0.0-20200413142854-c36b39fdd071 h1:GFI7Rs86D4qip+tBvMcv0ux5kHbngC0rNWfgpTeVoAQ=
+github.com/CodyGuo/godaemon v0.0.0-20200413142854-c36b39fdd071/go.mod h1:VBC/JvjvRkcgE7wMjDJs7Y94Ta6KSpCWDquUKW+WbJo=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
