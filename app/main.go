@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"os"
+
 	_ "github.com/CodyGuo/godaemon"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"io"
-	"os"
 )
 
 var db = initDatabase()
@@ -28,14 +29,17 @@ func initLog() {
 }
 
 func appServer() {
+
+	ff, _ := os.Create("tmp.log")
 	GinMode := os.Getenv("GIN_MODE")
-	fmt.Print(GinMode)
+	fmt.Fprintf(ff, "GinMode=%s", GinMode)
 	if GinMode == "release" {
+		fmt.Fprintf(ff, "initLog")
 		initLog()
 	}
 
 	r := gin.Default()
-	_ = r.SetTrustedProxies(nil)
+	// _ = r.SetTrustedProxies(nil)
 
 	user := r.Group("/api/user")
 	{
