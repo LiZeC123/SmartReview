@@ -30,16 +30,13 @@ func initLog() {
 
 func appServer() {
 
-	ff, _ := os.Create("tmp.log")
 	GinMode := os.Getenv("GIN_MODE")
-	fmt.Fprintf(ff, "GinMode=%s", GinMode)
 	if GinMode == "release" {
-		fmt.Fprintf(ff, "initLog")
 		initLog()
 	}
 
 	r := gin.Default()
-	// _ = r.SetTrustedProxies(nil)
+	_ = r.SetTrustedProxies(nil)
 
 	user := r.Group("/api/user")
 	{
