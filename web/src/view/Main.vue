@@ -30,12 +30,6 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/home/knowledge">知识管理</router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/home/tag">标签管理</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/home/export">导出数据</router-link>
-            </li>
           </ul>
 
           <ul class="navbar-nav">
