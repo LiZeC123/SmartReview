@@ -21,17 +21,13 @@ func initDatabase() *gorm.DB {
 	return db
 }
 
-func init() {
-
-}
-
 func initLog() {
 	gin.DisableConsoleColor()
 	f, _ := os.Create("gin.log")
 	gin.DefaultWriter = io.MultiWriter(f)
 }
 
-func main() {
+func appServer() {
 	GinMode := os.Getenv("GIN_MODE")
 	fmt.Print(GinMode)
 	if GinMode == "release" {
@@ -50,8 +46,13 @@ func main() {
 	knowledge := r.Group("/api/knowledge")
 	{
 		knowledge.GET("/queryRecentReview", QueryRecentReview)
+		knowledge.GET("/create", CreateKnowledge)
 
 	}
 
 	_ = r.Run("localhost:8792")
+}
+
+func main() {
+	appServer()
 }
