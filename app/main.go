@@ -47,7 +47,7 @@ func appServer() {
 	{
 		knowledge.GET("/queryRecentReview", QueryRecentReview)
 		knowledge.GET("/generateWordMarkdown", GenerateWordMarkdown)
-
+		knowledge.GET("/migrate", Migrate)
 	}
 
 	_ = r.Run("localhost:8792")

@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/CodyGuo/godaemon v0.0.0-20200413142854-c36b39fdd071
-	github.com/PuerkitoBio/goquery v1.8.0 // indirect
+	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible
