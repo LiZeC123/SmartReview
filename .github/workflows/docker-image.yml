@@ -30,4 +30,4 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Push Docker Image to Github Packages
-      run: docker push ghcr.io/lizec123/smart-reviews
+      run: docker push ghcr.io/lizec123/smart-review
