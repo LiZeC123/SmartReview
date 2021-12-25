@@ -7,8 +7,7 @@ function backup {
 function update() {
   git pull
   docker-compose down
-  docker pull ghcr.io/lizec123/smart-review-backend:latest
-  docker pull ghcr.io/lizec123/smart-review-web:latest
+  docker pull ghcr.io/lizec123/smart-review:latest
   docker-compose up -d
 }
 
