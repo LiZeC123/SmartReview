@@ -29,17 +29,17 @@ func QueryRecentReview(c *gin.Context) {
 	c.JSON(http.StatusOK, cards)
 }
 
-func CreateKnowledge(c *gin.Context) {
+func GenerateWordMarkdown(c *gin.Context) {
 	word := c.DefaultQuery("word", "")
 	if word == "" {
 		c.String(http.StatusOK, "请指定需要插入的单词")
 	}
 
 	content := fmt.Sprintf("## %s\n\n\n", word)
-	content += fmt.Sprintf("> [Learner's Dictionary](https://www.learnersdictionary.com/definition/%s", word)
-	content += fmt.Sprintf("  [Merriam](https://www.merriam-webster.com/dictionary/%s", word)
-	content += fmt.Sprintf("  [Bing Image](https://cn.bing.com/images/search?q=%s", word)
-	content += fmt.Sprintf("  [Bing Dictionary](https://cn.bing.com/dict/search?q=%s", word)
+	content += fmt.Sprintf("> [Learner's Dictionary](https://www.learnersdictionary.com/definition/%s)", word)
+	content += fmt.Sprintf("  [Merriam](https://www.merriam-webster.com/dictionary/%s)", word)
+	content += fmt.Sprintf("  [Bing Image](https://cn.bing.com/images/search?q=%s)", word)
+	content += fmt.Sprintf("  [Bing Dictionary](https://cn.bing.com/dict/search?q=%s)", word)
 
 	c.String(http.StatusOK, content)
 }

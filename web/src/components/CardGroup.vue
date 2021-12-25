@@ -18,26 +18,6 @@
               <p class="card-text">{{ card.content }}</p>
             </div>
 
-            <div class="card-body" v-if="card.sentences && card.sentences.length !== 0">
-              <h5 class="card-title">相关句子</h5>
-              <div class="my-2" v-for="sentence in card.sentences" :key="sentence.id">
-                {{ sentence.content }}
-              </div>
-            </div>
-
-            <div class="card-body" v-if="card.links.length !== 0">
-              <h5 class="card-title">资源</h5>
-              <ul>
-                <li class="my-2" v-for="link in card.links" :key="link.url">
-                  <a :href="link.url" target="_blank">{{ link.name }}</a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="card-body">
-              <span class="badge bg-secondary me-3" v-for="tag in card.tag" v-bind:key="tag.id">{{ tag.name }}</span>
-            </div>
-
             <div class="card-footer" v-if="showProcess">
               <div class="d-flex justify-content-between align-items-center">
 

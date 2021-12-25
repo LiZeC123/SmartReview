@@ -46,7 +46,7 @@ func appServer() {
 	knowledge := r.Group("/api/knowledge")
 	{
 		knowledge.GET("/queryRecentReview", QueryRecentReview)
-		knowledge.GET("/create", CreateKnowledge)
+		knowledge.GET("/generateWordMarkdown", GenerateWordMarkdown)
 
 	}
 

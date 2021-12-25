@@ -24,14 +24,6 @@
 
         <component :is="currentComp" :reset="reset" :submit="submit" @on-submit="updateExtend"></component>
 
-        <hr/>
-
-        <knowledge-link :reset="reset" :submit="submit" @on-submit="updateLink"></knowledge-link>
-
-        <hr/>
-
-        <knowledge-tag :reset="reset" :submit="submit" @on-submit="updateTag"></knowledge-tag>
-
       </div>
     </div>
 
@@ -55,10 +47,7 @@ export default {
     return {
       showMessage: "知识点已进入自动复习队列",
       currentId: 0,
-      types: [],
-      links: [],
-      tags: [],
-      extend: {},
+      types: [{"id": 0, "comp": EnglishWordBook, "name": "单词本"}, {"id": 1, "comp": BaseKnowledge, "name": "基本类型"}],
       reset: 0,
       submit: 0,
       ss: {
@@ -157,12 +146,6 @@ export default {
       }
     },
   },
-  created() {
-    this.axios.get('/appType/getAllTypes').then(response => {
-      this.types = response.data.data;
-      this.currentId = 1;
-    });
-  }
 
 }
 </script>
