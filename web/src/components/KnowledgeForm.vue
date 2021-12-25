@@ -19,14 +19,6 @@
 
       <component :is="currentComp" @on-submit="updateExtend"></component>
 
-      <hr/>
-
-      <knowledge-link :reset="reset" :submit="submit" @on-submit="updateLink"></knowledge-link>
-
-      <hr/>
-
-      <knowledge-tag :reset="reset" :submit="submit" @on-submit="updateTag"></knowledge-tag>
-
     </div>
   </div>
 </template>
@@ -34,13 +26,11 @@
 <script>
 import LeetCodeNote from "./LeetCodeNote";
 import $ from "jquery";
-import KnowledgeTag from "./KnowledgeTag";
-import KnowledgeLink from "./KnowledgeLink";
 import EnglishWordBook from "./EnglishWordBook";
 
 export default {
   name: "KnowledgeForm",
-  components: {EnglishWordBook, LeetCodeNote, KnowledgeLink, KnowledgeTag},
+  components: {EnglishWordBook, LeetCodeNote},
   props: {
     doSubmit: Boolean,
     doShow: Boolean,
@@ -54,31 +44,13 @@ export default {
       types: [],
       title: "",
       content: "",
-      links: [],
       initLinks: [],
       reset: 0,
     }
   },
   methods: {
-    updateLink: function (links) {
-      this.links = links
-    },
-    updateTag: function (tags) {
-      this.tags = tags
-    },
     updateExtend: function (extend) {
       this.extend = extend
-    },
-
-    submitKnowledge: function () {
-      const knowledge = {
-        "appType": this.appType.currentId,
-        "link": JSON.stringify(this.links),
-        "tag": this.tags,
-        "extend": this.extend,
-      }
-
-      this.$emit('submit', knowledge);
     },
     resetForm: function () {
       this.title = "";
@@ -93,10 +65,6 @@ export default {
         console.log("Return Default Comp.")
         return "EnglishWordBook"
       }
-    },
-
-    getInitLinks: function () {
-      return this.initLinks;
     },
     clear: function () {
       return this.title === "";

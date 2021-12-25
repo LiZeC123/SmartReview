@@ -9,13 +9,13 @@ axios.defaults.baseURL = '/api'
 axios.interceptors.request.use(config => {
     // 这是一个函数, 因此并不会在定义时立即执行, 而是在每次发送请求时执行此操作
     if(store.state.token) {
-        config.headers.common['Authorization'] = store.state.token;
+        config.headers.common['Token'] = store.state.token;
     }
     return config;
 });
 
 axios.interceptors.response.use(res => {
-    if (res.data.success) {
+    if (res.data) {
         return res;
     } else {
         store.commit('del_token')

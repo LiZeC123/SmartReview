@@ -4,6 +4,14 @@ function backup {
   zip -r SmartReview.zip data/
 }
 
+function update() {
+  git pull
+  docker-compose down
+  docker pull ghcr.io/lizec123/smart-review-backend:latest
+  docker pull ghcr.io/lizec123/smart-review-web:latest
+  docker-compose up -d
+}
+
 function init {
   dataFile=data/SmartReview.db
   if [ ! -f "${dataFile}" ]; then
@@ -21,6 +29,8 @@ function init {
 
 if [ "$1"x == "backup"x ]; then
   backup
+elif [ "$1"x == "update"x ]; then
+  update
 elif [ "$1"x == "init"x ]; then
   init $2
 else
@@ -29,5 +39,5 @@ else
   echo "用法: ./service [参数]"
   echo "参数可以选择以下值:"
   echo "init      初始化数据库"
-  echo "update    更新项目代码"
+  echo "update    更新项目代码并重启"
 fi
