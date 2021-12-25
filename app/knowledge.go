@@ -42,8 +42,8 @@ func migrateEnglishWordRecord() {
 		return
 	}
 
-	var record EnglishWordRecord
 	for _, word := range words {
+		var record EnglishWordRecord
 		err := db.Where("word = ?", word).First(&record).Error
 		if err != nil {
 			db.Create(&EnglishWordRecord{Word: word, Count: 0, Level: 0, Interval: 12, NextReviewTime: time.Now()})
