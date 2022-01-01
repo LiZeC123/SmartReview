@@ -30,6 +30,9 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/home/knowledge">知识管理</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/home/quote">配额管理</router-link>
+            </li>
           </ul>
 
           <ul class="navbar-nav">

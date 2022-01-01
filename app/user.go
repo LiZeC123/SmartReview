@@ -67,3 +67,17 @@ func GetCurrentUserName(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"username": user.UserName})
 }
+
+func GetUser(c *gin.Context) (*User, error) {
+	header := TokenHeader{}
+	if err := c.ShouldBindHeader(&header); err != nil {
+		return nil, err
+	}
+
+	user, err := CheckToken(header.Token)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}

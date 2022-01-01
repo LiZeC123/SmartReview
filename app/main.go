@@ -50,6 +50,14 @@ func appServer() {
 		knowledge.GET("/migrate", Migrate)
 	}
 
+	quote := r.Group("/api/quote")
+	{
+		quote.POST("/create", CreateQuote)
+		quote.GET("/list", ListQuote)
+		quote.POST("/use", UseQuote)
+		quote.POST("/del", DelQuote)
+	}
+
 	_ = r.Run("localhost:8792")
 }
 

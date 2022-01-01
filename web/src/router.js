@@ -6,8 +6,8 @@ import Login from "./view/Login";
 import Main from "./view/Main";
 import ManageKnowledgePage from "./view/page/ManageKnowledgePage";
 import CreateKnowledgePage from "./view/page/CreateKnowledgePage";
-import ModifyKnowledgePage from "./view/page/ModifyKnowledgePage";
 import ReviewKnowledge from "./view/page/ReviewKnowledge";
+import ManagerQuotePage from "./view/page/ManagerQuotePage";
 
 
 const routes = [
@@ -20,7 +20,7 @@ const routes = [
             {path: "review", component: ReviewKnowledge},
             {path: 'create', component: CreateKnowledgePage},
             {path: 'knowledge', component: ManageKnowledgePage},
-            {path: 'modify', component: ModifyKnowledgePage, name: "ModifyKnowledgePage"},
+            {path: 'quote', component: ManagerQuotePage}
         ]
     }
 ];
