@@ -173,7 +173,7 @@ func CreateTask(c *gin.Context) {
 		return
 	}
 
-	if err := db.Create(&Task{Name: vo.Name, Price: vo.Price, CD: vo.Price}).Error; err != nil {
+	if err := db.Create(&Task{Name: vo.Name, Price: vo.Price, CD: float64(vo.Cd)}).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
