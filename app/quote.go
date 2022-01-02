@@ -54,9 +54,10 @@ func QueryCounts(c *gin.Context) {
 	var quotes []Quote
 	db.Find(&quotes)
 	for _, q := range quotes {
-		value += float64(now-q.CreatedAt.Unix())/DaySecond/q.Price - (q.Consumed * q.Price)
-		speed += 1.0 / q.Price / 24.0
+		value += float64(now-q.CreatedAt.Unix())/DaySecond - (q.Consumed * q.Price)
 	}
+
+	speed = float64(len(quotes)) / 24
 
 	var tasks []Task
 	db.Find(&tasks)
