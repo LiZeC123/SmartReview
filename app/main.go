@@ -52,10 +52,18 @@ func appServer() {
 
 	quote := r.Group("/api/quote")
 	{
-		quote.POST("/create", CreateQuote)
-		quote.GET("/list", ListQuote)
-		quote.POST("/use", UseQuote)
-		quote.POST("/del", DelQuote)
+		quote.POST("/createQuote", CreateQuote)
+		quote.POST("/createTask", CreateTask)
+
+		quote.GET("/queryCounts", QueryCounts)
+		quote.GET("/queryQuotes", QueryQuotes)
+		quote.GET("/queryTasks", QueryTasks)
+
+		quote.POST("/consumeQuote", ConsumeQuote)
+		quote.POST("/finishTask", FinishTask)
+
+		quote.POST("/deleteQuote", DeleteQuote)
+		quote.POST("/deleteTask", DeleteTask)
 	}
 
 	_ = r.Run("localhost:8792")
