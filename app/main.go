@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io"
+	"log"
 	"os"
 
 	_ "github.com/CodyGuo/godaemon"
@@ -23,8 +23,9 @@ func initDatabase() *gorm.DB {
 
 func initLog() {
 	gin.DisableConsoleColor()
-	f, _ := os.Create("gin.log")
-	gin.DefaultWriter = io.MultiWriter(f)
+	f, _ := os.Create("data/gin.log")
+	gin.DefaultWriter = f
+	log.SetOutput(f)
 }
 
 func appServer() {

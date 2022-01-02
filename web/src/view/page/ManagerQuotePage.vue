@@ -13,8 +13,8 @@
         <tbody>
         <tr v-for="(rec) in counts" :key="rec.id">
           <th>{{ rec.name }}</th>
-          <th>{{ rec.value }}</th>
-          <th>{{ rec.speed }}</th>
+          <th>{{ rec.value.toFixed(5) }}</th>
+          <th>{{ rec.speed.toFixed(5) }}</th>
         </tr>
         </tbody>
       </table>
