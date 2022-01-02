@@ -44,20 +44,17 @@ type Count struct {
 }
 
 func QueryCounts(c *gin.Context) {
-
-	// 获得计算数据
 	const DaySecond = 24 * 60 * 60
+	start := time.Date(2022, 1, 1, 0, 0, 0, 0, time.Local)
 	now := time.Now().Unix()
-	value := 0.0
-	speed := 0.0
+	value := float64(now-start.Unix()) / DaySecond
+	speed := 1.0 / 24
 
 	var quotes []Quote
 	db.Find(&quotes)
 	for _, q := range quotes {
-		value += float64(now-q.CreatedAt.Unix())/DaySecond - (q.Consumed * q.Price)
+		value -= q.Consumed * q.Price
 	}
-
-	speed = float64(len(quotes)) / 24
 
 	var tasks []Task
 	db.Find(&tasks)
@@ -75,7 +72,7 @@ type QuoteVO struct {
 	Id    uint    `json:"id"`
 	Name  string  `json:"name"`
 	Price float64 `json:"price"`
-	Cd    int8    `json:"cd"`
+	Cd    int16   `json:"cd"`
 }
 
 func CreateQuote(c *gin.Context) {
@@ -102,7 +99,7 @@ func QueryQuotes(c *gin.Context) {
 			cd = 0
 		}
 
-		vo[i] = QuoteVO{Id: q.ID, Name: q.Name, Price: q.Price, Cd: int8(math.Ceil(cd))}
+		vo[i] = QuoteVO{Id: q.ID, Name: q.Name, Price: q.Price, Cd: int16(math.Ceil(cd))}
 	}
 
 	c.JSON(http.StatusOK, vo)
@@ -145,7 +142,7 @@ type TaskVO struct {
 	Id    uint    `json:"id"`
 	Name  string  `json:"name"`
 	Price float64 `json:"price"`
-	Cd    int8    `json:"cd"`
+	Cd    int16   `json:"cd"`
 }
 
 func QueryTasks(c *gin.Context) {
@@ -161,7 +158,7 @@ func QueryTasks(c *gin.Context) {
 			cd = 0
 		}
 
-		vo[i] = TaskVO{Id: t.ID, Name: t.Name, Price: t.Price, Cd: int8(math.Ceil(cd))}
+		vo[i] = TaskVO{Id: t.ID, Name: t.Name, Price: t.Price, Cd: int16(math.Ceil(cd))}
 	}
 
 	c.JSON(http.StatusOK, vo)

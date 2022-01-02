@@ -35,7 +35,7 @@
         <tr v-for="(record) in records" :key="record.id">
           <th>{{ record.name }}</th>
           <th>{{ record.price }}</th>
-          <th>{{ record.cd }}</th>
+          <th>{{ hourToDay(record.cd) }}</th>
           <th>
             <button :class="['btn', 'me-2', 'my-1', quoteEnable(record) ? 'btn-success' : 'btn-secondary']"
                     :disabled="!quoteEnable(record)" @click="use(record.id)">消耗
@@ -131,6 +131,10 @@ export default {
       this.axios.post("/quote/deleteQuote", {id}).then(() => this.reload())
     },
     hourToDay: function (currentInterval) {
+      if(currentInterval === 0) {
+        return "冷却完毕"
+      }
+
       if (currentInterval < 24) {
         return currentInterval + '小时';
       }
