@@ -64,7 +64,7 @@
         <tbody>
         <tr v-for="(rec) in tasks" :key="rec.id">
           <th>{{ rec.name }}</th>
-          <th>{{ rec.price }}</th>
+          <th>{{ rec.price.toFixed(3) }}</th>
           <th>{{ hourToDay(rec.cd) }}</th>
           <th>
             <button :class="['btn', 'me-2', 'my-1', taskEnable(rec) ? 'btn-success' : 'btn-secondary']"
@@ -78,16 +78,6 @@
 
       <button class="btn btn-primary me-2 my-1" @click="createTask">新建任务</button>
     </div>
-
-    <nav aria-label="Page navigation example">
-      <ul class="pagination  justify-content-center">
-        <li class="page-item"><a class="page-link" href="#">上一页</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">下一页</a></li>
-      </ul>
-    </nav>
 
   </div>
 </template>
@@ -162,7 +152,7 @@ export default {
     },
     createTask: function () {
       let name = prompt("请输入任务名称")
-      let price = parseFloat(prompt("请输入任务价值"))
+      let price = parseFloat(prompt("请输入任务权重(1~3)"))
       let cd = parseInt(prompt("请输入任务冷却时间"))
 
       this.axios.post("/quote/createTask", {"id": 0, name, price, cd}).then(() => this.reload())
