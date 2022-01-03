@@ -166,6 +166,10 @@ func QueryTasks(c *gin.Context) {
 		vo[i] = &TaskVO{Id: t.ID, Name: t.Name, Price: t.Price, Cd: int16(math.Ceil(cd))}
 	}
 
+	sort.Slice(vo, func(i, j int) bool {
+		return vo[i].Cd < vo[j].Cd
+	})
+
 	c.JSON(http.StatusOK, vo)
 }
 
