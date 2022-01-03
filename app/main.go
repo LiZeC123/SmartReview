@@ -46,6 +46,7 @@ func appServer() {
 
 	knowledge := r.Group("/api/knowledge")
 	{
+		knowledge.Use(Auth())
 		knowledge.GET("/queryRecentReview", QueryRecentReview)
 		knowledge.GET("/generateWordMarkdown", GenerateWordMarkdown)
 		knowledge.GET("/migrate", Migrate)
@@ -53,6 +54,7 @@ func appServer() {
 
 	quote := r.Group("/api/quote")
 	{
+		quote.Use(Auth())
 		quote.POST("/createQuote", CreateQuote)
 		quote.POST("/createTask", CreateTask)
 

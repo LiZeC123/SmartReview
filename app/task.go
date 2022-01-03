@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"math"
@@ -67,8 +66,6 @@ func QueryTasks(c *gin.Context) {
 	sort.Slice(vo, func(i, j int) bool {
 		return vo[i].Cd < vo[j].Cd
 	})
-
-	fmt.Printf("%v\n %v\n %v\n", vo[0], vo[1], vo[2])
 
 	c.JSON(http.StatusOK, vo)
 }

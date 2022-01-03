@@ -39,9 +39,10 @@ func Login(c *gin.Context) {
 	}
 
 	var user User
-	err := db.First(&user, "email = ? and password = ?", login.Email, login.Password).Error
+	err := db.Where("email = ? and password = ?", login.Email, login.Password).First(&user).Error
 	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"success": false})
+		return
 	}
 
 	token, err := NewToken(user)
@@ -80,4 +81,21 @@ func GetUser(c *gin.Context) (*User, error) {
 	}
 
 	return user, nil
+}
+
+func Auth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.Request.Header.Get("Token")
+		_, err := CheckToken(token)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"stat": 1,
+				"msg":  "禁止访问，请检查权限",
+			})
+
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
 }
