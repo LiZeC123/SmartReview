@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"math"
 	"net/http"
+	"sort"
 	"time"
 )
 
@@ -90,7 +91,7 @@ func QueryQuotes(c *gin.Context) {
 	var quotes []Quote
 	db.Find(&quotes)
 
-	vo := make([]QuoteVO, len(quotes))
+	vo := make([]*QuoteVO, len(quotes))
 	now := time.Now().Unix()
 
 	for i, q := range quotes {
@@ -99,8 +100,12 @@ func QueryQuotes(c *gin.Context) {
 			cd = 0
 		}
 
-		vo[i] = QuoteVO{Id: q.ID, Name: q.Name, Price: q.Price, Cd: int16(math.Ceil(cd))}
+		vo[i] = &QuoteVO{Id: q.ID, Name: q.Name, Price: q.Price, Cd: int16(math.Ceil(cd))}
 	}
+
+	sort.Slice(vo, func(i, j int) bool {
+		return vo[i].Cd < vo[j].Cd
+	})
 
 	c.JSON(http.StatusOK, vo)
 }
@@ -149,7 +154,7 @@ func QueryTasks(c *gin.Context) {
 	var tasks []Task
 	db.Find(&tasks)
 
-	vo := make([]TaskVO, len(tasks))
+	vo := make([]*TaskVO, len(tasks))
 	now := time.Now().Unix()
 
 	for i, t := range tasks {
@@ -158,7 +163,7 @@ func QueryTasks(c *gin.Context) {
 			cd = 0
 		}
 
-		vo[i] = TaskVO{Id: t.ID, Name: t.Name, Price: t.Price, Cd: int16(math.Ceil(cd))}
+		vo[i] = &TaskVO{Id: t.ID, Name: t.Name, Price: t.Price, Cd: int16(math.Ceil(cd))}
 	}
 
 	c.JSON(http.StatusOK, vo)
