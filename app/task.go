@@ -123,5 +123,8 @@ func DeleteTask(c *gin.Context) {
 	}
 
 	db.Delete(&Task{}, taskId.Id)
+
+	updateWeightSum()
+
 	c.JSON(http.StatusOK, gin.H{})
 }
