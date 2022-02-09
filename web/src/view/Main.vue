@@ -21,15 +21,15 @@
             <li class="nav-item active">
               <router-link class="nav-link" to="/home/recent">最近复习</router-link>
             </li>
-            <li class="nav-item active">
-              <router-link class="nav-link" to="/home/review">回顾知识</router-link>
-            </li>
+<!--            <li class="nav-item active">-->
+<!--              <router-link class="nav-link" to="/home/review">回顾知识</router-link>-->
+<!--            </li>-->
             <li class="nav-item">
               <router-link class="nav-link" to="/home/create">创建知识</router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/home/knowledge">知识管理</router-link>
-            </li>
+<!--            <li class="nav-item">-->
+<!--              <router-link class="nav-link" to="/home/knowledge">知识管理</router-link>-->
+<!--            </li>-->
             <li class="nav-item">
               <router-link class="nav-link" to="/home/quote">配额管理</router-link>
             </li>
