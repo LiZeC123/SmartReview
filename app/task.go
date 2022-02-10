@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/LiZeC123/SmartReview/app/db"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"math"
@@ -20,7 +21,7 @@ var WeightSum = 0.0
 
 func updateWeightSum() {
 	var tasks []Task
-	db.Find(&tasks)
+	db.Db.Find(&tasks)
 	weightSum := 0.0
 	for _, t := range tasks {
 		weightSum += t.Weight
@@ -30,7 +31,7 @@ func updateWeightSum() {
 }
 
 func init() {
-	err := db.AutoMigrate(&Task{})
+	err := db.Db.AutoMigrate(&Task{})
 	if err != nil {
 		panic("Task表自动迁移失败")
 	}
@@ -51,7 +52,7 @@ func QueryTasks(c *gin.Context) {
 	now := time.Now().Unix()
 
 	var tasks []Task
-	db.Find(&tasks)
+	db.Db.Find(&tasks)
 
 	vo := make([]*TaskVO, len(tasks))
 	for i, t := range tasks {
@@ -85,7 +86,7 @@ func CreateTask(c *gin.Context) {
 		return
 	}
 
-	if err := db.Create(&Task{Name: vo.Name, Weight: vo.Price, CD: float64(vo.Cd)}).Error; err != nil {
+	if err := db.Db.Create(&Task{Name: vo.Name, Weight: vo.Price, CD: float64(vo.Cd)}).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -103,14 +104,14 @@ func FinishTask(c *gin.Context) {
 	}
 
 	var task Task
-	if err := db.First(&task, taskId.Id).Error; err != nil {
+	if err := db.Db.First(&task, taskId.Id).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	db.Save(&task)
+	db.Db.Save(&task)
 
 	record := QuoteRecord{Name: task.Name, Value: calcPrice(task.Weight, task.CD)}
-	db.Save(&record)
+	db.Db.Save(&record)
 
 	c.JSON(http.StatusOK, gin.H{})
 }
@@ -122,7 +123,7 @@ func DeleteTask(c *gin.Context) {
 		return
 	}
 
-	db.Delete(&Task{}, taskId.Id)
+	db.Db.Delete(&Task{}, taskId.Id)
 
 	updateWeightSum()
 

@@ -1,6 +1,7 @@
-package main
+package user
 
 import (
+	"github.com/LiZeC123/SmartReview/app/db"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -25,7 +26,7 @@ type TokenHeader struct {
 }
 
 func init() {
-	err := db.AutoMigrate(&User{})
+	err := db.Db.AutoMigrate(&User{})
 	if err != nil {
 		panic("User表自动迁移失败")
 	}
@@ -39,7 +40,7 @@ func Login(c *gin.Context) {
 	}
 
 	var user User
-	err := db.Where("email = ? and password = ?", login.Email, login.Password).First(&user).Error
+	err := db.Db.Where("email = ? and password = ?", login.Email, login.Password).First(&user).Error
 	if err != nil {
 		c.JSON(http.StatusForbidden, gin.H{"success": false})
 		return

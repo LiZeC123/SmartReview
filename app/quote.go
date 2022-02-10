@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/LiZeC123/SmartReview/app/db"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"math"
@@ -24,12 +25,12 @@ type QuoteRecord struct {
 }
 
 func init() {
-	err := db.AutoMigrate(&Quote{})
+	err := db.Db.AutoMigrate(&Quote{})
 	if err != nil {
 		panic("Quote表自动迁移失败")
 	}
 
-	err = db.AutoMigrate(&QuoteRecord{})
+	err = db.Db.AutoMigrate(&QuoteRecord{})
 	if err != nil {
 		panic("QuoteRecord表自动迁移失败")
 	}
@@ -49,7 +50,7 @@ func QueryCounts(c *gin.Context) {
 	speed := 1.0 / 24
 
 	var records []QuoteRecord
-	db.Find(&records)
+	db.Db.Find(&records)
 	for _, q := range records {
 		value += q.Value
 	}
@@ -74,13 +75,13 @@ func CreateQuote(c *gin.Context) {
 		return
 	}
 
-	db.Create(&Quote{UID: 1, Name: vo.Name, Price: vo.Price, CD: float64(vo.Cd)})
+	db.Db.Create(&Quote{UID: 1, Name: vo.Name, Price: vo.Price, CD: float64(vo.Cd)})
 	c.JSON(http.StatusOK, gin.H{})
 }
 
 func QueryQuotes(c *gin.Context) {
 	var quotes []Quote
-	db.Find(&quotes)
+	db.Db.Find(&quotes)
 
 	vo := make([]*QuoteVO, len(quotes))
 	now := time.Now().Unix()
@@ -113,14 +114,14 @@ func ConsumeQuote(c *gin.Context) {
 	}
 
 	var quote Quote
-	if err := db.First(&quote, quoteId.Id).Error; err != nil {
+	if err := db.Db.First(&quote, quoteId.Id).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	db.Save(&quote)
+	db.Db.Save(&quote)
 
 	record := QuoteRecord{Name: quote.Name, Value: -quote.Price}
-	db.Save(&record)
+	db.Db.Save(&record)
 
 	c.JSON(http.StatusOK, gin.H{})
 }
@@ -132,7 +133,7 @@ func DeleteQuote(c *gin.Context) {
 		return
 	}
 
-	db.Delete(&Quote{}, quoteId.Id)
+	db.Db.Delete(&Quote{}, quoteId.Id)
 	c.JSON(http.StatusOK, gin.H{})
 }
 

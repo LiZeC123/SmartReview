@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/LiZeC123/SmartReview/app/db"
 	"net/http"
 	"time"
 
@@ -24,7 +25,7 @@ type EnglishWordRecord struct {
 }
 
 func init() {
-	err := db.AutoMigrate(&EnglishWordRecord{})
+	err := db.Db.AutoMigrate(&EnglishWordRecord{})
 	if err != nil {
 		panic("EnglishWordRecord表自动迁移失败")
 	}
@@ -45,9 +46,9 @@ func migrateEnglishWordRecord() {
 
 	for _, word := range words {
 		var record EnglishWordRecord
-		err := db.Where("word = ?", word).First(&record).Error
+		err := db.Db.Where("word = ?", word).First(&record).Error
 		if err != nil {
-			db.Create(&EnglishWordRecord{Word: word, Count: 0, Level: 0, Interval: 12, NextReviewTime: time.Now()})
+			db.Db.Create(&EnglishWordRecord{Word: word, Count: 0, Level: 0, Interval: 12, NextReviewTime: time.Now()})
 			fmt.Println("Insert " + word)
 		}
 	}
@@ -56,7 +57,7 @@ func migrateEnglishWordRecord() {
 func QueryRecentReview(c *gin.Context) {
 	var records []EnglishWordRecord
 
-	db.Find(&records)
+	db.Db.Find(&records)
 
 	cards := make([]Card, len(records))
 	for idx, record := range records {
@@ -73,7 +74,7 @@ func GenerateWordMarkdown(c *gin.Context) {
 	}
 
 	content := fmt.Sprintf("## %s\n\n\n", word)
-	content += fmt.Sprintf(" > [Learner's Dictionary](https://www.learnersdictionary.com/definition/%s)", word)
+	content += fmt.Sprintf("> [Learner's Dictionary](https://www.learnersdictionary.com/definition/%s)", word)
 	content += fmt.Sprintf(" / [Merriam](https://www.merriam-webster.com/dictionary/%s)", word)
 	content += fmt.Sprintf(" / [Bing Image](https://cn.bing.com/images/search?q=%s)", word)
 	content += fmt.Sprintf(" / [Bing Dictionary](https://cn.bing.com/dict/search?q=%s)", word)
