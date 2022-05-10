@@ -5,6 +5,7 @@ import (
 	"github.com/LiZeC123/SmartReview/app/user"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 	"net/http"
 	"os"
@@ -13,69 +14,61 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func initDatabase() {
-	db, err := gorm.Open(sqlite.Open("data/SmartReview.db"), &gorm.Config{})
+func isRelease() bool {
+	return os.Getenv("GIN_MODE") == "release"
+}
+
+func initDatabase(release bool) {
+	var config gorm.Config
+	if !release {
+		config.Logger = logger.Default.LogMode(logger.Info)
+	}
+
+	db, err := gorm.Open(sqlite.Open("data/SmartReview.db"), &config)
+
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	user.Init(db)
 	kb.Init(db)
-
 }
 
-func initLog() {
-	gin.DisableConsoleColor()
-	f, _ := os.Create("data/gin.log")
-	gin.DefaultWriter = f
-	log.SetOutput(f)
+func initLog(release bool) {
+	if release {
+		gin.DisableConsoleColor()
+		f, _ := os.Create("data/gin.log")
+		gin.DefaultWriter = f
+		log.SetOutput(f)
+	}
 }
 
 func appServer() {
-	initDatabase()
-	GinMode := os.Getenv("GIN_MODE")
-	if GinMode == "release" {
-		initLog()
-	}
+	release := isRelease()
+	initDatabase(release)
+	initLog(release)
 
 	r := gin.Default()
 	_ = r.SetTrustedProxies(nil)
 
 	u := r.Group("/api/user")
 	{
-		u.POST("/login", Login)
-		u.GET("/getCurrentUserName", GetCurrentUserName)
+		u.POST("/login", login)
+		u.GET("/getCurrentUserName", getCurrentUserName)
 	}
 
 	k := r.Group("/api/knowledge")
 	{
 		k.Use(user.Auth())
-		k.GET("/migrate", Migrate)
-		k.GET("/queryRecentReview", QueryRecentReview)
-		//knowledge.GET("/generateWordMarkdown", GenerateWordMarkdown)
+		k.GET("/migrate", migrate)
+		k.GET("/queryRecentReview", queryRecentReview)
+		k.POST("/finishReview", finishReview)
 	}
-
-	//q := r.Group("/api/quote")
-	//{
-	//	q.Use()
-	//	q.POST("/createQuote", CreateQuote)
-	//	q.POST("/createTask", CreateTask)
-	//
-	//	q.GET("/queryCounts", QueryCounts)
-	//	q.GET("/queryQuotes", QueryQuotes)
-	//	q.GET("/queryTasks", QueryTasks)
-	//
-	//	q.POST("/consumeQuote", ConsumeQuote)
-	//	q.POST("/finishTask", FinishTask)
-	//
-	//	q.POST("/deleteQuote", DeleteQuote)
-	//	q.POST("/deleteTask", DeleteTask)
-	//}
 
 	_ = r.Run("localhost:8792")
 }
 
-func Login(c *gin.Context) {
+func login(c *gin.Context) {
 	var loginInfo user.LoginInfo
 	if err := c.ShouldBindJSON(&loginInfo); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -90,7 +83,7 @@ func Login(c *gin.Context) {
 	}
 }
 
-func GetCurrentUserName(c *gin.Context) {
+func getCurrentUserName(c *gin.Context) {
 	header := user.TokenHeader{}
 	if err := c.ShouldBindHeader(&header); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -106,13 +99,24 @@ func GetCurrentUserName(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"username": u.UserName})
 }
 
-func Migrate(c *gin.Context) {
+func migrate(c *gin.Context) {
 	kb.Migrate()
 	c.String(http.StatusOK, "Accepted.")
 }
 
-func QueryRecentReview(c *gin.Context) {
+func queryRecentReview(c *gin.Context) {
 	c.JSON(http.StatusOK, kb.QueryRecentReview())
+}
+
+func finishReview(c *gin.Context) {
+	r := kb.ReviewRequest{}
+	if err := c.ShouldBindJSON(&r); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	kb.FinishReview(r)
+	c.String(http.StatusOK, "Accepted.")
 }
 
 func main() {
