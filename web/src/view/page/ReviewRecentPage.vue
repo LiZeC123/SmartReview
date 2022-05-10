@@ -12,7 +12,7 @@ export default {
       return this.axios.get('knowledge/queryRecentReview')
     },
     finishCard: function (kid, process) {
-      return this.axios.post("/review/finishReview", {"kid": kid, "memoryLevel": process})
+      return this.axios.post("knowledge/finishReview", {"kid": kid, "memoryLevel": process})
     },
   },
 }
