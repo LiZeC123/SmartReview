@@ -2,11 +2,12 @@ package user
 
 import (
 	"errors"
-	"github.com/LiZeC123/SmartReview/app/db"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
 )
+
+var db *gorm.DB
 
 type LoginInfo struct {
 	Email    string `json:"email"`
@@ -26,8 +27,9 @@ type TokenHeader struct {
 	Token string `header:"Token"`
 }
 
-func init() {
-	err := db.Db.AutoMigrate(&User{})
+func Init(d *gorm.DB) {
+	db = d
+	err := db.AutoMigrate(&User{})
 	if err != nil {
 		panic("User表自动迁移失败")
 	}
@@ -36,7 +38,7 @@ func init() {
 func Login(login LoginInfo) (string, error) {
 
 	var user User
-	err := db.Db.Where("email = ? and password = ?", login.Email, login.Password).First(&user).Error
+	err := db.Where("email = ? and password = ?", login.Email, login.Password).First(&user).Error
 	if err != nil {
 		return "", errors.New("用户名或密码错误")
 	}

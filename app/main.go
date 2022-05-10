@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/LiZeC123/SmartReview/app/kb"
 	"github.com/LiZeC123/SmartReview/app/user"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"os"
@@ -10,6 +12,17 @@ import (
 	_ "github.com/CodyGuo/godaemon"
 	"github.com/gin-gonic/gin"
 )
+
+func initDatabase() {
+	db, err := gorm.Open(sqlite.Open("data/SmartReview.db"), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	user.Init(db)
+	kb.Init(db)
+
+}
 
 func initLog() {
 	gin.DisableConsoleColor()
@@ -19,7 +32,7 @@ func initLog() {
 }
 
 func appServer() {
-
+	initDatabase()
 	GinMode := os.Getenv("GIN_MODE")
 	if GinMode == "release" {
 		initLog()
@@ -42,22 +55,22 @@ func appServer() {
 		//knowledge.GET("/generateWordMarkdown", GenerateWordMarkdown)
 	}
 
-	q := r.Group("/api/quote")
-	{
-		q.Use()
-		q.POST("/createQuote", CreateQuote)
-		q.POST("/createTask", CreateTask)
-
-		q.GET("/queryCounts", QueryCounts)
-		q.GET("/queryQuotes", QueryQuotes)
-		q.GET("/queryTasks", QueryTasks)
-
-		q.POST("/consumeQuote", ConsumeQuote)
-		q.POST("/finishTask", FinishTask)
-
-		q.POST("/deleteQuote", DeleteQuote)
-		q.POST("/deleteTask", DeleteTask)
-	}
+	//q := r.Group("/api/quote")
+	//{
+	//	q.Use()
+	//	q.POST("/createQuote", CreateQuote)
+	//	q.POST("/createTask", CreateTask)
+	//
+	//	q.GET("/queryCounts", QueryCounts)
+	//	q.GET("/queryQuotes", QueryQuotes)
+	//	q.GET("/queryTasks", QueryTasks)
+	//
+	//	q.POST("/consumeQuote", ConsumeQuote)
+	//	q.POST("/finishTask", FinishTask)
+	//
+	//	q.POST("/deleteQuote", DeleteQuote)
+	//	q.POST("/deleteTask", DeleteTask)
+	//}
 
 	_ = r.Run("localhost:8792")
 }

@@ -13,8 +13,10 @@
           <div class="card shadow-sm" @click="changeShowStatus(card)">
             <div class="card-header">{{ card.title }}</div>
 
-            <div class="card-body" v-if="card.content !== '' && card.showContent">
-              <h5 class="card-title">正文</h5>
+            <!--            <div class="card-body" v-if="card.content !== '' && card.showContent">-->
+            <div class="card-body" v-if="card.content !== ''">
+
+              <!--              <h5 class="card-title">正文</h5>-->
               <p class="card-text">{{ card.content }}</p>
             </div>
 

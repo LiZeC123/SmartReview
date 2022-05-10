@@ -2,9 +2,11 @@ package kb
 
 import (
 	"fmt"
-	"github.com/LiZeC123/SmartReview/app/db"
+	"gorm.io/gorm"
 	"time"
 )
+
+var db *gorm.DB
 
 type Card struct {
 	Title   string `json:"title"`
@@ -18,8 +20,9 @@ type EnglishCorpusRecord struct {
 	LastReviewTime time.Time
 }
 
-func init() {
-	err := db.Db.AutoMigrate(&EnglishCorpusRecord{})
+func Init(d *gorm.DB) {
+	db = d
+	err := db.AutoMigrate(&EnglishCorpusRecord{})
 	if err != nil {
 		panic("EnglishWordRecord表自动迁移失败")
 	}
@@ -35,9 +38,9 @@ func Migrate() {
 
 	for _, sentence := range sentences {
 		var record EnglishCorpusRecord
-		err := db.Db.Where("sentence = ?", sentence).First(&record).Error
+		err := db.Where("sentence = ?", sentence).First(&record).Error
 		if err != nil {
-			db.Db.Create(&EnglishCorpusRecord{Sentence: sentence, Count: 0, LastReviewTime: time.Now()})
+			db.Create(&EnglishCorpusRecord{Sentence: sentence, Count: 0, LastReviewTime: time.Now()})
 			fmt.Println("Insert Sentence:" + sentence)
 		}
 	}
@@ -46,7 +49,7 @@ func Migrate() {
 func QueryRecentReview() []Card {
 	var records []EnglishCorpusRecord
 
-	db.Db.Find(&records)
+	db.Find(&records)
 
 	cards := make([]Card, len(records))
 	for idx, record := range records {

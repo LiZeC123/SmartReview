@@ -6,7 +6,7 @@ import (
 )
 
 func TestHelloName(t *testing.T) {
-	url := "https://lizec.top/note/%E5%8D%95%E8%AF%8D%E6%9C%AC.html"
+	url := "https://lizec.top/note/%E7%A7%91%E5%B9%BB%E5%B0%8F%E8%AF%B4.html"
 
 	contents, err := LoadWebRawFile(url)
 
