@@ -42,3 +42,9 @@ npm run build
 ### Vue
 
 - [vue 判断是否登录，进入不同的页面](https://blog.csdn.net/dwb123456123456/article/details/85317136)
+
+### 选中查词
+
+- [[技术博客]WEB实现划词右键操作](https://www.cnblogs.com/JeromyLee/p/12958914.html)
+- [vue-context-menu鼠标右键事件](https://blog.csdn.net/poplargg/article/details/108518306)
+- [chiic/vue-contextmenu](https://github.com/chiic/vue-contextmenu)

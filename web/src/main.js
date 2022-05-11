@@ -4,6 +4,7 @@ import axios from "axios";
 import router from "./router";
 import store from "./store";
 import VueAxios from "vue-axios";
+import VueContextMenu from "vue-contextmenu/src/main";
 
 axios.defaults.baseURL = '/api'
 axios.interceptors.request.use(config => {
@@ -55,4 +56,5 @@ router.beforeEach((to, from, next) => {
 });
 
 
-createApp(App).use(store).use(router).use(VueAxios, axios).mount("#app")
+createApp(App).use(store).use(router).use(VueAxios, axios)
+    .use(VueContextMenu).mount("#app")

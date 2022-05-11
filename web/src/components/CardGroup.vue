@@ -9,8 +9,11 @@
           <p class="text-center">太棒了, 现在没有要复习的知识点了</p>
         </div>
 
+        <vue-context-menu :contextMenuData="contextMenuData" @openSD="openSD" @openMD="openMD"
+                          @openBI="openBI" @openBD="openBD"></vue-context-menu>
+
         <div class="col" v-for="(card, index) in cards" :key="card.id">
-          <div class="card shadow-sm" @click="changeShowStatus(card)">
+          <div class="card shadow-sm" @click="changeShowStatus(card)" @contextmenu="contextmenu">
             <div class="card-header">{{ card.title }}</div>
 
             <!--            <div class="card-body" v-if="card.content !== '' && card.showContent">-->
@@ -54,7 +57,36 @@ export default {
   },
   data: function () {
     return {
-      cards: []
+      cards: [],
+      word: "",
+      contextMenuData: {
+        // the contextmenu name(@1.4.1 updated)
+        menuName: "demo",
+        // The coordinates of the display(菜单显示的位置)
+        axis: {
+          x: null,
+          y: null
+        },
+        // Menu options (菜单选项)
+        menulists: [
+          {
+            fnHandler: "openSD", // 绑定事件
+            btnName: "初阶词典" // 菜单名称
+          },
+          {
+            fnHandler: "openMD",
+            btnName: "韦氏词典"
+          },
+          {
+            fnHandler: "openBI",
+            btnName: "必应图片"
+          },
+          {
+            fnHandler: "openBD",
+            btnName: "必应词典"
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -79,6 +111,27 @@ export default {
     },
     changeShowStatus: function (card) {
       card.showContent = !card.showContent;
+    },
+    openSD() {
+      open("https://www.learnersdictionary.com/definition/" + this.word)
+    },
+    openMD() {
+     open("https://www.merriam-webster.com/dictionary/" + this.word)
+    },
+    openBI() {
+      open("https://cn.bing.com/images/search?q=" + this.word)
+    },
+    openBD() {
+      open("https://cn.bing.com/dict/search?q=" +this.word)
+    },
+    contextmenu(e) {
+      e.preventDefault();
+      const x = e.clientX;
+      const y = e.clientY;
+      // 获得当前鼠标的位置
+      this.contextMenuData.axis = {x, y};
+      // 获得当前选择的单词
+      this.word = window.getSelection().toString();
     }
   },
   mounted() {
