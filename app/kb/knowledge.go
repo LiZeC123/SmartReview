@@ -56,12 +56,15 @@ func QueryRecentReview() []Card {
 	var records []EnglishCorpusRecord
 
 	// 从今天还没有复习过的数据中随机抽取10条数据返回
-	yesterday := time.Now().AddDate(0, 0, -1)
-	db.Where("LastReviewTime < ?", yesterday).Order(" RANDOM()").Limit(10).Find(&records)
+	//yesterday := time.Now().AddDate(0, 0, -1)
+	//db.Where("LastReviewTime < ?", yesterday).Order(" RANDOM()").Limit(10).Find(&records)
+
+	db.Order(" RANDOM()").Limit(10).Find(&records)
 
 	cards := make([]Card, len(records))
 	for i, r := range records {
-		cards[i] = Card{ID: r.ID, Title: "Corpus", Content: r.Sentence}
+		title := fmt.Sprintf("知识点%d [已复习%d次]", i+1, r.Count)
+		cards[i] = Card{ID: r.ID, Title: title, Content: r.Sentence}
 	}
 
 	return cards
@@ -79,18 +82,3 @@ func FinishReview(r ReviewRequest) {
 	record.Count += 1
 	db.Save(&record)
 }
-
-//func GenerateWordMarkdown(c *gin.Context) {
-//	word := c.DefaultQuery("word", "")
-//	if word == "" {
-//		c.String(http.StatusOK, "请指定需要插入的单词")
-//	}
-//
-//	content := fmt.Sprintf("## %s\n\n\n", word)
-//	content += fmt.Sprintf("> [Learner's Dictionary](https://www.learnersdictionary.com/definition/%s)", word)
-//	content += fmt.Sprintf(" / [Merriam](https://www.merriam-webster.com/dictionary/%s)", word)
-//	content += fmt.Sprintf(" / [Bing Image](https://cn.bing.com/images/search?q=%s)", word)
-//	content += fmt.Sprintf(" / [Bing Dictionary](https://cn.bing.com/dict/search?q=%s)", word)
-//
-//	c.String(http.StatusOK, content)
-//}
