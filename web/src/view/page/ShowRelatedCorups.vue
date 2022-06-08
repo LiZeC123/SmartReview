@@ -6,11 +6,12 @@
 import CardGroup from "../../components/CardGroup";
 
 export default {
-  name: "ReviewKnowledge",
+  name: "ShowRelatedCorups",
   components: {CardGroup},
   methods: {
     initCard: function () {
-      return this.axios.get('knowledge/queryList')
+      let word = this.$route.query.word
+      return this.axios.post("knowledge/queryWordCorups", {"word": word})
     },
   },
 }

@@ -6,7 +6,7 @@ import Login from "./view/Login";
 import Main from "./view/Main";
 import ManageKnowledgePage from "./view/page/ManageKnowledgePage";
 import CreateKnowledgePage from "./view/page/CreateKnowledgePage";
-import ReviewKnowledge from "./view/page/ReviewKnowledge";
+import ShowRelatedCorups from "./view/page/ShowRelatedCorups";
 import ManagerQuotePage from "./view/page/ManagerQuotePage";
 
 
@@ -17,7 +17,7 @@ const routes = [
         path: '/home', component: Main,
         children: [
             {path: 'recent', component: ReviewRecentCard},
-            {path: "review", component: ReviewKnowledge},
+            {path: "related", component: ShowRelatedCorups},
             {path: 'create', component: CreateKnowledgePage},
             {path: 'knowledge', component: ManageKnowledgePage},
             {path: 'quote', component: ManagerQuotePage}

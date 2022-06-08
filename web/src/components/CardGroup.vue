@@ -10,16 +10,12 @@
         </div>
 
         <vue-context-menu :contextMenuData="contextMenuData" @openSD="openSD" @openMD="openMD"
-                          @openBI="openBI" @openBD="openBD"></vue-context-menu>
+                          @openBI="openBI" @openBD="openBD" @openWords="openWords"></vue-context-menu>
 
         <div class="col" v-for="(card, index) in cards" :key="card.id">
           <div class="card shadow-sm" @click="changeShowStatus(card)" @contextmenu="contextmenu">
-            <div class="card-header">{{ card.title }}</div>
-
-            <!--            <div class="card-body" v-if="card.content !== '' && card.showContent">-->
+            <div class="card-header"><span>{{ card.title }}</span> <span style="float:right">已复习{{card.count}}次</span> </div>
             <div class="card-body" v-if="card.content !== ''">
-
-              <!--              <h5 class="card-title">正文</h5>-->
               <p class="card-text">{{ card.content }}</p>
             </div>
 
@@ -84,6 +80,10 @@ export default {
           {
             fnHandler: "openBD",
             btnName: "必应词典"
+          },
+          {
+            fnHandler: "openWords",
+            btnName: "相关句子"
           }
         ]
       }
@@ -124,6 +124,9 @@ export default {
     openBD() {
       open("https://cn.bing.com/dict/search?q=" +this.word)
     },
+    openWords() {
+      open("/home/related?word="+ this.word)
+    },
     contextmenu(e) {
       e.preventDefault();
       const x = e.clientX;
@@ -138,7 +141,7 @@ export default {
     this.initCards().then(response => {
       for (let card of response.data) {
         card.showContent = false
-        card.process = 85
+        card.process = 50
       }
       this.cards = response.data;
     })
