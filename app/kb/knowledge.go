@@ -13,7 +13,7 @@ var db *gorm.DB
 type Card struct {
 	ID      uint   `json:"id"`
 	Title   string `json:"title"`
-	Count   uint8   `json:"count"`
+	Count   uint8  `json:"count"`
 	Content string `json:"content"`
 }
 
@@ -70,10 +70,13 @@ func QueryRecentReview() []Card {
 	return toCard(records)
 }
 
-func QueryReviewByWord(word string) []Card {
+func QueryWordCorups(word string) []Card {
 	var records []EnglishCorpusRecord
 	word = strings.TrimSpace(word)
-	db.Where("LIKE %"+word+"%").Limit(50).Find(&records)
+	if word != "" {
+		db.Where("sentence LIKE ?", "%"+word+"%").Limit(50).Find(&records)
+	}
+
 	return toCard(records)
 }
 
@@ -83,7 +86,7 @@ func toCard(records []EnglishCorpusRecord) []Card {
 		title := "知识点"
 		cards[i] = Card{ID: r.ID, Title: title, Count: r.Count, Content: r.Sentence}
 	}
-	return cards;
+	return cards
 }
 
 func FinishReview(r ReviewRequest) {

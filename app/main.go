@@ -62,6 +62,7 @@ func appServer() {
 		k.Use(user.Auth())
 		k.GET("/migrate", migrate)
 		k.GET("/queryRecentReview", queryRecentReview)
+		k.POST("/queryWordCorups", queryWordCorups)
 		k.POST("/finishReview", finishReview)
 	}
 
@@ -106,6 +107,16 @@ func migrate(c *gin.Context) {
 
 func queryRecentReview(c *gin.Context) {
 	c.JSON(http.StatusOK, kb.QueryRecentReview())
+}
+
+func queryWordCorups(c *gin.Context) {
+	json := make(map[string]string) 
+	if err := c.ShouldBindJSON(&json); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})	
+	}
+
+	word := json["word"]
+	c.JSON(http.StatusOK, kb.QueryWordCorups(word))
 }
 
 func finishReview(c *gin.Context) {
