@@ -1,14 +1,15 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/LiZeC123/SmartReview/app/kb"
 	"github.com/LiZeC123/SmartReview/app/user"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"log"
-	"net/http"
-	"os"
 
 	_ "github.com/CodyGuo/godaemon"
 	"github.com/gin-gonic/gin"
@@ -60,6 +61,7 @@ func appServer() {
 	k := r.Group("/api/knowledge")
 	{
 		k.Use(user.Auth())
+		k.POST("/create", createKnowledge)
 		k.GET("/migrate", migrate)
 		k.GET("/queryRecentReview", queryRecentReview)
 		k.POST("/queryWordCorups", queryWordCorups)
@@ -100,6 +102,28 @@ func getCurrentUserName(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"username": u.UserName})
 }
 
+type KnowledgeRequest struct {
+	AppType uint   `json:"appType"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}
+
+func createKnowledge(c *gin.Context) {
+	r := KnowledgeRequest{}
+	if err := c.ShouldBindJSON(&r); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if (r.AppType == 0) {
+		kb.CreateEnglishCorpus(r.Content)
+	} else {
+		kb.CreateDefaultKnowledge()
+	}
+
+	c.String(http.StatusOK, "Accepted.")
+}
+
 func migrate(c *gin.Context) {
 	kb.Migrate()
 	c.String(http.StatusOK, "Accepted.")
@@ -110,9 +134,9 @@ func queryRecentReview(c *gin.Context) {
 }
 
 func queryWordCorups(c *gin.Context) {
-	json := make(map[string]string) 
+	json := make(map[string]string)
 	if err := c.ShouldBindJSON(&json); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})	
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
 	word := json["word"]

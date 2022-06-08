@@ -18,13 +18,13 @@
 
         <hr/>
 
-        <component :is="currentComp" :reset="reset" :submit="submit" @on-submit="updateExtend"></component>
+        <component :is="currentComp" :reset="reset" :submit="submit" @on-submit="doSumbit"></component>
 
       </div>
     </div>
 
 
-    <button type="submit" class="btn btn-primary float-end me-4" @click="sendSubmit">创建知识点</button>
+    <button type="submit" class="btn btn-primary float-end me-4" @click="sendSubmit">添加知识点</button>
   </div>
 </template>
 
@@ -44,75 +44,48 @@ export default {
       types: [{"id": 0, "comp": EnglishWordBook, "name": "单词本"}, {"id": 1, "comp": BaseKnowledge, "name": "基本类型"}],
       reset: 0,
       submit: 0,
-      ss: {
-        link: false,
-        tag: false,
-        extend: false
-      }
     }
   },
   methods: {
-
-    updateExtend: function (extend) {
-      this.extend = extend
-      this.ss.extend = true
-      this.doSumbit()
-    },
-    resetSS: function () {
-      this.ss.link = false;
-      this.ss.tag = false;
-      this.ss.extend = false;
-    },
     sendSubmit: function () {
-      this.resetSS()
       this.submit += 1;
     },
-    doSumbit: function () {
-      let done = this.ss.link && this.ss.tag && this.ss.extend;
-      if (!done) {
-        console.log("Not Done Return.")
-        return;
-      }
-
+    doSumbit: function (extend) {
       let knowledge;
-      if (this.currentId === 1) {
-        knowledge = this.createBaseKnowledge();
+      if (this.currentId === 0) {
+        knowledge = this.createEnglishWordBook(extend);
+      } else if (this.currentId === 1) {
+        knowledge = this.createBaseKnowledge(extend);
       } else if (this.currentId === 2) {
-        knowledge = this.createEnglishWordBook();
-      } else if (this.currentId === 3) {
-        knowledge = this.submitLeetCodeNote();
+        knowledge = this.submitLeetCodeNote(extend);
       }
 
-      console.log(knowledge);
+      console.log("Knowledge is",  knowledge);
 
       this.axios.post('/knowledge/create', knowledge).then(response => {
-        if (response.data.success) {
+        if (response.data) {
+          console.log("Response Data is", response.data)
           this.reset += 1
           this.show()
         }
       })
     },
-    createBaseKnowledge: function () {
+    createBaseKnowledge: function (extend) {
       return {
         "appType": this.currentId,
-        "title": this.extend.title,
-        "content": this.extend.content,
-        "link": this.links,
-        "tag": this.tags,
+        "title": extend.title,
+        "content": extend.content,
       }
     },
-    createEnglishWordBook: function () {
+    createEnglishWordBook: function (extend) {
       return {
         "appType": this.currentId,
         "title": "",
-        "content": this.extend.content,
-        "link": this.links,
-        "tag": this.tags,
-        "words": this.extend.words
+        "content": extend.content,
       }
     },
-    submitLeetCodeNote: function () {
-      return {}
+    submitLeetCodeNote: function (extend) {
+      return {"extend": extend}
     },
     show: function () {
       const alert = $('#submitAlert')

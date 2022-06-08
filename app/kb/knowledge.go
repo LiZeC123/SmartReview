@@ -24,6 +24,8 @@ type EnglishCorpusRecord struct {
 	LastReviewTime time.Time
 }
 
+
+
 type ReviewRequest struct {
 	ID          uint `json:"kid"`
 	MemoryLevel uint `json:"memoryLevel"`
@@ -35,6 +37,16 @@ func Init(d *gorm.DB) {
 	if err != nil {
 		panic("EnglishWordRecord表自动迁移失败")
 	}
+}
+
+func CreateEnglishCorpus(sentence string) {
+	record := EnglishCorpusRecord{Sentence: sentence, Count: 0, LastReviewTime: time.Now()}
+	db.Create(&record)
+	fmt.Println("Insert Sentence:" + sentence)
+}
+
+func CreateDefaultKnowledge() {
+	fmt.Println("Error: Default Knowledge Creater Called.")
 }
 
 func Migrate() {
@@ -66,7 +78,8 @@ func QueryRecentReview() []Card {
 
 	// 这些规则本身可以做成可配置的？
 
-	db.Order(" RANDOM()").Limit(10).Find(&records)
+	// 由于页面上分为三列显示，因此获取数据量选择3的倍数能够让界面看起来相对更整齐
+	db.Order(" RANDOM()").Limit(15).Find(&records)
 	return toCard(records)
 }
 
@@ -74,7 +87,7 @@ func QueryWordCorups(word string) []Card {
 	var records []EnglishCorpusRecord
 	word = strings.TrimSpace(word)
 	if word != "" {
-		db.Where("sentence LIKE ?", "%"+word+"%").Limit(50).Find(&records)
+		db.Where("sentence LIKE ?", "%"+word+"%").Limit(45).Find(&records)
 	}
 
 	return toCard(records)

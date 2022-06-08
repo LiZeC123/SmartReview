@@ -1,18 +1,16 @@
 <template>
   <div>
     <div class="form-floating my-3">
-      <input type="text" class="form-control" id="textInputTitle" aria-describedby="textInputTitleHelp"
-             placeholder="请输入单词" v-model="title">
+      <textarea class="form-control" id="textInputContent" placeholder="知识点正文"
+                      style="height: 280px" v-model="content"></textarea>
       <small id="textInputTitleHelp"
-             class="form-text text-muted">简要的概括知识点的主要内容</small>
-      <label for="textInputTitle">请输入单词</label>
+             class="form-text text-muted">输入需要添加到语料库中的句子</small>
+      <label for="textInputTitle">请输入句子</label>
     </div>
 
-    <div class="form-floating mb-3">
-            <textarea class="form-control" id="textInputContent" placeholder="Markdown代码"
-                      style="height: 250px" v-model="content" @click="copyCode"></textarea>
-      <label for="textInputContent">Markdown代码</label>
-    </div>
+
+
+
   </div>
 </template>
 
@@ -20,37 +18,24 @@
 export default {
   name: "EnglishWordBook",
   props: {
+    submit: Number,
     reset: Number,
   },
   data: function () {
     return {
-      title: "",
       content: "",
     }
   },
   methods:{
-    copyCode: function () {
-      navigator.clipboard.writeText(this.content)
-      console.log("Copied.")
-    }
+
   },
   watch: {
-    'title': function (newValue) {
-      if (newValue === "") {
-        this.content = ""
-      }
-
-      this.axios.get("/knowledge/generateWordMarkdown", {
-        params: {
-          "word": newValue
-        }
-      }).then(resp => this.content = resp.data)
-
-    },
     'reset': function () {
-      this.title = ""
       this.content = ""
     },
+    'submit': function () {
+      this.$emit("on-submit", {"content": this.content})
+    }
   }
 }
 </script>
