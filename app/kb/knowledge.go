@@ -2,8 +2,10 @@ package kb
 
 import (
 	"fmt"
-	"gorm.io/gorm"
+	"strings"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 var db *gorm.DB
@@ -11,13 +13,14 @@ var db *gorm.DB
 type Card struct {
 	ID      uint   `json:"id"`
 	Title   string `json:"title"`
+	Count   uint8   `json:"count"`
 	Content string `json:"content"`
 }
 
 type EnglishCorpusRecord struct {
 	ID             uint `gorm:"primarykey"`
 	Sentence       string
-	Count          int8
+	Count          uint8
 	LastReviewTime time.Time
 }
 
@@ -59,15 +62,28 @@ func QueryRecentReview() []Card {
 	//yesterday := time.Now().AddDate(0, 0, -1)
 	//db.Where("LastReviewTime < ?", yesterday).Order(" RANDOM()").Limit(10).Find(&records)
 
-	db.Order(" RANDOM()").Limit(10).Find(&records)
+	// 如果数据量足够大，可以考虑先随即抽取100个句子，然后按照一定的规则选择最需要复习的10个句子返回
 
+	// 这些规则本身可以做成可配置的？
+
+	db.Order(" RANDOM()").Limit(10).Find(&records)
+	return toCard(records)
+}
+
+func QueryReviewByWord(word string) []Card {
+	var records []EnglishCorpusRecord
+	word = strings.TrimSpace(word)
+	db.Where("LIKE %"+word+"%").Limit(50).Find(&records)
+	return toCard(records)
+}
+
+func toCard(records []EnglishCorpusRecord) []Card {
 	cards := make([]Card, len(records))
 	for i, r := range records {
-		title := fmt.Sprintf("知识点%d [已复习%d次]", i+1, r.Count)
-		cards[i] = Card{ID: r.ID, Title: title, Content: r.Sentence}
+		title := "知识点"
+		cards[i] = Card{ID: r.ID, Title: title, Count: r.Count, Content: r.Sentence}
 	}
-
-	return cards
+	return cards;
 }
 
 func FinishReview(r ReviewRequest) {

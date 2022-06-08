@@ -11,4 +11,5 @@ data/
 tmpFile/
 
 app.exe
+app
 gin.log
