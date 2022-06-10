@@ -64,7 +64,7 @@ func appServer() {
 		k.POST("/create", createKnowledge)
 		k.GET("/migrate", migrate)
 		k.GET("/queryRecentReview", queryRecentReview)
-		k.POST("/queryWordCorups", queryWordCorups)
+		k.POST("/queryWordCorpus", queryWordCorpus)
 		k.POST("/finishReview", finishReview)
 	}
 
@@ -115,7 +115,7 @@ func createKnowledge(c *gin.Context) {
 		return
 	}
 
-	if (r.AppType == 0) {
+	if r.AppType == 0 {
 		kb.CreateEnglishCorpus(r.Content)
 	} else {
 		kb.CreateDefaultKnowledge()
@@ -133,14 +133,14 @@ func queryRecentReview(c *gin.Context) {
 	c.JSON(http.StatusOK, kb.QueryRecentReview())
 }
 
-func queryWordCorups(c *gin.Context) {
+func queryWordCorpus(c *gin.Context) {
 	json := make(map[string]string)
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
 	word := json["word"]
-	c.JSON(http.StatusOK, kb.QueryWordCorups(word))
+	c.JSON(http.StatusOK, kb.QueryWordCorpus(word))
 }
 
 func finishReview(c *gin.Context) {

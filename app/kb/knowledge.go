@@ -2,6 +2,7 @@ package kb
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -23,8 +24,6 @@ type EnglishCorpusRecord struct {
 	Count          uint8
 	LastReviewTime time.Time
 }
-
-
 
 type ReviewRequest struct {
 	ID          uint `json:"kid"`
@@ -70,20 +69,19 @@ func Migrate() {
 func QueryRecentReview() []Card {
 	var records []EnglishCorpusRecord
 
-	// 从今天还没有复习过的数据中随机抽取10条数据返回
-	//yesterday := time.Now().AddDate(0, 0, -1)
-	//db.Where("LastReviewTime < ?", yesterday).Order(" RANDOM()").Limit(10).Find(&records)
+	// 如果数据量足够大, 则先随机抽取一部分句子
+	db.Order(" RANDOM()").Limit(45).Find(&records)
 
-	// 如果数据量足够大，可以考虑先随即抽取100个句子，然后按照一定的规则选择最需要复习的10个句子返回
+	// 然后根据某种算法返回最需要复习的15个句子, 此处按照复习次数排序
+	// 于页面上分为三列显示，因此获取数据量选择3的倍数能够让界面看起来相对更整齐
+	sort.Slice(records, func(i, j int) bool {
+		return records[i].Count < records[j].Count
+	})
 
-	// 这些规则本身可以做成可配置的？
-
-	// 由于页面上分为三列显示，因此获取数据量选择3的倍数能够让界面看起来相对更整齐
-	db.Order(" RANDOM()").Limit(15).Find(&records)
-	return toCard(records)
+	return toCard(records[:15])
 }
 
-func QueryWordCorups(word string) []Card {
+func QueryWordCorpus(word string) []Card {
 	var records []EnglishCorpusRecord
 	word = strings.TrimSpace(word)
 	if word != "" {

@@ -11,7 +11,7 @@ export default {
   methods: {
     initCard: function () {
       let word = this.$route.query.word
-      return this.axios.post("knowledge/queryWordCorups", {"word": word})
+      return this.axios.post("knowledge/queryWordCorpus", {"word": word})
     },
   },
 }
