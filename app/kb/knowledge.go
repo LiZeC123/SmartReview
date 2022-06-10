@@ -48,22 +48,8 @@ func CreateDefaultKnowledge() {
 	fmt.Println("Error: Default Knowledge Creater Called.")
 }
 
-func Migrate() {
-	url := "https://lizec.top/note/%E5%8D%95%E8%AF%8D%E6%9C%AC.html"
-	sentences, err := LoadWebRawFile(url)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	for _, sentence := range sentences {
-		var record EnglishCorpusRecord
-		err := db.Where("sentence = ?", sentence).First(&record).Error
-		if err != nil {
-			db.Create(&EnglishCorpusRecord{Sentence: sentence, Count: 0, LastReviewTime: time.Now()})
-			fmt.Println("Insert Sentence:" + sentence)
-		}
-	}
+func Export() []byte {
+	return make([]byte, 0)
 }
 
 func QueryRecentReview() []Card {

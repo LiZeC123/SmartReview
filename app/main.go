@@ -62,7 +62,7 @@ func appServer() {
 	{
 		k.Use(user.Auth())
 		k.POST("/create", createKnowledge)
-		k.GET("/migrate", migrate)
+		k.GET("/export", export)
 		k.GET("/queryRecentReview", queryRecentReview)
 		k.POST("/queryWordCorpus", queryWordCorpus)
 		k.POST("/finishReview", finishReview)
@@ -124,9 +124,10 @@ func createKnowledge(c *gin.Context) {
 	c.String(http.StatusOK, "Accepted.")
 }
 
-func migrate(c *gin.Context) {
-	kb.Migrate()
-	c.String(http.StatusOK, "Accepted.")
+func export(c *gin.Context) {
+	data := kb.Export()
+	c.Header("content-disposition", `attachment; filename=English`)
+	c.Data(200, "text/plain", data)
 }
 
 func queryRecentReview(c *gin.Context) {
