@@ -49,7 +49,8 @@ func CreateDefaultKnowledge() {
 }
 
 func Export() []byte {
-	return make([]byte, 0)
+	return []byte("Hello World~")
+	//return make([]byte, 0)
 }
 
 func QueryRecentReview() []Card {
