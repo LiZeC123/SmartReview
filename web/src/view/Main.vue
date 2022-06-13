@@ -46,7 +46,7 @@
                   <hr class="dropdown-divider">
                 </li>
                 <li><a class="dropdown-item" href="#">用户设置</a></li>
-                <li><a class="dropdown-item" href="#" @click="syncKnowledge">同步知识</a></li>
+                <li><a class="dropdown-item" href="#" @click="exportKb">导出知识库</a></li>
                 <li><a class="dropdown-item" href="#" @click="logout">退出登录</a></li>
               </ul>
             </li>
@@ -78,8 +78,9 @@ export default {
       this.$store.commit("del_token");
       router.push({path: '/login'}).then(()=>{});
     },
-    syncKnowledge: function () {
-      this.axios.get("knowledge/migrate").then(()=> location.reload())
+    exportKb: function () {
+      open("/api/knowledge/export")
+      // this.axios.get("").then(()=> location.reload())
     }
   },
   created() {

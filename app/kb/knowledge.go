@@ -1,6 +1,7 @@
 package kb
 
 import (
+	"bufio"
 	"fmt"
 	"sort"
 	"strings"
@@ -39,9 +40,16 @@ func Init(d *gorm.DB) {
 }
 
 func CreateEnglishCorpus(sentence string) {
-	record := EnglishCorpusRecord{Sentence: sentence, Count: 0, LastReviewTime: time.Now()}
-	db.Create(&record)
-	fmt.Println("Insert Sentence:" + sentence)
+	sc := bufio.NewScanner(strings.NewReader(sentence))
+
+	for sc.Scan() {
+		text := strings.TrimSpace(sc.Text())
+		if text != "" {
+			record := EnglishCorpusRecord{Sentence: text, Count: 0, LastReviewTime: time.Now()}
+			db.Create(&record)
+			fmt.Println("Insert Sentence:" + text)
+		}
+	}
 }
 
 func CreateDefaultKnowledge() {

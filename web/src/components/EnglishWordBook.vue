@@ -2,13 +2,11 @@
   <div>
     <div class="form-floating my-3">
       <textarea class="form-control" id="textInputContent" placeholder="知识点正文"
-                      style="height: 280px" v-model="content"></textarea>
+                style="height: 280px" v-model="content" @keydown="hotKeyDispatcher"></textarea>
       <small id="textInputTitleHelp"
              class="form-text text-muted">输入需要添加到语料库中的句子</small>
-      <label for="textInputTitle">请输入句子</label>
+      <label for="textInputContent">请输入句子</label>
     </div>
-
-
 
 
   </div>
@@ -26,8 +24,18 @@ export default {
       content: "",
     }
   },
-  methods:{
-
+  methods: {
+    hotKeyDispatcher: function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault()
+        console.log("Format Current Text.")
+        this.formatSentence()
+      }
+    },
+    formatSentence: function () {
+      let c = this.content
+      this.content = c.replace(/\n|\r/g, "").replace(/[.]/g, ".\n\n")
+    }
   },
   watch: {
     'reset': function () {
