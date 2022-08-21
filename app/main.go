@@ -66,6 +66,9 @@ func appServer() {
 		k.GET("/queryRecentReview", queryRecentReview)
 		k.POST("/queryWordCorpus", queryWordCorpus)
 		k.POST("/finishReview", finishReview)
+		k.POST("/queryKnowledgeCount", queryKnowledgeCount)
+		k.POST("/queryKnowledgePage", queryKnowledgePage)
+		k.POST("/deleteKnowledge", deleteKnowledge)
 	}
 
 	_ = r.Run("localhost:8792")
@@ -153,6 +156,40 @@ func finishReview(c *gin.Context) {
 
 	kb.FinishReview(r)
 	c.String(http.StatusOK, "Accepted.")
+}
+
+func queryKnowledgeCount(c *gin.Context) {
+	c.JSON(http.StatusOK, kb.QueryKnowledgeCount())
+}
+
+type KnowledgePageRequest struct {
+	PageIndex int `json:"pageIndex"`
+	PageSize  int `json:"pageSize"`
+}
+
+func queryKnowledgePage(c *gin.Context) {
+	r := KnowledgePageRequest{}
+	if err := c.ShouldBindJSON(&r); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, kb.QueryKnowledgePage(r.PageIndex, r.PageSize))
+}
+
+type DeleteKnowledgeRequest struct {
+	ID uint `json:"id"`
+}
+
+func deleteKnowledge(c *gin.Context) {
+	r := DeleteKnowledgeRequest{}
+	if err := c.ShouldBindJSON(&r); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	kb.DeleteKnowledge(r.ID)
+	c.JSON(http.StatusOK, nil)
 }
 
 func main() {

@@ -14,7 +14,8 @@
 
         <div class="col" v-for="(card, index) in cards" :key="card.id">
           <div class="card shadow-sm" @click="changeShowStatus(card)" @contextmenu="contextmenu">
-            <div class="card-header"><span>{{ card.title }}</span> <span style="float:right">已复习{{card.count}}次</span> </div>
+            <div class="card-header"><span>{{ card.title }}</span> <span style="float:right">已复习{{ card.count }}次</span>
+            </div>
             <div class="card-body" v-if="card.content !== ''">
               <p class="card-text">{{ card.content }}</p>
             </div>
@@ -53,7 +54,7 @@ export default {
   },
   data: function () {
     return {
-      cards: [],
+      cards: [{title: "Title", content: "Empty Content", count: 0}],
       word: "",
       contextMenuData: {
         // the contextmenu name(@1.4.1 updated)
@@ -116,16 +117,16 @@ export default {
       open("https://www.learnersdictionary.com/definition/" + this.word)
     },
     openMD() {
-     open("https://www.merriam-webster.com/dictionary/" + this.word)
+      open("https://www.merriam-webster.com/dictionary/" + this.word)
     },
     openBI() {
       open("https://cn.bing.com/images/search?q=" + this.word)
     },
     openBD() {
-      open("https://cn.bing.com/dict/search?q=" +this.word)
+      open("https://cn.bing.com/dict/search?q=" + this.word)
     },
     openWords() {
-      open("/home/related?word="+ this.word)
+      open("/home/related?word=" + this.word)
     },
     contextmenu(e) {
       e.preventDefault();

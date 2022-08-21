@@ -68,7 +68,6 @@ func QueryRecentReview() []Card {
 	db.Order(" RANDOM()").Limit(45).Find(&records)
 
 	// 然后根据某种算法返回最需要复习的15个句子, 此处按照复习次数排序
-	// 于页面上分为三列显示，因此获取数据量选择3的倍数能够让界面看起来相对更整齐
 	sort.Slice(records, func(i, j int) bool {
 		return records[i].Count < records[j].Count
 	})
@@ -84,6 +83,22 @@ func QueryWordCorpus(word string) []Card {
 	}
 
 	return toCard(records)
+}
+
+func QueryKnowledgeCount() int64 {
+	var count int64
+	db.Find(&[]EnglishCorpusRecord{}).Count(&count)
+	return count
+}
+
+func QueryKnowledgePage(pageIndex int, pageSize int) []Card {
+	var records []EnglishCorpusRecord
+	db.Offset(pageIndex * pageSize).Limit(pageSize).Order("id desc").Find(&records)
+	return toCard(records)
+}
+
+func DeleteKnowledge(id uint) {
+	db.Delete(&EnglishCorpusRecord{}, id)
 }
 
 func toCard(records []EnglishCorpusRecord) []Card {

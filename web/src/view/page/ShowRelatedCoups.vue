@@ -6,7 +6,7 @@
 import CardGroup from "../../components/CardGroup";
 
 export default {
-  name: "ShowRelatedCorups",
+  name: "ShowRelatedCoups",
   components: {CardGroup},
   methods: {
     initCard: function () {
